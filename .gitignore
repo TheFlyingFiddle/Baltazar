@@ -1,0 +1,15 @@
+# Log files
+*.log
+
+# Windows
+Thumbs.db
+
+
+# Directories
+Debug/
+Release/
+logging/
+compiled_resources/
+
+#Binary Visual Studio file
+*.suo
