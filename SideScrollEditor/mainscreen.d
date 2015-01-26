@@ -14,8 +14,9 @@ import do_undo;
 import commands;
 import allocation;
 import tools;
-import common.bindings;
+import dialogs;
 
+import common.bindings;
 import core.sys.windows.windows;
 
 extern(Windows) BOOL GetOpenFileNameA(LPOPENFILENAMEA);
@@ -65,59 +66,43 @@ class MainScreen : Screen
 
 	void open()
 	{
-		import window.window, main, std.c.string;
-
+		import window.window;
 		auto wnd = app.locate!Window;
-
 		HWND ptr = wnd.getNativeHandle();
 
 		char[256] buffer;
-		buffer[] = '\0';
-		OPENFILENAMEA ofn = OPENFILENAMEA.init;
-		memset ( &ofn, 0, OPENFILENAMEA.sizeof );
-
-		ofn.lStructSize = OPENFILENAMEA.sizeof;
-		ofn.hInstance   = instance;
-		ofn.hwndOwner   = ptr;
-		ofn.lpstrFilter = "Map\0*.sidal\0";
-		ofn.nFilterIndex = 1;
-		ofn.Flags		= 0x00001000;
-		ofn.lpstrFile   = buffer.ptr;
-		ofn.nMaxFile    = 256;
-
-		import log, std.file;
-		logInfo(thisExePath);
-		if(GetOpenFileNameA(&ofn))
+		if(openFileDialog(ptr, "Map\0*.sidal\0", buffer[]))
 		{
+			import std.c.string;
 			auto len = strlen(buffer.ptr);
 			auto tmp = ScopeStack(scratch_alloc);
 			auto c = fromSDLFile!EditorStateContent(Mallocator.it, cast(string)buffer[0 .. len], CompContext());
 			state.initialize(c);
 		}
-		else 
-		{
-			
-		}
-
-		logInfo(thisExePath);
 	}
 
 	void save()
 	{
-		EditorStateContent content;
-		content.assetDir   = "images";
-		content.archetypes = state.archetypes;
-		content.items	   = state.items;
+		import window.window, std.c.string, util.strings, std.path;
+		auto wnd = app.locate!Window;
+		HWND ptr = wnd.getNativeHandle();
 
-		import content.sdl, common, std.array, std.stdio;
-		auto app = appender!(char[]);
+		char[256] buffer;
+		if(saveFileDialog(ptr, "Map\0*.sidal\0", buffer[]))
+		{
+			EditorStateContent content;
+			content.assetDir   = "..\\images";
+			content.archetypes = state.archetypes;
+			content.items	   = state.items;
 
-		CompContext c;
-		toSDL(content, app, &c);
-		
-		import std.file;
-		std.file.write("testapp.sdl", app.data);
-		writeln(app.data);
+			auto len = strlen(buffer.ptr);
+			const(char)[] fileName = buffer[0 .. len];
+			if(fileName.extension != ".sidal")
+				fileName = text1024(buffer[0 .. len], ".sidal\0");
+
+			CompContext c;
+			toSDLFile(content, &c, fileName);
+		}
 	}
 
 	void asArch()
@@ -197,6 +182,8 @@ class MainScreen : Screen
 
 	void removeItem()
 	{
+		if(state.item(state.selected) is null) return;
+
 		state.doUndo.apply(&state, RemoveItem(&state));
 	}
 

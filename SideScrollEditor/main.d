@@ -21,8 +21,6 @@ import core.runtime;
 
 static HINSTANCE instance;
 
-pragma(lib, "comdlg32");
-
 extern (Windows) int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     int result;
@@ -87,10 +85,8 @@ void run(DesktopAppConfig config)
 
 	import screen.loading;
 	auto endScreen     = stack.allocate!(MainScreen)();
-	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(["Fonts.fnt", "Atlas.atlas"], "Fonts"), endScreen);
+	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(["Fonts.fnt", "Atlas.atlas", "GuiAtlas.atlas"], "Fonts"), endScreen);
 
-	FontRenderer renderer = FontRenderer(region, RenderConfig(0xFFFF, 3), vd_Source, fd_Source);
-	app.addService(&renderer);
 
 	auto s = app.locate!ScreenComponent;
 	s.push(loadingScreen);

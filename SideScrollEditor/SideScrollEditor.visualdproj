@@ -194,6 +194,7 @@
   <File path="arch.sdl" />
   <File path="commands.d" />
   <File path="config.sdl" />
+  <File path="dialogs.d" />
   <File path="do_undo.d" />
   <File path="guiconfig.sdl" />
   <File path="main.d" />

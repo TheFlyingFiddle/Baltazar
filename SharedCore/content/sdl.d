@@ -633,6 +633,15 @@ struct SDLContainer
 	}
 }
 
+
+void toSDLFile(T, C)(auto ref T value, C* context, const(char)[] path)
+{
+	import std.stdio;
+	auto file = File(cast(string)path, "w");
+	auto writer = file.lockingTextWriter();
+	toSDL(value, writer, context, 0);
+}
+
 void toSDL(T, Sink)(auto ref T value, ref Sink s)
 {
 	toSDL(value, s, &default_context);

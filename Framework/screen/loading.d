@@ -2,6 +2,7 @@ module screen.loading;
 import framework.screen;
 import content;
 import rendering;
+import rendering.combined;
 
 struct LoadingConfig
 {
@@ -49,7 +50,7 @@ class LoadingScreen : Screen
 		import std.range, util.strings, window.window;
 
 		auto screen   = app.locate!Window;
-		auto renderer = app.locate!FontRenderer;
+		auto renderer = app.locate!Renderer2D;
 		renderer.viewport(float2(screen.size));
 		renderer.begin();
 		
