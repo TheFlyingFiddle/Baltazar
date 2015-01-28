@@ -192,6 +192,11 @@
  </Config>
  <Folder name="SharedComponents">
   <Folder name="common">
+   <Folder name="systems">
+    <File path="common\systems\box2D.d" />
+    <File path="common\systems\package.d" />
+    <File path="common\systems\systems.d" />
+   </Folder>
    <File path="common\bindings.d" />
    <File path="common\components.d" />
    <File path="common\content.d" />

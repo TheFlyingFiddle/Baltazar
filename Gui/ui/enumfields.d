@@ -222,8 +222,6 @@ NameGen itemNameGen(Items)(Items items)
 		return true;
 	}
 
-	pragma(msg, Items.sizeof);
-
 	return NameGen(items, &impl);
 }
 

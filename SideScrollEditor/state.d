@@ -82,7 +82,7 @@ struct EditorState
 		archetype = 0;
 		this.selectedChanged = selectedChanged;
 
-		string[] frameNames;
+		List!string frameNames = List!string(GlobalAlloc, 50);
 
 		import std.path;
 
@@ -91,16 +91,16 @@ struct EditorState
 		{
 			if(entry.name.extension == ".png")
 			{
-				frameNames ~= relativePath(p, entry.name);
+				frameNames ~= relativePath(entry.name, p).stripExtension;
 				images     ~= FrameLoader.load(Mallocator.cit,  entry.name, false);
 				
 			}
 		}
 
 		variables.images		  = frameNames;
-		variables.bodies		  = ["bodyA", "bodyB"];
-		variables.particleEffects = ["systemA", "systemB"];
-		variables.collisions	  = ["collisionA", "collisionB"];
+		variables.bodies		  = List!string(["bodyA", "bodyB"].ptr, 2, 2);
+		variables.particleEffects = List!string(["systemA", "systemB"].ptr, 2, 2);
+		variables.collisions	  = List!string(["collisionA", "collisionB"].ptr, 2, 2);
 	}
 
 	ref int selected() @property
@@ -125,6 +125,12 @@ struct EditorState
 		import std.algorithm;
 		return items.array.map!(x => x.name);
 	}
+}
+
+//Should fix this.
+struct SavePath
+{
+	char[256] path;
 }
 
 struct EditorClipboard

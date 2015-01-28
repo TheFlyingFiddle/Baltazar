@@ -23,6 +23,7 @@ abstract class Screen
 	}	
 
 	void initialize() { }
+	void deinitialize() { }
 	void update(Time time) { }
 	void render(Time time) { }
 }
@@ -46,8 +47,10 @@ final class ScreenComponent : IApplicationComponent
 	Screen pop()
 	{
 		assert(screens.length);
+
 		auto r = screens[$ - 1];
 		screens.length = screens.length - 1;
+		r.deinitialize();
 		return r;
 	}
 
@@ -59,14 +62,14 @@ final class ScreenComponent : IApplicationComponent
 		foreach(i, screen; screens)
 		{
 			int j = i;
-			if(j > uIndex)
+			if(j >= uIndex)
 				screen.update(time);
 		}
 
 		foreach(i, screen; screens)
 		{
 			int j = i;
-			if(j > rIndex)
+			if(j >= rIndex)
 				screen.render(time);
 		}
 	}

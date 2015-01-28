@@ -96,7 +96,6 @@ struct Application
 		this.shouldRun = true;
 	}
 
-
 	T* locate(T)(string name = "") if(is(T == struct))
 	{
 		return services.find!(T)(name);
@@ -121,6 +120,12 @@ struct Application
 	{
 		services.add(service);
 	}
+	
+	void removeService(T)()
+	{
+		services.remove!T;
+	}
+
 
 	void addComponent(T)(T component) if(is(T : IApplicationComponent))
 	{

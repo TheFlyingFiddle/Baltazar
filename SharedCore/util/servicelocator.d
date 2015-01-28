@@ -92,7 +92,7 @@ struct ServiceLocator
 
 	void remove(T)()
 	{
-		auto hash = cHash!T;
+		auto hash = hashOf!(T)("");
 		foreach(i, s; services) if(s.hash == hash)
 		{
 			services.removeAt(i);

@@ -196,6 +196,7 @@
   <File path="config.sdl" />
   <File path="dialogs.d" />
   <File path="do_undo.d" />
+  <File path="gameplayscreen.d" />
   <File path="guiconfig.sdl" />
   <File path="main.d" />
   <File path="mainscreen.d" />

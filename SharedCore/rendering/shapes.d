@@ -7,7 +7,6 @@ math,
 	graphics.frame,
 	graphics.font;
 
-
 void drawText(R)(ref R renderer, const(char)[] text, float2 pos, float2 size, ref Font font, Color color, float2 thresholds, float4 bounds = float4(0,0,0,0))
 {
 	if(bounds == float4(0,0,0,0)) 
@@ -196,7 +195,7 @@ void drawTriangle(R)(ref R renderer, float2 a, float2 b, float2 c, Texture2D tex
 	renderer.addItems(vertices, indices, texture);
 }
 
-void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, Color color)
+void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, Color color, float rotation = 0)
 {
 	import rendering.renderer;
 	if(rect.x == rect.z || rect.y == rect.w) return;
@@ -217,19 +216,25 @@ void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, C
 
 	float2 center = (frame.coords.xy + frame.coords.zw) / 2;
 
+	float2 rcenter     = float2((rect.x + rect.z) / 2, (rect.y + rect.w) / 2);
+	float2 bl  = (float2(rect.x, rect.y) - rcenter).rotate(rotation) + rcenter;
+	float2 br = (float2(rect.z, rect.y) - rcenter).rotate(rotation) + rcenter;
+	float2 tr    = (float2(rect.z, rect.w) - rcenter).rotate(rotation) + rcenter;
+	float2 tl     = (float2(rect.x, rect.w) - rcenter).rotate(rotation) + rcenter;
+
 	Vertex[8] vertices;
-	vertices[0] = Vertex(rect.xy, center, color);
-	vertices[1] = Vertex(rect.xy + float2(width), center, color);
+	vertices[0] = Vertex(bl, center, color);
+	vertices[1] = Vertex(bl + float2(width), center, color);
 
-	vertices[2] = Vertex(rect.zy + float2(-width, width), center, color);
-	vertices[3] = Vertex(rect.zy, center, color);
+	vertices[2] = Vertex(br + float2(-width, width), center, color);
+	vertices[3] = Vertex(br, center, color);
 
 
-	vertices[4] = Vertex(rect.zw + float2(-width), center, color);
-	vertices[5] = Vertex(rect.zw, center, color);
+	vertices[4] = Vertex(tr + float2(-width), center, color);
+	vertices[5] = Vertex(tr, center, color);
 
-	vertices[6] = Vertex(rect.xw + float2(width,-width), center, color);
-	vertices[7] = Vertex(rect.xw, center, color);
+	vertices[6] = Vertex(tl + float2(width,-width), center, color);
+	vertices[7] = Vertex(tl, center, color);
 
 	renderer.addItems(vertices[], indices[], frame.texture);
 }

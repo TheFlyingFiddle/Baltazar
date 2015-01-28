@@ -31,11 +31,17 @@ class MainScreen : Screen
 	bool moving;
 	EntityPanel   ep;
 	WorldRenderer renderer;
-
-
+	SavePath savePath;
 	int timerID;
 
-	this() { super(false, false); }
+	Screen other;
+
+	this(Screen other) 
+	{
+		super(false, false); 
+		this.other = other;
+	}
+
 	override void initialize() 
 	{
 		auto all = Mallocator.it;
@@ -61,7 +67,10 @@ class MainScreen : Screen
 		ep = EntityPanel(Mallocator.cit, &state);
 		auto keeper = app.locate!(TimeKeeper);
 		timerID = keeper.startTimer(5, &onAutoSave);
-		components = List!Component(all, 20);
+		components = List!Component(all, 20);	
+		app.addService(&savePath);
+
+		savePath.path[] = '\0';
 	}
 
 	void open()
@@ -70,13 +79,12 @@ class MainScreen : Screen
 		auto wnd = app.locate!Window;
 		HWND ptr = wnd.getNativeHandle();
 
-		char[256] buffer;
-		if(openFileDialog(ptr, "Map\0*.sidal\0", buffer[]))
+		if(openFileDialog(ptr, "Map\0*.sidal\0", savePath.path[]))
 		{
 			import std.c.string;
-			auto len = strlen(buffer.ptr);
+			auto len = strlen(savePath.path.ptr);
 			auto tmp = ScopeStack(scratch_alloc);
-			auto c = fromSDLFile!EditorStateContent(Mallocator.it, cast(string)buffer[0 .. len], CompContext());
+			auto c = fromSDLFile!EditorStateContent(Mallocator.it, cast(string)savePath.path[0 .. len], CompContext());
 			state.initialize(c);
 		}
 	}
@@ -90,18 +98,14 @@ class MainScreen : Screen
 		char[256] buffer;
 		if(saveFileDialog(ptr, "Map\0*.sidal\0", buffer[]))
 		{
-			EditorStateContent content;
-			content.assetDir   = "..\\images";
-			content.archetypes = state.archetypes;
-			content.items	   = state.items;
 
 			auto len = strlen(buffer.ptr);
-			const(char)[] fileName = buffer[0 .. len];
-			if(fileName.extension != ".sidal")
-				fileName = text1024(buffer[0 .. len], ".sidal\0");
-
-			CompContext c;
-			toSDLFile(content, &c, fileName);
+			if(buffer[0 .. len].extension != ".sidal")
+				buffer[len .. len + ".sidal".length + 1] = ".sidal\0"; 
+			
+			len = strlen(buffer.ptr);
+			savePath.path[0 .. len + 1] = buffer[0 .. len + 1];
+			saveFile(cast(string)savePath.path[0 .. len]);
 		}
 	}
 
@@ -219,7 +223,18 @@ class MainScreen : Screen
 		Rect newItemBox    = Rect(lp.x, lp.y, lp.w / 2 - 5, 25);
 		Rect deleteItemBox = Rect(newItemBox.right + 10, lp.y, newItemBox.w, 25);
 		Rect proto		   = Rect(lp.x, newItemBox.top + 5, lp.w, 25);
-		Rect itemBox = Rect(lp.x, proto.top + 5, lp.w, lp.h - (proto.top + 5 - lp.y));
+		Rect itemBox	   = Rect(lp.x, proto.top + 5, lp.w, lp.h - (proto.top + 5 - lp.y));
+		Rect runButton	   = Rect(lp.x, itemBox.top + 5, lp.w / 2 - 5, 25);
+
+		if(gui.button(runButton, "Run"))
+		{
+			if(savePath.path[0] != 0)
+			{
+				import std.c.string;
+				saveFile(cast(string)savePath.path[0 .. strlen(savePath.path.ptr)]);
+				owner.push(other);
+			}
+		}
 
 		gui.selectionfield(proto, state.archetype, state.archetypes.array.map!(x => x.name));
 		int sel = state.selected;
@@ -246,6 +261,18 @@ class MainScreen : Screen
 
 		gui.menu(m);
 		gui.end();
+	}
+
+	void saveFile(string path)
+	{
+		EditorStateContent content;
+		content.assetDir   = "..\\images";
+		content.archetypes = state.archetypes;
+		content.items	   = state.items;
+
+		CompContext c;
+		toSDLFile(content, &c, path);
+
 	}
 
 	void guiTest(ref Gui gui)
@@ -461,15 +488,10 @@ struct EntityPanel
 		return gui.typefield(Rect(5, offset, width, size), t, &this);
 	}
 
-	bool comp(ref Gui gui, ref Shape config, ref float offset, float width)
-	{
-		return false;
-	}
-
 	alias Handler = FromItems;
 	bool handle(T)(ref Gui gui, FromItems f, Rect r, ref T t, HashID styleID)
 	{
-		auto var = state.variables[f.name].get!(string[]);
+		auto var = state.variables[f.name].get!(List!string);
 
 		import std.algorithm;
 		auto idx = var.countUntil!(x => x == t);

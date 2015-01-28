@@ -11,6 +11,7 @@ import rendering.combined;
 import graphics;
 import components;
 
+/*
 class ParticleProcessSystem : System
 {
 	List!ParticleSystem effects;
@@ -100,3 +101,4 @@ class ParticleProcessSystem : System
 		renderer.end();
 	}
 }
+*/

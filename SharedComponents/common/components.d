@@ -5,16 +5,6 @@ import window.gamepad;
 import util.traits;
 import ui.reflection;
 
-struct Input
-{
-	PlayerIndex index;
-
-	static Input ident()
-	{
-		return Input.init;
-	}
-}
-
 struct Transform
 {
 	float2 position;
@@ -38,63 +28,39 @@ struct Sprite
 	}
 }
 
-struct Emitter
+struct Font
 {
-	@FromItems("particleEffects") string effect;
-	static Emitter ident()
+	Color color;
+	string text;
+	@FromItems("fonts") string font;
+}
+
+enum PhysType
+{
+	static_,
+	dynamic,
+	kinematic,
+	sensor
+}
+
+struct Physics
+{
+	float friction;
+	float density;
+	float bouncyness;
+	float damping;
+	float gravity;
+
+	float2 velocity;
+	PhysType type;
+
+	static Physics ident()
 	{
-		return Emitter("");
+		return Physics(0.0f, 1.0f, 0.0f,  0.0f, 1.0f, float2.zero, PhysType.static_);
 	}
 }
 
-struct Elevator
-{
-	float2 destination;
-	float  interval; 
-	@Optional(true) bool active;
 
-	@Optional(0.0f) @DontShow float  elapsed;
-
-	static Elevator ident()
-	{
-		return Elevator(float2.zero, 0, false, 0);
-	}
-}
-
-struct Box2DConfig
-{
-	@FromItems("bodies") string name;
-	@FromItems("collisions") string collision;
-
-	static Box2DConfig ident()
-	{
-		return Box2DConfig("", "");
-	}
-}
-
-enum ShapeType
-{
-	circle,
-	polygon
-}
-
-struct Shape
-{
-	static Shape ident()
-	{
-		Shape s;
-		s.type   = ShapeType.circle;
-		s.radius = 0;
-		return s;
-	}		
-
-	ShapeType type;
-	union
-	{
-		float  radius;
-		string polygon;
-	}
-}
 
 struct Chain
 {

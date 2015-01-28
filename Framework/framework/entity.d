@@ -5,9 +5,12 @@ import std.algorithm;
 import collections.list;
 import util.hash;
 import std.traits;
+import allocation;
 
 struct World
 {
+	IAllocator allocator;
+
 	Application* app;
 	List!Initializer initializers;
 	List!System systems;
@@ -15,33 +18,33 @@ struct World
 
 	private List!int	toRemove;
 
-	this(A)(ref A all, 
+	this(IAllocator allocator, 
 			size_t maxSystems, 
 			size_t maxInitializers, 
 			size_t maxEntities, 
 			Application* app)
 	{
+		this.allocator = allocator;
+
 		this.app			= app;
-		this.systems		= List!System(all, maxSystems);
-		this.initializers	= List!Initializer(all, maxInitializers);	 
-		this.entities		= EntityCollection(all, maxEntities, 20);
-		this.toRemove		= List!int(all, maxEntities);
+		this.systems		= List!System(allocator, maxSystems);
+		this.initializers	= List!Initializer(allocator, maxInitializers);	 
+		this.entities		= EntityCollection(allocator, maxEntities, 20);
+		this.toRemove		= List!int(allocator, maxEntities);
 	}
 
-	void addSystem(T, A)(ref A all, size_t numEntities, size_t order) if(is(T : System))
+	void addSystem(T)(size_t numEntities, size_t order) if(is(T : System))
 	{
-		import allocation;
-
-		T sys = all.allocate!(T)();
-		sys.setup(all, &this, numEntities, order);
+		T sys = allocator.allocate!(T)();
+		sys.setup(allocator, &this, numEntities, order);
 		this.systems ~= cast(System)sys;
 	}
 
-	void addInitializer(T, A)(ref A all) if(is(T : Initializer))
+	void addInitializer(T)() if(is(T : Initializer))
 	{
 		import allocation;
 
-		T inits = all.allocate!(T)();
+		T inits = allocator.allocate!(T)();
 		inits.world = &this;
 		initializers ~= cast(Initializer)inits;
 	}
@@ -50,21 +53,42 @@ struct World
 	{
 		foreach(s; systems)
 		{
-			s.preInitialize();
+			s.preInitialize(allocator);
 		}
 
 		foreach(i; initializers)
 		{
-			i.initialize();
+			i.initialize(allocator);
 		}
 
 		foreach(s; systems)
 		{
-			s.initialize();
+			s.initialize(allocator);
 		}
 
 		import std.algorithm;
 		systems.sort!((a,b) => a.order < b.order);
+	}
+
+	void deinitialize()
+	{
+		entities.destroyAll(this);
+
+		foreach(ref i; initializers)
+		{
+			i.deinitialize(allocator);
+			allocator.deallocate(i);
+		}
+
+		foreach(ref s; systems)
+		{
+			s.deinitialize(allocator);
+			allocator.deallocate(s);
+		}
+
+		systems.clear();
+		initializers.clear();
+		toRemove.clear();
 	}
 
 	void step(Time time)
@@ -86,7 +110,6 @@ struct World
 
 		removeEntites();
 	}
-
 
 	void entityChanged(ref Entity entity)
 	{
@@ -162,7 +185,8 @@ class Initializer
 			initializeEntity(e);
 	}
 
-	void initialize() { }
+	void initialize(IAllocator all) { }
+	void deinitialize(IAllocator all) { }
 
 	abstract bool shouldInitializeEntity(ref Entity e);
 	abstract void initializeEntity(ref Entity e);
@@ -212,8 +236,10 @@ class System
 	void postStep(Time time) { }
 	void step(Time time)	 { }
 
-	void preInitialize() { }
-	void initialize() { }
+	void preInitialize(IAllocator all) { }
+	void initialize(IAllocator all) { }
+	void deinitialize(IAllocator all) { }
+
 	abstract bool shouldAddEntity(ref Entity entity);
 }
 
@@ -221,7 +247,7 @@ struct Component
 {
 	TypeHash type;
 	void function(ref Component, ref Entity, ref World) destructor;
-	ubyte[32 - 8] data;
+	ubyte[48 - 8] data;
 
 	this(T)(auto ref T t)
 	{

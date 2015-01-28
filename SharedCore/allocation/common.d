@@ -137,6 +137,8 @@ void deallocate(T,A)(ref A allocator, T* item) if(is(T == struct))
 {
 	static if(hasMember!(T, "deallocate"))
 		item.deallocate(allocator);
+	static if(hasFinalizer!(T))
+		item.__dtor();
 
 	void* ptr = cast(void*)item;
 	void[] toDealloc = ptr[0 .. T.sizeof];

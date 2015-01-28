@@ -523,7 +523,6 @@ struct SDLIterator(C)
 		enum context_compiles = __traits(compiles, () => context.read!(T, C)(&this));
 		static if(context_compiles)
 		{
-			pragma(msg, T.stringof);
 			return context.read!T(&this);
 		}
 

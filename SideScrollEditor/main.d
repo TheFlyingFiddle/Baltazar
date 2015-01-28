@@ -9,6 +9,7 @@ import concurency.task;
 import content.sdl;
 import content.reloading;
 import mainscreen;
+import gameplayscreen;
 import framework;
 import window.window;
 import window.keyboard;
@@ -84,9 +85,10 @@ void run(DesktopAppConfig config)
 
 
 	import screen.loading;
-	auto endScreen     = stack.allocate!(MainScreen)();
+	auto gameplay	   = stack.allocate!(GameplayScreen)();
+	auto endScreen     = stack.allocate!(MainScreen)(gameplay);
 	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(["Fonts.fnt", "Atlas.atlas", "GuiAtlas.atlas"], "Fonts"), endScreen);
-
+	
 
 	auto s = app.locate!ScreenComponent;
 	s.push(loadingScreen);

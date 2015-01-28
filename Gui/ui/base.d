@@ -427,8 +427,11 @@ struct Gui
 
 	void drawText(const(char[]) text, float2 pos, Rect rect, ref GuiFont font, Rect bounds)
 	{
+		Rect b = intersection(rect, bounds);
+		if(b == Rect.empty) return;
+
 		renderer.drawText(text, pos, font.size, fonts.asset[font.font], 
-						  font.color, font.thresholds, intersection(rect, bounds));
+						  font.color, font.thresholds, b);
 	}
 
 	void drawText(const(char[]) text, Rect rect, ref GuiFont font, Rect bounds,
