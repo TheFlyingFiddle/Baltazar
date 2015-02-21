@@ -86,7 +86,6 @@ struct Application
 	private bool shouldRun;
 	public string name;
 
-
 	this(A)(ref A al, size_t numServices, size_t numComponents, string name)
 	{		
 		services   = ServiceLocator(al, numServices);
@@ -115,17 +114,15 @@ struct Application
 		assert(0, "Failed to find : " ~ T.stringof);
 	}
 
-
-	void addService(T)(T* service) if(is(T == struct))
+	void addService(T)(T* service, string s = "") if(is(T == struct))
 	{
-		services.add(service);
+		services.add(service, s);
 	}
-	
+
 	void removeService(T)()
 	{
 		services.remove!T;
 	}
-
 
 	void addComponent(T)(T component) if(is(T : IApplicationComponent))
 	{

@@ -19,48 +19,27 @@ import log;
 
 import core.sys.windows.windows;
 import core.runtime;
+import plugins;
 
-static HINSTANCE instance;
-
-extern (Windows) int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+void main()
 {
-    int result;
+	import core.memory;
+	GC.disable();
 
-	instance = hInstance;
+	//import std.process;
+	//char[][] commands;
+	//commands ~= cast(char[])"..\\Content_Pipeline\\Debug\\Content_pipeline.exe";
+	//commands ~= cast(char[])"..\\resources";
+	//commands ~= cast(char[])"..\\compiled_resources";
+	//spawnProcess(commands);
 
-    try
-    {
-        Runtime.initialize();
-        main_start();
-        Runtime.terminate();
-    }
-    catch (Throwable e) 
-    {
-		import std.string;
-        MessageBoxA(null, e.toString().toStringz(), "Error",
-                    MB_OK | MB_ICONEXCLAMATION);
-        result = 0;     // failed
-    }
-
-    return result;
-}
-
-
-void main_start()
-{
 	initializeScratchSpace(Mallocator.it, 1024 * 1024);
 
-	import std.stdio;
-	initializeRemoteLogging("EntityEditor");
-	scope(exit) termRemoteLogging();
-
 	init_dlls();
+	scope(exit) shutdown_dlls();
 	try
 	{
-		import core.memory;
-		GC.disable();
 		auto config = fromSDLFile!DesktopAppConfig(Mallocator.it, "config.sdl");
-		logInfo("start");
 		run(config);
 	}
 	catch(Throwable t)
@@ -71,25 +50,27 @@ void main_start()
 			t = t.next;
 			logErr(t);
 		}
-
+		import std.stdio;
 		readln;
 	}
+
+	import std.stdio;
+	readln;
 }
 
 void run(DesktopAppConfig config) 
 {
 	RegionAllocator region = RegionAllocator(new ubyte[1024 * 1024 * 5]);
 	auto stack = ScopeStack(region);
-
 	auto app = createDesktopApp(stack, config);
-
 
 	import screen.loading;
 	auto gameplay	   = stack.allocate!(GameplayScreen)();
 	auto endScreen     = stack.allocate!(MainScreen)(gameplay);
-	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(["Fonts.fnt", "Atlas.atlas", "GuiAtlas.atlas"], "Fonts"), endScreen);
 	
-
+	//The preloading!
+	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(true, [], "Fonts"), endScreen);
+	
 	auto s = app.locate!ScreenComponent;
 	s.push(loadingScreen);
 

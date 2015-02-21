@@ -41,12 +41,12 @@ struct WorkerPool
 	~this()
 	{	
 		this.stop();
-		_inbox.__dtor();
 		foreach(thread; threads)
 		{
-			thread.__dtor();
+			thread.join();
 			GlobalAllocator.deallocate(thread);
 		}
+		_inbox.__dtor();
 	}	
 
 	void start()

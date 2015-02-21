@@ -12,7 +12,7 @@
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>1</symdebug>
+  <symdebug>0</symdebug>
   <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
@@ -33,7 +33,7 @@
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>1</useInline>
-  <release>0</release>
+  <release>1</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -44,8 +44,6 @@
   <nofloat>0</nofloat>
   <Dversion>2</Dversion>
   <ignoreUnsupportedPragmas>0</ignoreUnsupportedPragmas>
-  <allinst>0</allinst>
-  <stackStomp>0</stackStomp>
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
@@ -77,7 +75,7 @@
   <moduleDepsFile />
   <run>0</run>
   <runargs />
-  <runCv2pdb>1</runCv2pdb>
+  <runCv2pdb>0</runCv2pdb>
   <pathCv2pdb>$(VisualDInstallDir)cv2pdb\cv2pdb.exe</pathCv2pdb>
   <cv2pdbPre2043>0</cv2pdbPre2043>
   <cv2pdbNoDemangle>0</cv2pdbNoDemangle>
@@ -110,7 +108,7 @@
   <verbose>0</verbose>
   <vtls>0</vtls>
   <symdebug>0</symdebug>
-  <optimize>0</optimize>
+  <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -126,7 +124,7 @@
   <useIn>0</useIn>
   <useOut>0</useOut>
   <useArrayBounds>0</useArrayBounds>
-  <noboundscheck>0</noboundscheck>
+  <noboundscheck>1</noboundscheck>
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
@@ -141,8 +139,6 @@
   <nofloat>0</nofloat>
   <Dversion>2.043</Dversion>
   <ignoreUnsupportedPragmas>0</ignoreUnsupportedPragmas>
-  <allinst>0</allinst>
-  <stackStomp>0</stackStomp>
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
@@ -238,8 +234,6 @@
   <nofloat>0</nofloat>
   <Dversion>2</Dversion>
   <ignoreUnsupportedPragmas>0</ignoreUnsupportedPragmas>
-  <allinst>0</allinst>
-  <stackStomp>0</stackStomp>
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
@@ -335,8 +329,6 @@
   <nofloat>0</nofloat>
   <Dversion>2.043</Dversion>
   <ignoreUnsupportedPragmas>0</ignoreUnsupportedPragmas>
-  <allinst>0</allinst>
-  <stackStomp>0</stackStomp>
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
@@ -389,71 +381,6 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
  <Folder name="ExternalLibs">
-  <Folder name="derelict">
-   <Folder name="freeimage">
-    <File path="derelict\freeimage\freeimage.d" />
-    <File path="derelict\freeimage\functions.d" />
-    <File path="derelict\freeimage\types.d" />
-   </Folder>
-   <Folder name="freetype">
-    <File path="derelict\freetype\ft.d" />
-    <File path="derelict\freetype\functions.d" />
-    <File path="derelict\freetype\types.d" />
-   </Folder>
-   <Folder name="glfw3">
-    <File path="derelict\glfw3\functions.d" />
-    <File path="derelict\glfw3\glfw3.d" />
-    <File path="derelict\glfw3\types.d" />
-   </Folder>
-   <Folder name="ogg">
-    <File path="derelict\ogg\ogg.d" />
-    <File path="derelict\ogg\oggfunctions.d" />
-    <File path="derelict\ogg\oggtypes.d" />
-    <File path="derelict\ogg\vorbis.d" />
-    <File path="derelict\ogg\vorbisenc.d" />
-    <File path="derelict\ogg\vorbisencfunctions.d" />
-    <File path="derelict\ogg\vorbisenctypes.d" />
-    <File path="derelict\ogg\vorbisfile.d" />
-    <File path="derelict\ogg\vorbisfilefunctions.d" />
-    <File path="derelict\ogg\vorbisfiletypes.d" />
-    <File path="derelict\ogg\vorbisfunctions.d" />
-    <File path="derelict\ogg\vorbistypes.d" />
-   </Folder>
-   <Folder name="opengl3">
-    <File path="derelict\opengl3\arb.d" />
-    <File path="derelict\opengl3\cgl.d" />
-    <File path="derelict\opengl3\constants.d" />
-    <File path="derelict\opengl3\deprecatedConstants.d" />
-    <File path="derelict\opengl3\deprecatedFunctions.d" />
-    <File path="derelict\opengl3\ext.d" />
-    <File path="derelict\opengl3\functions.d" />
-    <File path="derelict\opengl3\gl.d" />
-    <File path="derelict\opengl3\gl3.d" />
-    <File path="derelict\opengl3\glx.d" />
-    <File path="derelict\opengl3\glxext.d" />
-    <File path="derelict\opengl3\internal.d" />
-    <File path="derelict\opengl3\types.d" />
-    <File path="derelict\opengl3\wgl.d" />
-    <File path="derelict\opengl3\wglext.d" />
-   </Folder>
-   <Folder name="sdl2">
-    <File path="derelict\sdl2\functions.d" />
-    <File path="derelict\sdl2\image.d" />
-    <File path="derelict\sdl2\mixer.d" />
-    <File path="derelict\sdl2\net.d" />
-    <File path="derelict\sdl2\sdl.d" />
-    <File path="derelict\sdl2\ttf.d" />
-    <File path="derelict\sdl2\types.d" />
-   </Folder>
-   <Folder name="util">
-    <File path="derelict\util\exception.d" />
-    <File path="derelict\util\loader.d" />
-    <File path="derelict\util\sharedlib.d" />
-    <File path="derelict\util\system.d" />
-    <File path="derelict\util\wintypes.d" />
-    <File path="derelict\util\xtypes.d" />
-   </Folder>
-  </Folder>
   <Folder name="dbox">
    <Folder name="collision">
     <Folder name="shapes">
@@ -527,7 +454,72 @@
     <File path="dbox\rope\package.d" />
    </Folder>
    <File path="dbox\package.d" />
+  </Folder>
+  <Folder name="derelict">
+   <Folder name="freeimage">
+    <File path="derelict\freeimage\freeimage.d" />
+    <File path="derelict\freeimage\functions.d" />
+    <File path="derelict\freeimage\types.d" />
    </Folder>
+   <Folder name="freetype">
+    <File path="derelict\freetype\ft.d" />
+    <File path="derelict\freetype\functions.d" />
+    <File path="derelict\freetype\types.d" />
+   </Folder>
+   <Folder name="glfw3">
+    <File path="derelict\glfw3\functions.d" />
+    <File path="derelict\glfw3\glfw3.d" />
+    <File path="derelict\glfw3\types.d" />
+   </Folder>
+   <Folder name="ogg">
+    <File path="derelict\ogg\ogg.d" />
+    <File path="derelict\ogg\oggfunctions.d" />
+    <File path="derelict\ogg\oggtypes.d" />
+    <File path="derelict\ogg\vorbis.d" />
+    <File path="derelict\ogg\vorbisenc.d" />
+    <File path="derelict\ogg\vorbisencfunctions.d" />
+    <File path="derelict\ogg\vorbisenctypes.d" />
+    <File path="derelict\ogg\vorbisfile.d" />
+    <File path="derelict\ogg\vorbisfilefunctions.d" />
+    <File path="derelict\ogg\vorbisfiletypes.d" />
+    <File path="derelict\ogg\vorbisfunctions.d" />
+    <File path="derelict\ogg\vorbistypes.d" />
+   </Folder>
+   <Folder name="opengl3">
+    <File path="derelict\opengl3\arb.d" />
+    <File path="derelict\opengl3\cgl.d" />
+    <File path="derelict\opengl3\constants.d" />
+    <File path="derelict\opengl3\deprecatedConstants.d" />
+    <File path="derelict\opengl3\deprecatedFunctions.d" />
+    <File path="derelict\opengl3\ext.d" />
+    <File path="derelict\opengl3\functions.d" />
+    <File path="derelict\opengl3\gl.d" />
+    <File path="derelict\opengl3\gl3.d" />
+    <File path="derelict\opengl3\glx.d" />
+    <File path="derelict\opengl3\glxext.d" />
+    <File path="derelict\opengl3\internal.d" />
+    <File path="derelict\opengl3\types.d" />
+    <File path="derelict\opengl3\wgl.d" />
+    <File path="derelict\opengl3\wglext.d" />
+   </Folder>
+   <Folder name="sdl2">
+    <File path="derelict\sdl2\functions.d" />
+    <File path="derelict\sdl2\image.d" />
+    <File path="derelict\sdl2\mixer.d" />
+    <File path="derelict\sdl2\net.d" />
+    <File path="derelict\sdl2\sdl.d" />
+    <File path="derelict\sdl2\ttf.d" />
+    <File path="derelict\sdl2\types.d" />
+   </Folder>
+   <Folder name="util">
+    <File path="derelict\util\exception.d" />
+    <File path="derelict\util\loader.d" />
+    <File path="derelict\util\sharedlib.d" />
+    <File path="derelict\util\system.d" />
+    <File path="derelict\util\wintypes.d" />
+    <File path="derelict\util\xtypes.d" />
+   </Folder>
+  </Folder>
   <File path="lib.d" />
  </Folder>
 </DProject>

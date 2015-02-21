@@ -23,9 +23,9 @@ struct ContentHandle(T)
 		this.handle = handle;
 	}
 
-	ref T asset()
+	@property ref T asset()
 	{
-		assert(handle.typeHash == cHash!T);
+		assert(handle.typeHash == typeHash!T);
 		auto item = cast(T*)(handle.item);
 		return *item;
 	}
@@ -49,11 +49,24 @@ FileLoader makeLoader(Loader, string ext)()
 	static assert(is(ParameterTypeTuple!(Loader.unload)[1] == T), "Wrong item type for unloader!");
 
 	FileLoader loader;
-	loader.typeHash  = cHash!BaseT;
+	loader.typeHash  = typeHash!BaseT;
 	loader.extension = ext;
 	loader.load		 = (aloc, path, async) => cast(void*)Loader.load(aloc, path, async);
 	loader.unload	 = (aloc, item) => Loader.unload(aloc, cast(T)item);
 	return loader;
+}
+
+
+//Used during debuging :)
+struct Dependencies
+{
+	string name;
+	string[] deps;
+}
+
+struct FileMap
+{
+	Dependencies[] dependencies;
 }
 
 struct ContentLoader
@@ -64,6 +77,7 @@ struct ContentLoader
 	Handle[] items;
 
 	int resourceCount;
+	FileMap avalibleResources;
 
 	this(A)(ref A allocator, IAllocator itemAllocator, 
 			size_t maxResources, string resourceFolder)
@@ -77,6 +91,10 @@ struct ContentLoader
 		//We will not have more the 100 file formats.
 		this.fileLoaders   = List!(FileLoader)(allocator, 100);
 		this.resourceCount = 0;
+
+		//USE SDL MAP HERE! :)
+		import content.sdl, util.strings;
+		avalibleResources = fromSDLFile!(FileMap)(allocator, text1024(resourceFolder, "\\FileCache.sdl"));
 	}
 
 	void addFileLoader(FileLoader fileLoader)
@@ -92,7 +110,7 @@ struct ContentLoader
 
 	private uint addItem(T)(HashID hash, T* item)
 	{
-		return addItem(hash, cHash!T, cast(void*)item);
+		return addItem(hash, typeHash!T, cast(void*)item);
 	}
 
 	private uint addItem(HashID hash, TypeHash typeHash, void* item)
@@ -136,23 +154,22 @@ struct ContentLoader
 		if(isLoaded(path)) 
 		{
 			auto item = items[indexOf(hash)];
-			assert(item.typeHash == cHash!T);
+			assert(item.typeHash == typeHash!T);
 			return getItem!T(hash);
 		}
 
 		import util.strings;
 		
-		auto index = fileLoaders.countUntil!(x => x.typeHash == cHash!T);
+		auto index = fileLoaders.countUntil!(x => x.typeHash == typeHash!T);
 		assert(index != -1, "Can't load the type specified!");
 
 		auto loader = fileLoaders[index];
 		auto file = text1024(resourceFolder, dirSeparator, hash.value,  loader.extension);
 		T* loaded   = cast(T*)loader.load(allocator, cast(string)file, false);
 	
-		auto itemIndex = addItem(hash, cHash!T, loaded);
+		auto itemIndex = addItem(hash, typeHash!T, loaded);
 		return ContentHandle!(T)(&items[itemIndex]);
 	}
-
 
 	bool unload(T)(ContentHandle!(T) cHandle)
 	{
@@ -204,6 +221,7 @@ struct AsyncContentLoader
 	private int numRequests;	
 
 	string resourceFolder() { return loader.resourceFolder; }
+	FileMap avalibleResources() { return loader.avalibleResources; }
 
 	this(A)(ref A allocator, ContentConfig config)
 	{
@@ -242,6 +260,7 @@ struct AsyncContentLoader
 			auto absPath = text(buffer, loader.resourceFolder, dirSeparator, hash.value, fileLoader.extension);
 			numRequests++;
 
+			
 			taskpool.doTask!(asyncLoadFile)(cast(string)absPath, hash, fileLoader, &addReloadedAsyncFile);	
 		}
 	}
@@ -255,7 +274,7 @@ struct AsyncContentLoader
 		import concurency.threadpool;
 		import concurency.task;
 
-		auto fileLoader = loader.fileLoaders.find!(x => x.typeHash == cHash!T)[0];
+		auto fileLoader = loader.fileLoaders.find!(x => x.typeHash == typeHash!T)[0];
 		auto buffer = Mallocator.it.allocate!(char[])(loader.resourceFolder.length + maxNameSize);
 		auto absPath = text(buffer, loader.resourceFolder, dirSeparator, bytesHash(path).value, fileLoader.extension);
 		
@@ -316,6 +335,9 @@ struct AsyncContentLoader
 
 void asyncLoadFile(string path, HashID hash, FileLoader loader, void delegate(HashID, TypeHash, void*) adder) 
 {
+	import std.stdio;
+	writeln("Loading file: ", path);
+
 	import concurency.task;
 	auto item = loader.load(Mallocator.cit, path, true);
 	auto t = task(adder, hash, loader.typeHash, item);

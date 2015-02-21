@@ -120,7 +120,8 @@ struct SPMCQueue(Serializer)
 
 		synchronized(cond.mutex)
 		{
-			while(atomicLoad(items) == 0) {
+			back:
+			while(shouldStop || atomicLoad(items) == 0) {
 				if(shouldStop) return;
 
 				try
@@ -136,6 +137,8 @@ struct SPMCQueue(Serializer)
 
 			atomicOp!"-="(items, 1);
 			header = queue.deserializeHeader();
+
+
 			bool found = false;
 			foreach(handler; handlers)
 			{
@@ -154,6 +157,7 @@ struct SPMCQueue(Serializer)
 			}
 
 			assert(found);
+
 		}
 
 		foreach(handler; handlers)
@@ -353,7 +357,7 @@ struct QueueSerializer
 
 	static header typeHeader(T)()
 	{
-		return header(cHash!T);
+		return header(typeHash!T);
 	}
 
 	static uint dataSize(T)(auto ref T value)
@@ -368,7 +372,7 @@ struct QueueSerializer
 
 	static void serialize(T)(auto ref T value, ubyte[] sink)
 	{
-		(*cast(header*)sink.ptr) = header(cHash!T);
+		(*cast(header*)sink.ptr) = header(typeHash!T);
 		(*cast(T*)(sink.ptr + uint.sizeof)) = value;
 	}
 

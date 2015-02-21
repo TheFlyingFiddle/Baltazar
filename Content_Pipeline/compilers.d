@@ -26,9 +26,9 @@ enum FREE_TYPE_DLL_PATH   = dllPath  ~ "freetype.dll";
 
 bool missingSymFunc(string libName, string symName)
 {
-	import log;
-	auto logChnl = LogChannel("MISSING SYMBOLS");
-	logChnl.warn(libName,"   ", symName);
+//    import log;
+//    auto logChnl = LogChannel("MISSING SYMBOLS");
+//    logChnl.warn(libName,"   ", symName);
 	return true;
 }
 

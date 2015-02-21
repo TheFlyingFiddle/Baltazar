@@ -12,6 +12,7 @@ import network.server;
 import concurency.task;
 import allocation;
 import rendering;
+import sound;
 
 struct DesktopAppConfig
 {
@@ -21,6 +22,7 @@ struct DesktopAppConfig
 	ConcurencyConfig concurencyConfig;
 	ContentConfig contentConfig;
 	RenderConfig renderConfig;
+	SoundConfig  soundConfig;
 }
 
 struct PhoneAppConfig
@@ -39,20 +41,25 @@ struct PhoneAppConfig
 Application* createDesktopApp(A)(ref A al, DesktopAppConfig config)
 {
 	Application* app = al.allocate!Application(al, config.numServices, config.numComponents, config.name);
-	auto loader	   = new AsyncContentLoader(al, config.contentConfig);
+
+	//Only load items through the loader please! :)
+	auto loader	     = al.allocate!AsyncContentLoader(al, config.contentConfig);
 	app.addService(loader);
 
 	auto window		= al.allocate!WindowComponent(config.windowConfig);
 	auto task		= al.allocate!TaskComponent(al, config.concurencyConfig);
 	auto screen		= al.allocate!ScreenComponent(al, 20);
-	auto render     = al.allocate!RenderComponent(al, config.renderConfig);
 	auto time		= al.allocate!TimerComponent(al, 100);
+	auto sound		= al.allocate!SoundComponent(al, config.soundConfig);
 
+
+	auto render     = new RenderComponent(al, config.renderConfig);
 	app.addComponent(window);
 	app.addComponent(task);
 	app.addComponent(screen);
 	app.addComponent(render);
 	app.addComponent(time);
+	app.addComponent(sound);
 
 	version(RELOADING)
 	{
@@ -74,6 +81,7 @@ Application* createPhoneApp(A)(ref A al, PhoneAppConfig config)
 	auto networkComponent = al.allocate!NetworkComponent(al, config.serverConfig, config.phoneResourceDir);
 	auto screenComponent  = al.allocate!ScreenComponent(al, 20);
 	auto renderComponent  = al.allocate!RenderComponent(al, config.renderConfig);
+
 
 	g.addComponent(renderComponent);
 	g.addComponent(windowComponent);

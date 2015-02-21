@@ -31,7 +31,7 @@
   <useArrayBounds>0</useArrayBounds>
   <noboundscheck>0</noboundscheck>
   <useSwitchError>0</useSwitchError>
-  <useUnitTests>1</useUnitTests>
+  <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
   <release>0</release>
   <preservePaths>0</preservePaths>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\ExternalLibs; ..\SharedCore; ..\Framework; ..\Gui; ..\SharedComponents;</imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore; ..\Framework; ..\Gui; ..\PluginBridge; ..\SharedGame</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -61,7 +61,7 @@
   <doHdrGeneration>0</doHdrGeneration>
   <hdrdir />
   <hdrname />
-  <doXGeneration>1</doXGeneration>
+  <doXGeneration>0</doXGeneration>
   <xfilename>$(IntDir)\$(TargetName).json</xfilename>
   <debuglevel>0</debuglevel>
   <debugids />
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>SharedCore.lib Framework.lib Gui.lib SharedComponents.lib</libfiles>
-  <libpaths>..\SharedCore\Debug  ..\Framework\Debug ..\Gui\Debug ..\SharedComponents\Debug</libpaths>
+  <libfiles>SharedCore.lib Framework.lib Gui.lib  PluginBridge.lib</libfiles>
+  <libpaths>..\SharedCore\Debug  ..\Framework\Debug ..\Gui\Debug ..\PluginBridge\Debug</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).exe</exefile>
@@ -108,7 +108,7 @@
   <verbose>0</verbose>
   <vtls>0</vtls>
   <symdebug>0</symdebug>
-  <optimize>0</optimize>
+  <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -124,7 +124,7 @@
   <useIn>0</useIn>
   <useOut>0</useOut>
   <useArrayBounds>0</useArrayBounds>
-  <noboundscheck>0</noboundscheck>
+  <noboundscheck>1</noboundscheck>
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
@@ -137,12 +137,12 @@
   <pic>0</pic>
   <cov>0</cov>
   <nofloat>0</nofloat>
-  <Dversion>2.043</Dversion>
+  <Dversion>2</Dversion>
   <ignoreUnsupportedPragmas>0</ignoreUnsupportedPragmas>
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath />
+  <imppath>..\ExternalLibs; ..\SharedCore; ..\Framework; ..\Gui; ..\PluginBridge; ..\SharedGame</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -178,8 +178,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles />
-  <libpaths />
+  <libfiles>SharedCore.lib Framework.lib Gui.lib  PluginBridge.lib</libfiles>
+  <libpaths>..\SharedCore\Release  ..\Framework\Release ..\Gui\Release ..\PluginBridge\Release</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).exe</exefile>
@@ -192,19 +192,16 @@
  </Config>
  <Folder name="SideScrollEditor">
   <File path="arch.sdl" />
-  <File path="commands.d" />
+  <File path="bridge_core_impl.d" />
+  <File path="bridge_os.d" />
   <File path="config.sdl" />
   <File path="dialogs.d" />
-  <File path="do_undo.d" />
   <File path="gameplayscreen.d" />
   <File path="guiconfig.sdl" />
   <File path="main.d" />
   <File path="mainscreen.d" />
+  <File path="plugins.d" />
+  <File path="pluginsConfig.sdl" />
   <File path="skin.d" />
-  <File path="state.d" />
-  <File path="tools.d" />
-  <File path="viewpositions.sdl" />
-  <File path="virtual_dispatch.d" />
-  <File path="world_renderer.d" />
  </Folder>
 </DProject>

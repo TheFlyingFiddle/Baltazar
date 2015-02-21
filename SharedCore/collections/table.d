@@ -33,6 +33,12 @@ struct Table(K, V, SortStrategy s = SortStrategy.sorted)
 		keys   = List!K(allocator, capacity);
 	}
 
+	void deallocate(A)(ref A allocator)
+	{
+		values.deallocate(allocator);
+		keys.deallocate(allocator);
+	}
+
 
 	V* opBinaryRight(string s : "in")(in K key)
 	{

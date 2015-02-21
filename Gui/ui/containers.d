@@ -38,7 +38,6 @@ bool listbox(T)(ref Gui gui,
 	auto length    = count(items);
 	auto scrollMax =  length * style.itemSize - rect.h;
 	
-	
 	auto hash  = HashID(rect);
 	auto state = gui.fetchState(hash, State(float2(0, scrollMax)));
 	scope(exit) gui.state(hash, state);
@@ -56,6 +55,7 @@ bool listbox(T)(ref Gui gui,
 		state.scroll.y = -rect.h + length * style.itemSize;
 	}
 
+
 	bool result = false;
 	if(gui.wasClicked(rect))
 	{
@@ -64,9 +64,25 @@ bool listbox(T)(ref Gui gui,
 		result   = true;
 	}
 
+	if(gui.hasFocus())
+	{
+		if(gui.keyboard.wasPressed(Key.up)) 
+		{
+			selected = selected == 0 ? length - 1 : selected - 1;
+			result = true;
+		}
+		else if(gui.keyboard.wasPressed(Key.down))
+		{
+			selected = (selected + 1) % length;
+			result = true;
+		}
+	}
+
 	gui.drawQuad(rect, style.bg);
 	Rect toDraw = Rect(rect.x, rect.y + rect.h - style.itemSize - (state.scroll.y - scrollMax),
 					   rect.w, style.itemSize);
+
+	selected = min(length - 1, max(selected, 0));
 
 	int i = 0;
 	foreach(item; items)

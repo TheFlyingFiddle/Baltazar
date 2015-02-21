@@ -44,8 +44,8 @@ template hasFinalizer(T)
 
 interface IAllocator
 {
-	void[] allocate_impl(size_t size, size_t alignment) @nogc;
-	void   deallocate_impl(void[] memory) @nogc;
+	void[] allocate_impl(size_t size, size_t alignment);
+	void   deallocate_impl(void[] memory);
 }
 
 final class CAllocator(T) : IAllocator

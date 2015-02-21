@@ -12,7 +12,7 @@
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>1</symdebug>
+  <symdebug>0</symdebug>
   <optimize>0</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
@@ -29,11 +29,11 @@
   <useIn>0</useIn>
   <useOut>0</useOut>
   <useArrayBounds>0</useArrayBounds>
-  <noboundscheck>1</noboundscheck>
+  <noboundscheck>0</noboundscheck>
   <useSwitchError>0</useSwitchError>
-  <useUnitTests>1</useUnitTests>
-  <useInline>1</useInline>
-  <release>0</release>
+  <useUnitTests>0</useUnitTests>
+  <useInline>0</useInline>
+  <release>1</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -61,7 +61,7 @@
   <doHdrGeneration>0</doHdrGeneration>
   <hdrdir />
   <hdrname />
-  <doXGeneration>0</doXGeneration>
+  <doXGeneration>1</doXGeneration>
   <xfilename>$(IntDir)\$(TargetName).json</xfilename>
   <debuglevel>0</debuglevel>
   <debugids />
@@ -75,7 +75,7 @@
   <moduleDepsFile />
   <run>0</run>
   <runargs />
-  <runCv2pdb>1</runCv2pdb>
+  <runCv2pdb>0</runCv2pdb>
   <pathCv2pdb>$(VisualDInstallDir)cv2pdb\cv2pdb.exe</pathCv2pdb>
   <cv2pdbPre2043>0</cv2pdbPre2043>
   <cv2pdbNoDemangle>0</cv2pdbNoDemangle>
@@ -108,7 +108,7 @@
   <verbose>0</verbose>
   <vtls>0</vtls>
   <symdebug>0</symdebug>
-  <optimize>0</optimize>
+  <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -142,7 +142,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\Derelict</imppath>
+  <imppath>..\ExternalLibs</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -178,8 +178,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>Derelict.lib</libfiles>
-  <libpaths>..\Derelict\Release</libpaths>
+  <libfiles>ExternalLibs.lib</libfiles>
+  <libpaths>..\ExternalLibs\Release</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).lib</exefile>
@@ -407,10 +407,15 @@
    <File path="content\file.d" />
    <File path="content\font.d" />
    <File path="content\package.d" />
+   <File path="content\particle.d" />
    <File path="content\reloading.d" />
    <File path="content\sdl.d" />
+   <File path="content\sound.d" />
    <File path="content\texture.d" />
    <File path="content\textureatlas.d" />
+  </Folder>
+  <Folder name="dll">
+   <File path="dll\error.d" />
   </Folder>
   <Folder name="graphics">
    <File path="graphics\buffer.d" />
@@ -436,6 +441,7 @@
    <File path="math\matrix.d" />
    <File path="math\package.d" />
    <File path="math\polar.d" />
+   <File path="math\rect.d" />
    <File path="math\traits.d" />
    <File path="math\vector.d" />
   </Folder>
@@ -448,6 +454,21 @@
    <File path="network\service.d" />
    <File path="network\util.d" />
   </Folder>
+  <Folder name="particles">
+   <File path="particles\bindings.d" />
+   <File path="particles\examples.d" />
+   <File path="particles\generators.d" />
+   <File path="particles\package.d" />
+   <File path="particles\renderer.d" />
+   <File path="particles\system.d" />
+   <File path="particles\updaters.d" />
+  </Folder>
+  <Folder name="reflection">
+   <File path="reflection\data.d" />
+   <File path="reflection\generation.d" />
+   <File path="reflection\package.d" />
+   <File path="reflection\serialization.d" />
+  </Folder>
   <Folder name="rendering">
    <File path="rendering\asyncrenderbuffer.d" />
    <File path="rendering\combined.d" />
@@ -455,11 +476,16 @@
    <File path="rendering\renderer.d" />
    <File path="rendering\shapes.d" />
   </Folder>
+  <Folder name="sound">
+   <File path="sound\package.d" />
+   <File path="sound\player.d" />
+  </Folder>
   <Folder name="spatial">
    <File path="spatial\shape.d" />
    <File path="spatial\transform.d" />
   </Folder>
   <Folder name="util">
+   <File path="util\bench.d" />
    <File path="util\bitmanip.d" />
    <File path="util\exception.d" />
    <File path="util\hash.d" />

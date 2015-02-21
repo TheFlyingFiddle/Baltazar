@@ -1,0 +1,8033 @@
+
+items=[
+	{
+		name=|Entity|
+		id=2557073143
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=5.29688
+						y=11.3125
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Fan|
+		id=2169233672
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=47.6564
+						y=3.10938
+					}
+					scale=
+					{
+						x=100.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Fan|
+				value = 
+				{
+					force=300.
+					effect=3.
+					active=true
+				}
+			},
+			{
+				type = |common.components.extensions.Door|
+				value = 
+				{
+					open=false
+					openImage=
+					{
+						name=|banana|
+					}
+					closedImage=
+					{
+						name=|teddy|
+					}
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=static_
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2039691248
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=11.4375
+						y=12.0156
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2474241871
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.70313
+						y=8.54685
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3278185019
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=8.3125
+						y=11.8281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1917245715
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=7.125
+						y=10.1719
+					}
+					scale=
+					{
+						x=0.5
+						y=0.5
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2527305111
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.25
+						y=13.3906
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3595514272
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=3.96875
+						y=9.35935
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1698986234
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=7.95313
+						y=13.4687
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=174344742
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=8.59375
+						y=8.87498
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|PP|
+		id=563543383
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=18.0938
+						y=6.20308
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|baws|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.PressurePlate|
+				value = 
+				{
+					elev=
+					{
+						id=2169233672
+					}
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=486924633
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=9.34375
+						y=13.6094
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2757045074
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=9.75
+						y=9.74998
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2749621408
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.73438
+						y=11.9062
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1249823830
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=3.96876
+						y=10.4219
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2545174552
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=11.1719
+						y=11.8125
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1148388571
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=4.26563
+						y=8.28123
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4023543186
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.59375
+						y=14.3437
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2595374409
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=2.46875
+						y=11.3594
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1832872437
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=9.20313
+						y=6.59373
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=true
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1321514958
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.
+						y=6.23435
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3283956936
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.25
+						y=8.18748
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3774758148
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=11.6406
+						y=7.64065
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4056004781
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=5.95313
+						y=10.2812
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=24151989
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=5.76563
+						y=9.2031
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2496726830
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.39063
+						y=9.90623
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=203618685
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=4.21875
+						y=13.8125
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3227772749
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=12.7969
+						y=11.4844
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4018568733
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=6.54688
+						y=9.62498
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3960284656
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=9.70317
+						y=8.70315
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=775133043
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=9.26563
+						y=11.1562
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2122147997
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=3.34376
+						y=11.6719
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=377321806
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.5156
+						y=8.46873
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2070761205
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2383673914
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=2.78126
+						y=11.0312
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3833904324
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=3.56251
+						y=10.8281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2338256268
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=11.4531
+						y=10.1094
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4064018364
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=2.85938
+						y=12.2187
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1401339060
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=4.34375
+						y=12.75
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=35948546
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=3.71876
+						y=13.4062
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=10.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2475923780
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=13.7188
+						y=9.62498
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1314835426
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=4.73438
+						y=13.6719
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4133570289
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=10.6875
+						y=10.9062
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4294967295
+					}
+					texture=
+					{
+						name=|orange|
+					}
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Edge|
+		id=3373259533
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=2.57813
+						y=7.39063
+					}
+					scale=
+					{
+						x=1.
+						y=10.
+					}
+					rotation=4.
+				}
+			},
+			{
+				type = |common.components.core.Sprite|
+				value = 
+				{
+					tint=
+					{
+						packedValue=4284022784
+					}
+					texture=
+					{
+						name=|pixel|
+					}
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=static_
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4066605643
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2371221362
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1925858596
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2886173401
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2005646099
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1183498691
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3562869411
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1118932715
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3032699116
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4214020174
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1614435220
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1356142821
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2686693073
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4104619225
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1988451136
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2528492662
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2610168330
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1720238143
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3409765673
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1360323958
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1259622082
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2878165738
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3166246345
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1010739639
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4021869871
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=563360716
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2340867041
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1109179398
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3257726953
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=43077651
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2933241020
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2946511443
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1121458263
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4272053672
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1103525065
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1873223917
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1426045915
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4003828570
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1594988586
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1604732024
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=86910769
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1499956276
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2876186232
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2338736238
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3381101959
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4165653363
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3458253938
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4257177263
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1223670157
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3690985618
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=654309668
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4191182002
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3678505849
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=466776617
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2293276217
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2111954009
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4091046931
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2918867477
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1188506453
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=658353719
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2519114565
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2422912108
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=416463908
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3649088717
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2412406791
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4062375245
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2089396706
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=553758472
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1636643902
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1336996476
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2261676800
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1060068738
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=999951618
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=457150571
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3409508449
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=214170620
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3872551584
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3222158663
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3765826545
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3780479063
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=489831237
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2438673085
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2508824820
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1378246272
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3680032543
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2825057296
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2187584568
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3551641919
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3028657231
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2386205566
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=316320730
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2050317273
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1851872476
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3878354117
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3179727305
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3840978232
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1725882003
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=639847079
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1113492565
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3260267841
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4045518494
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=4233493477
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=597364723
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=1401252576
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2794862480
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=28749810
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=3446341709
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	},
+	{
+		name=|Entity|
+		id=2823148648
+		components=[
+			{
+				type = |common.components.core.Transform|
+				value = 
+				{
+					position=
+					{
+						x=14.0156
+						y=12.3281
+					}
+					scale=
+					{
+						x=1.
+						y=1.
+					}
+					rotation=0.
+				}
+			},
+			{
+				type = |common.components.extensions.Input|
+				value = 
+				{
+					gamepad=zero
+					jumpSpeed=5.
+					walkSpeed=5.
+				}
+			},
+			{
+				type = |common.components.editor.Physics|
+				value = 
+				{
+					friction=0.
+					density=1.
+					bouncyness=0.
+					damping=0.
+					gravity=1.
+					rotation=false
+					velocity=
+					{
+						x=0.
+						y=0.
+					}
+					type=dynamic
+				}
+			}]
+	}]
+archetypes=[
+	{
+		name=|Entity|
+		id=0
+		components=[]
+	}]

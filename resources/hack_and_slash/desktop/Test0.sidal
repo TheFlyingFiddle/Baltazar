@@ -1,0 +1,8 @@
+
+items=[]
+archetypes=[
+	{
+		name=|Entity|
+		id=0
+		components=[]
+	}]

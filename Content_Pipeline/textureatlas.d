@@ -116,9 +116,9 @@ CompiledFile compileAtlas(void[] data, DirEntry file, ref Context context)
 			atlasMetaData.write!float(r.top - r.bottom, &offset);
 		}
 
-		return CompiledFile([CompiledItem(".atlas", atlasMetaData), 
-							CompiledItem(".png"	 , atlas.data)],
-							itemIDs);
+		return CompiledFile([CompiledItem(".atl", atlasMetaData), 
+							 CompiledItem(".png"	 , atlas.data)],
+							 itemIDs);
 	}
 	else if(context.platform == Platform.phone)
 	{

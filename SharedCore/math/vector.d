@@ -24,48 +24,80 @@ alias ubyte4  = Vector!(4, ubyte);
 struct Vector(size_t size, T) 
 {
 	enum staticLength = size;
+	static if(size > 0)
+		T x;
+	static if(size > 1)
+		T y;
+	static if(size > 2)
+		T z; 
+	static if(size > 3)
+		T w;
 
 
-	union
+	T* data()
 	{
-		T[size] data;	
-		struct 
-		{
-			static if(size > 0)
-				T x;
-			static if(size > 1)
-				T y;
-			static if(size > 2)
-				T z; 
-			static if(size > 3)
-				T w;
-		}
+		return &x;
 	}
 
-	const void toString(scope void delegate(in char[]) sink)
+	const void toString(scope void delegate(const(char)[]) sink)
 	{
 		import util.strings;
 		char[100] buffer;
-		sink(text(buffer, "X: ", x, " Y: ", y));
+		static if(size == 2)
+			sink(text(buffer, "X:", x, " Y:", y));
+		static if(size == 3)
+			sink(text(buffer, "X:", x, " Y:", y, "Z:", z));
+		static if(size == 4)
+			sink(text(buffer, "X:", x, " Y:", y, "Z:", z, "W:", w));
 	}	
 
-	string toString()
-	{
-		import std.conv;
-		return text("X:", x, " Y:", y);
-	}	
+
 
 	this(U)(U u) if (isNumeric!U)
 	{
-		foreach(i; staticIota!(0, size))
-			this.data[i] = cast(T)u;
+		static if(__ctfe)
+		{
+			static if(size > 1)
+			{
+				x = cast(T)u;
+				y = cast(T)u;
+			}
+			static if(size > 2)
+				z = cast(T)u;
+			static if(size > 3)
+				w = cast(T)u;
+		}
+		else 
+		{
+			foreach(i; staticIota!(0, size))
+			{
+				arr[i] = cast(T)u;
+			}
+		}
 	}
 
 	this(U...)(U u) 
 		if(U.length == size)
 		{
-			foreach(i, elem; u) 
-				this.data[i] = cast(T)elem;
+			static if(__ctfe)
+			{
+				static if(size > 1)
+				{
+					x = cast(T)u[0];
+					y = cast(T)u[1];
+				}
+				static if(size > 2)
+					z = cast(T)u[2];
+				static if(size > 3)
+					w = cast(T)u[3];
+			}
+			else 
+			{
+				foreach(i, elem; u) 
+				{
+					this.data[i] = cast(T)elem;
+				}
+			}
 		}
 
 	this(U)(auto ref Vector!(size, U) other)
@@ -101,7 +133,7 @@ struct Vector(size_t size, T)
 		return res;
 	}
 
-	Vector!(size, T) opBinary(string s, U)(auto ref Vector!(size, U) vec) const
+	Vector!(size, T) opBinary(string s, U)(auto ref Vector!(size, U) vec)
 		if(is(U : T) && (s == "+" || s == "-" || s == "*" || s == "/"))
 		{
 			Vector!(size, T) res;
@@ -110,7 +142,7 @@ struct Vector(size_t size, T)
 			return res;
 		}
 
-	Vector!(size, T) opBinary(string op, U)(U u) const
+	Vector!(size, T) opBinary(string op, U)(U u)
 		if(isNumeric!U && is(U : T) && (op == "+" || op == "-" || op == "/" || op == "*"))
 		{
 			Vector!(size, T) res;

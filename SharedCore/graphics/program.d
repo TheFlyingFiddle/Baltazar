@@ -302,7 +302,7 @@ void drawElements(T, V, U)(ref VAO!V vao,
 	
 	static if(is(T == uint))
 		gl.drawElements(type, length,  IndexBufferType.uint_, cast(void*)(start * 4));
-	else  if(is(T == ushort))
+	else static if(is(T == ushort))
 		gl.drawElements(type, length,  IndexBufferType.ushort_, cast(void*)(start * 2));
 	else 
 		static assert(0, "Must be uint or ushort!");

@@ -4,7 +4,7 @@ public import math.vector;
 public import math.polar;
 public import math.matrix;
 public import math.traits;
-
+public import math.rect;
 
 enum double TAU = 6.2831853071;
 

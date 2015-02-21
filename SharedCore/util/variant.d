@@ -1,16 +1,18 @@
 module util.variant;
 
 import util.hash;
+import util.traits;
 import collections.table;
 
 struct VariantN(size_t size)
 {
-	ubyte[size - TypeHash.sizeof] data;
+	void[size - TypeHash.sizeof] data;
 	TypeHash id;
 
 	this(T)(auto ref T t) if(T.sizeof <= size - TypeHash.sizeof)
 	{
-		this.id  = cHash!T;
+		alias U = FullyUnqual!T;
+		this.id  = typeHash!U;
 		*cast(T*)(this.data.ptr) = t;
 	}
 
@@ -20,9 +22,17 @@ struct VariantN(size_t size)
 		this.data[0 .. N] = value.data[];
 	}
 
-	void opAssign(T)(auto ref T t)
+	this(TypeHash hash, const(void)[] data)
 	{
-		this.id  = cHash!T;
+		assert(data.length <= size - TypeHash.sizeof);
+		this.id = hash;
+		this.data[0 .. data.length] = data;
+	}
+
+	void opAssign(T)(auto ref T t) if(T.sizeof <= size - TypeHash.sizeof)
+	{
+		alias U = FullyUnqual!T;
+		this.id  = typeHash!U;
 		*cast(T*)(this.data.ptr) = t; 
 	}
 
@@ -32,19 +42,19 @@ struct VariantN(size_t size)
 		this.id			  = other.id;
 	}
 
-	ref T get(T)()
+	ref inout(T) get(T)() inout
 	{
 		import std.conv;
-		assert(cHash!T == id, text("Wrong typeid id! Expected: ", cHash!T, "Actual: ", id));
+		assert(typeHash!T == id, text("Wrong typeid id! Expected: ", typeHash!T, "Actual: ", id));
 
 		auto ptr = peek!T;
 		assert(ptr);
 		return *ptr;
 	}
 
-	T* peek(T)()
+	inout(T)* peek(T)() inout
 	{
-		if(cHash!T == id) return cast(T*)(data.ptr);
+		if(typeHash!T == id) return cast(T*)(data.ptr);
 		else return null;
 	}
 }
@@ -56,17 +66,18 @@ VariantN!(size) variant(size_t size, T)(T t)
 
 struct VariantTable(size_t size)
 {
-	private Table!(HashID, VariantN!size) _rep;
+	private Table!(HashID, string) _map;
+	private Table!(string, VariantN!size) _rep;
 	this(A)(ref A allocator, size_t count)
 	{
-		_rep = Table!(HashID, VariantN!size)(allocator, count);
+		_map = Table!(HashID, string)(allocator, count);
+		_rep = Table!(string, VariantN!size)(allocator, count);
 	}
 
 	ref VariantN!size opIndex(string name)
 	{
 		import std.conv;
-
-		auto ptr = bytesHash(name) in _rep;
+		auto ptr = name in _rep;
 		assert(ptr, text("Value not present in table! ", name));
 		return *ptr;
 	}
@@ -74,47 +85,49 @@ struct VariantTable(size_t size)
 	ref VariantN!size opIndex(HashID hash)
 	{
 		import std.conv;
-		auto ptr = hash in _rep;
-		assert(ptr, text("Hash not present in table! ", hash));
-		return *ptr;
+		auto ptr = hash in _map;
+		assert(ptr, text("Value not present in table! ", hash));
+		return this[*ptr];
 	}
 
 	void clear()
 	{
 		_rep.clear();
+		_map.clear();
 	}
 
 	void opIndexAssign(T)(auto ref T value, string name)
 	{
-		this[bytesHash(name)] = value;
+		_map[bytesHash(name)] = name;
+		static if(is(T == VariantN!(size)))		
+			_rep[name] = value;
+		else
+			_rep[name] = VariantN!(size)(value);		
 	}	
-
-	void opIndexAssign(T)(auto ref T value, HashID id)
-	{
-		_rep[id] = VariantN!size(value);
-	}
 
 	ref VariantN!size opDispatch(string name)()
 	{
-		enum id = bytesHash(name);
-		return _rep[id];
+		return _rep[name];
 	}
 
 	void opDispatch(string name, T)(auto ref T t)
 	{
-		enum id  = bytesHash(name);
-		_rep[id] = VariantN!size(t);
+		this[name] = t;
 	}
 
 	void add(T)(string name, auto ref T t)
 	{
-		_rep[bytesHash(name)] = VariantN!size(t);
+		this[name] = t;
 	}
 
-
-	void add(string name, VariantN!size t)
+	bool containsKey(string name)
 	{
-		_rep[bytesHash(name)] = t;
+		return (name in _rep) !is null;
+	}
+
+	int opApply(int delegate(string, ref VariantN!size) dg)
+	{
+		return _rep.opApply(dg);
 	}
 }
 

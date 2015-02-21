@@ -1,7 +1,6 @@
 numServices = 100
 numComponents = 100
 name = MapEditor
-phoneResourceDir = |..\compiled_resources\hack_and_slash\phone|
 
 contentConfig =
 {
@@ -11,8 +10,9 @@ contentConfig =
 
 renderConfig =
 {
-	maxBatchSize = 0xffff
-	batchCount   = 3
+	maxBatchSize = 8192
+	batchCount   = 15
+	clearColor   = 0xFFE7E4E3
 }
 
 windowConfig = 
@@ -26,7 +26,7 @@ windowConfig =
 	fullScreen = false
 	blocking   = false
 	decorated  = true
-	title      = |Tile Editor|
+	title      = |Entity Editor|
 }
 
 serverConfig = 
@@ -45,16 +45,16 @@ concurencyConfig =
 	inboxSize    = 0xFFFF   
 }
 
-//soundConfig =
-//{
-//	freq = 22050
-//	numChannels = 32
-//	bufferSize = 4096
-//	
-//	musicVolume  = 1.0
-//	soundVolume  = 1.0 
-//	masterVolume = 0.5
-//	muted        = false
-//
-//	musicFoulderPath = ||
-//}
+soundConfig =
+{
+	freq = 22050
+	numChannels = 32
+	bufferSize = 4096
+	
+	musicVolume  = 1.0
+	soundVolume  = 1.0 
+	masterVolume = 0.5
+	muted        = false
+
+	musicFoulderPath = ||
+}

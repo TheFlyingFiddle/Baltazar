@@ -49,7 +49,8 @@ void init_dlls()
 	Mix_Init(MIX_INIT_OGG);
 
 	glfwSetErrorCallback(&glfwError);
-	assert(glfwInit(), "GLFW did not initialize properly!");
+	auto res = glfwInit();
+	assert(res,  "GLFW did not initialize properly!");
 
 	auto logChnl = LogChannel("EXTERNAL_LIBRARIES");
 	logChnl.info("Setup complete");
@@ -74,8 +75,8 @@ void shutdown_dlls()
 
 bool missingSymFunc(string libName, string symName)
 {
-	auto logChnl = LogChannel("MISSING SYMBOLS");
-	logChnl.warn(libName,"   ", symName);
+	//auto logChnl = LogChannel("MISSING SYMBOLS");
+	//logChnl.warn(libName,"   ", symName);
 	return true;
 }
 

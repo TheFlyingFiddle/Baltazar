@@ -3,39 +3,50 @@ module mainscreen;
 import framework;
 import ui;
 import skin;
-import util.strings;
 import graphics;
+
+
 import std.algorithm;
 import collections.list;
 
-import world_renderer;
-import state;
-import do_undo;
-import commands;
 import allocation;
-import tools;
 import dialogs;
+import bridge_core_impl;
+import bridge_os;
 
-import common.bindings;
-import core.sys.windows.windows;
+import bridge.core;
+import bridge.os;
+import bridge.contexts;
+import bridge.attributes;
+import bridge.plugins;
+import bridge.do_undo;
 
-extern(Windows) BOOL GetOpenFileNameA(LPOPENFILENAMEA);
+enum defFieldSize = 20;
+enum defSpacing   = 3;
 
-class MainScreen : Screen
+
+
+final class MainScreen : Screen, IEditor
 {
-	Gui gui;
+	//These will be here!
 	Menu m;
-	EditorState   state;
-	Toolbox		  toolBox;
+	Gui gui;
+	Plugins* plugin;
+		
+	EditorData			 editorData;	
+	EditorServiceLocator locator;
+	Assets				 assets_;
+	DoUndo				 doUndo;
 
-	bool moving;
-	EntityPanel   ep;
-	WorldRenderer renderer;
-	SavePath savePath;
-	int timerID;
+	/*
+		ToolBox	 tools;
+	*/
+
+	Panels   centerPanels;
+	Panels	 leftPanels;
+	Panels	 rightPanels;
 
 	Screen other;
-
 	this(Screen other) 
 	{
 		super(false, false); 
@@ -44,61 +55,248 @@ class MainScreen : Screen
 
 	override void initialize() 
 	{
+		import content.sdl, plugins;
+		auto pluginConfig = fromSDLFile!PluginConfig(Mallocator.it, "pluginsConfig.sdl");
+		app.addComponent(Mallocator.it.allocate!PluginComponent(Mallocator.it, pluginConfig));
+
 		auto all = Mallocator.it;
 		gui = loadGui(all, app, "guiconfig.sdl");
-		auto c = fromSDLFile!EditorStateContent(Mallocator.it, "arch.sdl", CompContext());
 
-		state		   = EditorState(&onSelectedChanged);	
-		state.initialize(c);
 
-		renderer       = WorldRenderer(&state);
-		toolBox		   = Toolbox(Mallocator.it, &state, &gui);
-		
-		//Make menu
-		m = Menu(all, 100); 
-		int file = m.addSubmenu("File");
-		m.addItem("Open", &open, file);
-		m.addItem("Save", &save, file);
+		plugin = app.locate!Plugins;
+		plugin.preReload  = &prePluginReload;
+		plugin.postReload = &postPluginReload; 
 
-		int new_ = m.addSubmenu("New", file);
-		int entity_ = m.addSubmenu("Entity");
-		m.addItem("As Archetype", &asArch, entity_);
+		editorData = all.allocate!EditorData(Mallocator.cit, 100);
+		foreach(ref type; plugin.attributeTypes!(Data))
+		{
+			editorData.addData(&type);
+		}
+
+		locator   = all.allocate!EditorServiceLocator(&app.services);
+		assets_	  = all.allocate!Assets();
 	
-		ep = EntityPanel(Mallocator.cit, &state);
-		auto keeper = app.locate!(TimeKeeper);
-		timerID = keeper.startTimer(5, &onAutoSave);
-		components = List!Component(all, 20);	
-		app.addService(&savePath);
+		IFileFinder finder = all.allocate!FileFinder();
+		locator.add(finder);
 
-		savePath.path[] = '\0';
+		createMenu();
+		setupPlugins();
+
+		leftPanels = Panels(all, 10, PanelPos.left);
+		leftPanels.addPanels(Mallocator.cit, plugin);
+
+		rightPanels = Panels(all, 10, PanelPos.right);
+		rightPanels.addPanels(Mallocator.cit, plugin);
+
+		centerPanels = Panels(all, 10, PanelPos.center);
+		centerPanels.addPanels(Mallocator.cit, plugin);
+
+		doUndo = DoUndo(1000);
+		locator.add(&doUndo);
+
+		/*
+		tools = ToolBox(all, 10);
+		tools.addTools(plugin);
+		*/
+	}
+
+	void setupPlugins()
+	{
+		foreach(ref func; plugin.functions)
+		{
+			if(func.name == "bridge.core.setupEditorConnection")
+			{
+				(&func).invoke(cast(IEditor)this);
+			}
+		}
+	}
+
+	void createMenu()
+	{
+		m = Menu(Mallocator.it, 100); 
+		foreach(ref func; plugin.attributeFunctions!(bridge.attributes.MenuItem))
+		{
+			auto makeDel(const(MetaFunction)* fun)
+			{
+				return () => fun.invoke!(void)();
+			}
+			
+			auto attrib = func.getAttribute!(bridge.attributes.MenuItem);
+			m.addItem(attrib.name, makeDel(&func), attrib.command);
+		}
+	}
+
+
+	///IEDITOR INTERFACE
+	override void save(string path) nothrow
+	{
+		try
+		{
+			import reflection.serialization;
+			SaveData data = SaveData(editorData);
+			auto context = ReflectionContext(plugin.assemblies.array);
+			toSDLFile(data, &context, path);
+		}
+		catch(Exception e)
+		{
+			import log;
+			logInfo(e);
+			logInfo("Failed to save! ", path);
+		}
+	}
+
+	override void open(string path) nothrow
+	{
+		try
+		{
+			import reflection.serialization;
+			auto context = ReflectionContext(plugin.assemblies.array);
+			auto data    = fromSDLFile!SaveData(Mallocator.it, "tempsaved.sdl", context);
+			scope(exit) deallocate(Mallocator.it, cast(void[])data.data);
+
+			foreach(ref type; plugin.attributeTypes!(Data))
+			{
+				foreach(ref v; data.data)
+				{
+					if(type.isTypeOf(v))
+					{
+						editorData.addData(&type, v);
+					}
+					else 
+					{
+						editorData.addData(&type);
+					}
+				}
+			}
+
+		}
+		catch(Exception e)
+		{
+			import log;
+			logInfo(e);
+			logInfo("Failed to open! ", path);
+		}
+	}
+ 
+	override void close() nothrow
+	{
+		scope(failure) return;
+
+		import window;
+		auto wnd = app.locate!Window;
+		auto fl  = locator.locate!(IFileFinder);
+
+		auto p = fl.saveProjectPath();
+		if(p) save(p);
+		
+		wnd.shouldClose = true;
+	}
+
+	override IServiceLocator services() nothrow
+	{
+		return locator;
+	}
+
+	override IAssets assets() nothrow
+	{
+		return assets_;
+	}
+
+	override IEditorData data() nothrow
+	{
+		return editorData;
+	}
+	///
+
+	//Need to save the state of the application here
+	void prePluginReload(Plugin p)
+	{
+		m.clear();
+		//Save Data here
+		import content.sdl, reflection.serialization;
+
+		save("tempsaved.sdl");
+		editorData.clear();
+		leftPanels.clear();
+		rightPanels.clear();
+		doUndo.clear();
+
+
+		//saveFile("temp.sidal");
+		//tools.tools.clear();
+	}
+
+	//Need to load the state of the application here
+	void postPluginReload(Plugin plugin)
+	{
+		createMenu();
+		open("tempsaved.sdl");
+		setupPlugins();
+		leftPanels .addPanels(Mallocator.cit, this.plugin);
+		rightPanels.addPanels(Mallocator.cit, this.plugin);
+
+
+		//tools.addTools(this.plugin);
+		//createMenu();
+	}
+
+
+	/*
+	void newProj()
+	{
+		save();
+		state.items.clear();
+		state.archetypes.clear();
+	}
+
+	void addComponent(const(MetaType)* type)
+	{
+		auto item = state.item(state.selected);
+		if(item && !item.hasComponent(type.typeInfo))
+		{
+			state.doUndo.apply(&state, AddComponent(&state, type.initial!48));
+		}
+	}
+
+	EditorStateContent openStateFile(string path)
+	{
+		import plugins, reflection.serialization;
+		auto plugin = app.locate!Plugins;
+
+		auto context = ReflectionContext(plugin.assemblies.array);
+		return fromSDLFile!EditorStateContent(Mallocator.it, path, context);
 	}
 
 	void open()
 	{
-		import window.window;
-		auto wnd = app.locate!Window;
-		HWND ptr = wnd.getNativeHandle();
-
-		if(openFileDialog(ptr, "Map\0*.sidal\0", savePath.path[]))
+		if(openFileDialog("Map\0*.sidal\0", savePath.path[]))
 		{
 			import std.c.string;
-			auto len = strlen(savePath.path.ptr);
-			auto tmp = ScopeStack(scratch_alloc);
-			auto c = fromSDLFile!EditorStateContent(Mallocator.it, cast(string)savePath.path[0 .. len], CompContext());
+			auto len = strlen(savePath.path.ptr);			
+			auto c = openStateFile(cast(string)savePath.path[0 .. len]);
 			state.initialize(c);
 		}
 	}
 
 	void save()
-	{
-		import window.window, std.c.string, util.strings, std.path;
-		auto wnd = app.locate!Window;
-		HWND ptr = wnd.getNativeHandle();
-
-		char[256] buffer;
-		if(saveFileDialog(ptr, "Map\0*.sidal\0", buffer[]))
+	{		
+		if(savePath.path[0] != 0)
 		{
+			import std.c.string;
+			saveFile(cast(string)savePath.path[0 .. strlen(savePath.path.ptr)]);
+		}
+		else 
+		{
+			saveAs();
+		}
+	}
 
+	void saveAs()
+	{
+		char[256] buffer;
+		if(saveFileDialog("Map\0*.sidal\0", buffer[]))
+		{
+			import std.c.string, std.path;
 			auto len = strlen(buffer.ptr);
 			if(buffer[0 .. len].extension != ".sidal")
 				buffer[len .. len + ".sidal".length + 1] = ".sidal\0"; 
@@ -107,6 +305,15 @@ class MainScreen : Screen
 			savePath.path[0 .. len + 1] = buffer[0 .. len + 1];
 			saveFile(cast(string)savePath.path[0 .. len]);
 		}
+	}
+
+	void exit()
+	{
+		save();
+	
+		import window.window;
+		auto wnd = app.locate!(Window);
+		wnd.shouldClose = true;
 	}
 
 	void asArch()
@@ -118,10 +325,37 @@ class MainScreen : Screen
 		}
 	}
 
+	void addItem()
+	{
+		state.doUndo.apply(&state, AddItem(&state));
+	}
+
+	void removeItem()
+	{
+		if(state.item(state.selected) is null) return;
+		state.doUndo.apply(&state, RemoveItem(&state));
+	}
+
+	void saveFile(string path)
+	{
+		EditorStateContent content;
+		content.archetypes = state.archetypes;
+		content.items	   = state.items;
+
+		import plugins, reflection.serialization;
+		auto plugin = app.locate!Plugins;
+
+		auto context = ReflectionContext(plugin.assemblies.array);
+		return toSDLFile(content, &context, path);
+	}
+
+	*/
+
 	override void update(Time time)
 	{
-		toolBox.use();
-	
+		//tools.use(&state, gui);
+
+		/*
 		auto kboard = gui.keyboard;
 		auto mouse  = gui.mouse;
 		if(kboard.wasPressed(Key.z))
@@ -134,8 +368,6 @@ class MainScreen : Screen
 			{
 				state.doUndo.undo(&state);
 			}
-
-			updateComponents();
 		}
 
 		if(kboard.wasPressed(Key.c))
@@ -160,405 +392,245 @@ class MainScreen : Screen
 				state.doUndo.apply(&state, CopyItem(&state));
 			}
 		}
-		
-		if(kboard.wasPressed(Key.n))
-		{
-			if(kboard.isModifiersDown(KeyModifiers.control))
-			{
-				addItem();
-			}
-		}
-
-
-		import common.components;
-		
-		if(state.selected != -1)
-		{
-			if(state.item(state.selected).components.length != components.length)
-				updateComponents();
-		}
+		*/
 	}	
-
-	void addItem()
-	{
-		state.doUndo.apply(&state, AddItem(&state));
-	}
-
-	void removeItem()
-	{
-		if(state.item(state.selected) is null) return;
-
-		state.doUndo.apply(&state, RemoveItem(&state));
-	}
-
+	
 	override void render(Time time)
 	{
 		import window.window;
 
 		auto w = app.locate!Window;
 		gui.renderer.viewport(float2(w.size));
-
-
 		gl.viewport(0,0, cast(int)w.size.x, cast(int)w.size.y);
 
 		gui.area = Rect(0,0, w.size.x, w.size.y);
 		gui.begin();
 
-		gui.renderer.drawQuad(Rect(0,0, w.size.x, w.size.y), gui.atlas["pixel"], Color(0xFFE7E4E3));
+		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 46);
+		auto leftSide  = Rect(defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
+		leftPanels.show(gui, leftSide);
 
+		auto rightSide = Rect(wr.right + defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
+		rightPanels.show(gui, rightSide);
+
+		/*
 		import std.range : repeat, take;
-
-
-		auto wr =  Rect(200, 5, w.size.x - 500, w.size.y - 65);
-		state.worldRect = wr;
-
+		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 46);
+		state.camera.viewport = wr.toFloat4;
+		
+	
+		gui.toolbar(Rect(wr.x, wr.top + defSpacing, wr.w, defFieldSize), tools.selected, tools.itemNames);
 
 		float2 p = float2.zero;
-		gui.scrollarea(wr, p, &guiTest, wr);
-		gui.toolbar(Rect(wr.x, wr.y + wr.h + 10, wr.w, 30), toolBox.selected, toolBox.toolIDs);
-		
+		gui.scrollarea(wr, p, &renderWorld, wr);
+		*/
 
-		Rect lp = Rect(5, wr.y, 190, wr.h);
-
-		Rect newItemBox    = Rect(lp.x, lp.y, lp.w / 2 - 5, 25);
-		Rect deleteItemBox = Rect(newItemBox.right + 10, lp.y, newItemBox.w, 25);
-		Rect proto		   = Rect(lp.x, newItemBox.top + 5, lp.w, 25);
-		Rect itemBox	   = Rect(lp.x, proto.top + 5, lp.w, lp.h - (proto.top + 5 - lp.y));
-		Rect runButton	   = Rect(lp.x, itemBox.top + 5, lp.w / 2 - 5, 25);
-
-		if(gui.button(runButton, "Run"))
-		{
-			if(savePath.path[0] != 0)
-			{
-				import std.c.string;
-				saveFile(cast(string)savePath.path[0 .. strlen(savePath.path.ptr)]);
-				owner.push(other);
-			}
-		}
-
-		gui.selectionfield(proto, state.archetype, state.archetypes.array.map!(x => x.name));
-		int sel = state.selected;
-		if(gui.listbox(itemBox, sel, state.itemNames))
-		{
-			state.selected = sel;
-		}
-
-		itemBox.y -= 50;
-		//gui.typefield(itemBox, t);
-
-		if(gui.button(newItemBox, "New"))
-		{
-			addItem();
-		}
-
-		if(gui.button(deleteItemBox, "Delete"))
-		{
-			removeItem();
-		}
-
-		Rect panel = Rect(wr.right + 5, wr.y, 290, wr.h);
-		ep.onGui(gui, panel);
 
 		gui.menu(m);
 		gui.end();
 	}
 
-	void saveFile(string path)
+	/*
+	void renderWorld(ref Gui gui)
 	{
-		EditorStateContent content;
-		content.assetDir   = "..\\images";
-		content.archetypes = state.archetypes;
-		content.items	   = state.items;
+		import graphics;
+		import derelict.opengl3.gl3;
 
-		CompContext c;
-		toSDLFile(content, &c, path);
+		auto area = gui.area;
+		auto renderer = gui.renderer;
+		renderer.end();
 
-	}
+		gl.enable(GL_SCISSOR_TEST);
+		gl.scissor(cast(int)area.x, cast(int)area.y,  cast(int)area.w, cast(int)area.h);
 
-	void guiTest(ref Gui gui)
-	{
-		renderer.renderWorld(gui);
-	}
+		renderer.begin();
 
-	int oldItem  = -1;
-	List!Component components;
+		import plugins, bridge.attributes, bridge.state;
+		auto plugin = app.locate!Plugins;
 
-	void updateComponents()
-	{
-		import common;
+		void*[3] args;				
+		auto rend = RenderContext(renderer, &state.camera, state.images, state.fonts);
 
-		components.clear();
-		oldItem = state.selected;
-		auto item = state.item(oldItem);
-		if(!item) return;
-
-		foreach(i, ref comp; item.components)
-		{	
-			foreach(c; Components)
-			{
-				import util.traits;
-				enum id = cHash!c;
-				if(id == comp.type)
-				{
-					static if(hasMember!(c, "clone"))
-						components ~= Component((cast(c*)comp.data.ptr).clone());
-					else 
-						components ~= comp;
-				}
-			}
-		}
-	}
-
-	void onSelectedChanged(EditorState* s)
-	{
-		if(oldItem == s.selected) return;
-		else if(oldItem != -1) 
+		foreach(func; plugin.worldRenderFuncs)
 		{
-			onAutoSave();
+			alias func_t = void function(RenderContext*);
+			(cast(func_t)func.funcptr)(&rend);
 		}
-		
-		updateComponents();
-	}
 
-	Changed[] findChanged(WorldItem* item)
-	{
-		import common;
-
-		Changed[] changed;
-		foreach(i; 0 .. components.length)
+		foreach(i, ref item; state.items)
 		{
-			foreach(c; Components)
+			foreach(func; plugin.itemRenderFuncs)
 			{
-				import util.traits;
-				enum id = cHash!c;
-				if(id == components[i].type)
+				int count = 0;
+				auto params = func.parameters;
+				int length = params[1 .. $].length;
+				foreach(param; params[1 .. $])
 				{
-					auto fst = cast(c*)components[i].data.ptr;
-					auto snd = cast(c*)item.components[i].data.ptr;
-					
-					if(*fst != *snd)
+					auto outer = param.typeInfo;
+					auto info = param.typeInfo.inner;
+					auto comp = item.peekComponent(info);
+					if(comp)
 					{
-						changed ~= Changed(i, components[i]);
-						
-						static if(hasMember!(c, "clone"))
-							components[i] = Component(snd.clone());
-						else 
-							components[i] = item.components[i];
-					}
-				}
-			}
-		}
-
-		return changed;
-	}
-
-	void onAutoSave()
-	{
-		auto item = state.item(oldItem);
-		if(item)
-		{			
-			auto changed = findChanged(item);			
-			if(changed.length > 0)
-			{
-				import log;
-				logInfo("Adding a changed undoRedo command! For entity ", oldItem);
-				state.doUndo.add(&state, ComponentsChanged(oldItem, changed));
-			}
-		}
-	}
-}
-
-
-struct EntityPanel
-{
-	import common;
-
-	EditorState* state;
-	EditText textData;
-
-	float2 scroll;
-	float2 area;
-
-	int selectedComponent;
-	List!bool active;
-
-	this(IAllocator all, EditorState* state, )
-	{
-		this.state = state;
-		textData   = EditText(all, 50);
-
-		this.scroll = float2.zero;
-		this.area   = float2.zero;
-		this.active = List!bool(all, 20);
-		this.active.length = 20;
-		this.active[] = false;
-	}
-	
-	void onGui(ref Gui gui, Rect panel)
-	{
-		Rect area = panel;
-		area.h    = panel.h;
-
-		this.area = float2(area.w, area.h);
-		gui.scrollarea(panel, scroll, &onGui2);
-	}
-
-	void onGui2(ref Gui gui)
-	{
-		auto item = state.item(state.selected);
-		if(item)
-		{
-			Rect nameBox = Rect(5, area.y - 25, gui.area.w - 15, 20);
-			textData ~= item.name;
-			gui.name(nameBox, "Name", 60);
-			if(gui.textfield(nameBox, textData))
-			{
-				state.doUndo.apply(state, ChangeItemName(state, textData.array));
-			}
-			textData.clear();
-
-			float offset = area.y - 65;	
-			Rect addBox		 = Rect(5, offset - 5, 100, 25);
-			Rect compTypeBox = addBox;
-			compTypeBox.x  = addBox.right + 5;
-			compTypeBox.w  = gui.area.w - 20 - addBox.w ;
-
-			import std.algorithm;
-			gui.selectionfield(compTypeBox, selectedComponent, ComponentIDs);
-			if(gui.button(addBox, "AddComp"))
-			{
-				foreach(c; Components)
-				{
-					import util.traits;
-					enum id = Identifier!c;
-					if(id == ComponentIDs[selectedComponent])
-					{
-						if(!item.hasComp!c)
+						args[count++] = comp.data.ptr;
+						if(count == length)
 						{
-							state.doUndo.apply(state, AddComponent(state, c.ident));
+							alias func_t = void function(RenderContext*,void*,void*);
+							(cast(func_t)func.funcptr)(&rend, args[0], args[1]);
+							break;
 						}
 					}
+					else 
+						break;
 				}
 			}
-
-			offset -= 15;
-
-			int toRemove = -1;
-			foreach(i, ref component; item.components)
-			{
-				import util.traits;
-				foreach(c; Components)
-				{
-					enum id = cHash!c;
-					if(id == component.type)
-					{
-						auto value = cast(c*)component.data.ptr;
-						offset -= 25;
-						Rect r = Rect(5, offset, gui.area.w - 15, 20);
-						gui.label(r, Identifier!c, HorizontalAlignment.center);
-						r.x += 2;
-						r.y += 2;
-						r.w = 16;
-						r.h -= 4;
-						gui.toggle(r, active[i], "", HashID("arrowToggle"));
-						
-						r.x = gui.area.w - 35;
-						if(gui.button(r, "", HashID("deleteButton")))
-							toRemove = i;
-					
-						if(active[i])
-							comp(gui, *value, offset, gui.area.w - 15);
-
-						offset -= 25;
-						r = Rect(5, offset, gui.area.w - 15, 20);
-						gui.separator(r, Color(0xFFB3B0A9));
-					}
-				}
-			}
-
-			if(toRemove != -1)
-				state.doUndo.apply(state, RemoveComponent(state, toRemove));
-		}
-	}
-
-	bool comp(T)(ref Gui gui, ref T t, ref float offset, float width)
-	{
-		auto size = gui.typefieldHeight(t);
-		offset -= size + 5;
-		return gui.typefield(Rect(5, offset, width, size), t, &this);
-	}
-
-	alias Handler = FromItems;
-	bool handle(T)(ref Gui gui, FromItems f, Rect r, ref T t, HashID styleID)
-	{
-		auto var = state.variables[f.name].get!(List!string);
-
-		import std.algorithm;
-		auto idx = var.countUntil!(x => x == t);
-		if(idx == -1)
-			idx = 0;
-
-		if(gui.selectionfield(r, idx, var)) 
-		{
-			t = var[idx];
-			return true;
 		}
 
-		return false;
+		renderer.end();	
+		gl.disable(GL_SCISSOR_TEST);
+		renderer.begin();
 	}
+
+
+	void run()
+	{	
+		save();
+		owner.push(other);
+	}
+	*/
 }
 
-void name(ref Gui gui, ref Rect r, string name, int size)
+/*
+struct ToolBox
 {
-	gui.label(Rect(r.x, r.y, size, r.h), name);
+	struct Tool
+	{
+		MetaType     type;
+		VariantN!32 data;
+	}
+
+	List!Tool tools;
+	int selected;
+
+	this(A)(ref A a, size_t size)
+	{
+		tools = List!Tool(a, size);
+		selected = -1;
+	}
+
+	void clear()
+	{
+		tools.clear();
+		selected = -1;
+	}
+
+	void addTools(Plugins* plugin)
+	{
+		foreach(ref type; plugin.attributeTypes!(EditorTool))
+		{	
+			tools ~= Tool(type, type.initial!32);
+		}
+	}
 	
-	r.x += size + 5;
-	r.w -= size + 5;
+	void use(EditorState* state, ref Gui gui)
+	{
+		if(selected == -1) return;
+
+		auto tool = &tools[selected];
+		auto func = tool.type.findMethod("use");
+
+		ToolContext context;
+		context.state	 = state;
+		context.mouse    = gui.mouse;
+		context.keyboard = gui.keyboard;
+
+		try
+		{
+			func.invoke(tool.data, &context);
+		}
+		catch(Exception e)
+		{
+			import log;
+			logInfo(e);
+		}
+	}
+
+	auto itemNames()
+	{
+		return tools.map!(x => x.type.typeInfo.name);
+	}	
 }
+*/
 
-struct Toolbox
+struct Panels
 {
-	EditorState* state;
-	Gui*		 gui;
-
-	int			 selected;
-	private List!Tool		 tools_;
-	private List!Tool	 activeTools;	
-
-	this(A)(ref A allocator, EditorState* s, Gui* gui)
+	struct Panel
 	{
-		this.state		 = s;
-		this.gui		 = gui;
-		this.activeTools = List!Tool(allocator, 10);
-		this.tools_		 = List!Tool(allocator, 10);
-	
-		this.tools_ ~= allocator.allocate!SelectTool(s, gui);
-		this.tools_ ~= allocator.allocate!ChainTool(s, gui);
-
+		MetaType     type;
+		VariantN!64  data;
 	}
 
-	void use()
+	List!Panel panels;
+	int selected;
+	PanelPos	 side;
+
+	this(A)(ref A a, size_t size, PanelPos side)
 	{
-		activeTools.clear();
-		foreach(tool; tools_)
-		{
-			if(tool.canUse())
-			{
-				activeTools ~= tool;
-			}
+		panels		  = List!Panel(a, size);
+		this.selected = 0;
+		this.side     = side;
+	}
+
+	void addPanels(IAllocator allocator, Plugins* plugin)
+	{
+		foreach(ref type; plugin.attributeTypes!EditorPanel)
+		{	
+			auto attrib = type.getAttribute!EditorPanel;
+			if(attrib.side != this.side) continue;
+
+			panels ~= Panel(type, (&type).create!64(allocator));
 		}
-
-		if(selected < 0 || selected >= activeTools.length)
-		{
-			selected = 0;
-		}
-
-		activeTools[selected].use();
 	}
 
-	auto toolIDs()
+	void clear()
 	{
-		import std.algorithm;
-		return activeTools.map!(x => x.name());
+		panels.clear();
 	}
+
+	void show(ref Gui gui, Rect area)
+	{
+		Rect tb = Rect(area.x, area.y + area.h - defFieldSize, area.w, defFieldSize);
+		area.h -= defFieldSize;
+
+		gui.toolbar(tb, selected, panels.map!(x => toTabPage(&x)));
+		if(selected >= panels.length) return;
+
+		auto panel = &panels[selected];
+		auto func = panel.type.findMethod("show");
+
+		PanelContext context;
+		context.gui	  = &gui;
+		context.area  = area;
+		
+		try
+		{
+			func.invoke(panel.data, &context);
+		}
+		catch(Exception e)
+		{
+			import log;
+			logInfo(e);
+		}
+	}
+
+	auto toTabPage(Panel* p)
+	{
+		auto panelAttrib = p.type.getAttribute!EditorPanel;
+		return panelAttrib.name;
+	}
+
+
+	auto itemNames()
+	{
+		return panels.map!(x => x.type.typeInfo.name);
+	}	
 }

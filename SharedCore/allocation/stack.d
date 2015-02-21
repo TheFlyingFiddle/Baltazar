@@ -47,7 +47,7 @@ struct ScopeStack
 		static if(is(T == struct))
 			void[] mem = _allocator.allocateRaw(T.sizeof + Finalizer.sizeof, T.alignof);
 		else 
-			void[] mem = _allocator.allocateRaw(__traits(classInstanceSize, T) + Finalizer.sizeof, T.alignof);
+			void[] mem = _allocator.allocateRaw(__traits(classInstanceSize, T) + Finalizer.sizeof, 8);
 		
 		auto fin = emplace!(Finalizer)(mem, &destructor!T, _chain);
 		_chain = fin;
@@ -72,6 +72,17 @@ struct ScopeStack
 	{
 		//logChnl.info("Allocated Raw: ", size);
 		return _allocator.allocateRaw(size, alignment);
+	}
+
+	void[] allocate_impl(size_t size, size_t alignment)
+	{
+		return _allocator.allocateRaw(size, alignment);
+	}
+
+	void deallocate_impl(void[] mem)
+	{
+		import log;
+		logInfo("Trying to deallocate memory allocated through a scope stack... Something is wrong!!!");
 	}
 
 	~this()

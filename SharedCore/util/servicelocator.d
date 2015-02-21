@@ -19,10 +19,41 @@ struct ServiceLocator
 		services = List!Service(allocator, size);
 	}
 
-	private HashID hashOf(T)(string name)
+	private HashID hashOf(T)(string name) nothrow
 	{
-		auto hash = bytesHash(T.stringof, bytesHash(name));
-		return hash;
+		return hashOf(typeHash!T, name);
+	}
+
+	private HashID hashOf(TypeHash type, string name) nothrow
+	{
+		if(name.length > 0)
+		{
+			auto hash = bytesHash(name, type.value);
+			return hash;
+		}
+
+		return HashID(type.value);
+	}
+
+	void add(void* service, TypeHash type, string name="") nothrow 
+	{
+		services ~= Service(hashOf(type, name), service);
+	}
+
+	void* tryFind(TypeHash type, string name="") nothrow 
+	{
+		scope(failure) return null;
+
+		auto hash = hashOf(type, name);
+		foreach(service; services)
+		{
+			if(hash == service.hash)
+			{
+				return service.ptr;
+			}
+		}
+
+		return null;
 	}
 
 	void add(T)(T* service, string name = "") if(is(T == struct))
@@ -57,8 +88,6 @@ struct ServiceLocator
 		}
 		return false;
 	}	
-
-
 
 	T* find(T)(string name = "") if(is(T == struct))
 	{

@@ -237,7 +237,7 @@ CompiledFile compileDistFont(void[] input, DirEntry path, ref Context context)
 
 	FreeImage_SaveToHandle(FIF_PNG, image, &io, cast(fi_handle)&saveHandle, 0);
 
-	return CompiledFile([CompiledItem(".fnt", fontData), CompiledItem(".png", compilers.buffer[0 .. saveHandle.position])], []);	
+	return CompiledFile([CompiledItem(".fnt", fontData), CompiledItem(".png", compilers.buffer[0 .. saveHandle.position])], atlasData.fonts);	
 }
 
 

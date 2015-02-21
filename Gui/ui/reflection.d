@@ -79,7 +79,12 @@ bool typefield(T)(ref Gui gui, Rect rect, ref T t, HashID styleID = HashID("type
 
 bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID = HashID("typefield"))
 {
-	static if(is(T == enum))
+	enum context_compiles = __traits(compiles, () => context.handle(gui, rect, t, styleID));
+	static if(context_compiles)
+	{
+		return context.handle(gui, rect, t, styleID);
+	}
+	else static if(is(T == enum))
 	{
 		return gui.enumField!T(rect, t); 
 	}
@@ -99,10 +104,26 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 	{
 		return gui.textfield(rect, t);
 	}
+	else static if(is(T == string))
+	{
+		//Should place this someplace else!
+		char[50] buffer;
+		buffer[0 .. t.length] = t;
+		EditText et = EditText(buffer.ptr, t.length, 50);
+		bool res = gui.textfield(rect, et);
+		if(res)
+		{
+			import allocation;
+			auto data = Mallocator.it.allocate!(char[])(et.length);
+			data[] = et.array;
+			t = cast(string)data;
+		}
+
+		return res;
+	}
 	else static if(is(T == bool))
 	{
-		//Don't know what to do.
-		return false;
+		return gui.toggle(rect, t, "True", "False");
 	}
 	else static if(collections.list.isList!T)
 	{
@@ -185,12 +206,7 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 				r.x = r.w + style.itemSpacing;
 				r.w = rect.w - style.nameWidth - style.itemSpacing;
 
-				static if(hasValueAttribute!(T.tupleof[i], C.Handler))
-				{
-					changed = context.handle(gui, getAttribute!(T.tupleof[i], C.Handler), r, t.tupleof[i], styleID) || changed;
-				}
-				else
-					changed = gui.typefield(r, t.tupleof[i], context, styleID) || changed;
+				changed = gui.typefield(r, t.tupleof[i], context, styleID) || changed;
 
 				if(style.topDown)
 					offset -= style.itemSpacing + r.h;

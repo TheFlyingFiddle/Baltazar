@@ -15,7 +15,7 @@ void copyBetween(From, To)(From from, To to,  uint fromOffset, uint toOffset,
 
 void bufferData(T,Buffer)(ref Buffer buffer, T data) if(isArray!T)				
 {
-	buffer._size = T.sizeof * data.length;
+	buffer.size = T.sizeof * data.length;
 	gl.bufferData(buffer.target, buffer.size, data.ptr, buffer.hint);
 }
 
@@ -90,7 +90,7 @@ mixin template BufferData(T, BufferTarget bufferTarget, BufferType,  bool canBeS
 	void bufferData(T)(T[] data)
 	{
 		static assert (isValidType!(T), assertMsg);
-		Buffer.bufferData(this, data);
+		.bufferData(this, data);
 	}
 
 	T getBufferSubData(T)(uint offset, uint size, T[] output = null)  

@@ -12,7 +12,6 @@ import window.clipboard;
 import window.gamepad;
 
 import log;
-
 class WindowComponent : IApplicationComponent
 {
 	private Window _window;
@@ -138,11 +137,14 @@ class NetworkComponent : IApplicationComponent
 class RenderComponent : IApplicationComponent
 {
 	import rendering.renderer, rendering.combined;
+	import graphics.color;
 
 	Renderer2D* renderer;
+	Color		clear;
 	this(A)(ref A al, RenderConfig config)
 	{
 		renderer = al.allocate!Renderer2D(al, config);
+		clear    = config.clearColor;
 	}
 
 	override void initialize()
@@ -159,7 +161,7 @@ class RenderComponent : IApplicationComponent
 
 		import graphics;
 		gl.viewport(0,0, cast(uint)w.size.x, cast(uint)w.size.y);
-		gl.clearColor(1,1,1,1);
+		gl.clearColor(clear.r, clear.g, clear.b, clear.a);
 		gl.clear(ClearFlags.color);
 	}
 }
@@ -182,6 +184,23 @@ class TimerComponent : IApplicationComponent
 	{
 		keeper.step(time);
 	}
+}
+
+class SoundComponent : IApplicationComponent
+{
+	import sound.player;
+	SoundPlayer player;
+
+	this(A)(ref A all, SoundConfig config)
+	{
+		player = SoundPlayer(all, config);
+	}
+
+	override void initialize()
+	{
+		app.addService(&player);
+	}
+
 }
 
 version(RELOADING)

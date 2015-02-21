@@ -1,0 +1,9 @@
+pluginDlls = 
+[
+	|..\Plugin\Release\Plugin.dll|
+]
+
+gameDlls =
+[
+	|..\Game\Release\Game.dll|
+]

@@ -7,6 +7,7 @@ struct RenderConfig
 {
 	size_t maxBatchSize;
 	size_t batchCount;
+	Color  clearColor;
 }
 
 struct Vertex
@@ -44,7 +45,7 @@ struct Renderer(V)
 		Texture2D texture;
 	}
 
-	private AsyncRenderBuffer!V renderBuffer;
+	private SubBufferRenderBuffer!V renderBuffer;
 	private Program!(Uniform, V) program;
 	private List!RenderData renderData;
 
@@ -63,7 +64,7 @@ struct Renderer(V)
 		sampler.minFilter(TextureMinFilter.linear);
 		sampler.magFilter(TextureMagFilter.linear);
 
-		renderBuffer = AsyncRenderBuffer!V(config.maxBatchSize, config.batchCount, program);
+		renderBuffer = SubBufferRenderBuffer!V(allocator, config.maxBatchSize, program);
 	}
 
 	void viewport(float2 viewport)
@@ -72,7 +73,7 @@ struct Renderer(V)
 		program.uniforms.invViewport = invViewport;
 	}
 
-	void addItems(V[] vertices, uint[] indecies, ref Texture2D texture)
+	void addItems(V[] vertices, ushort[] indecies, ref Texture2D texture)
 	{
 		renderBuffer.addItems(vertices, indecies);
 		if(renderData.back.texture == texture)
@@ -83,11 +84,14 @@ struct Renderer(V)
 
 	void begin() 
 	{		
-		renderBuffer.map();
+		//Nothing special about this...
 	}
 
-	private void draw(int start)
+	private void draw()
 	{
+		renderBuffer.pushToGL();
+
+		int start = 0;
 		context[TextureUnit.zero] = sampler;
 		foreach(data; renderData)
 		{
@@ -95,15 +99,16 @@ struct Renderer(V)
 			renderBuffer.render(start, data.count, program);
 			start += data.count;
 		}
+
+		renderData.clear();
 	}
 
 	void end()
 	{
-		int start = renderBuffer.unmap();
-		draw(start);
-		renderData.clear();
+		draw();
 	}
 }
+
 
 enum v_Source =  q{
 	#version 330

@@ -372,8 +372,6 @@ bool numberfield(T)(ref Gui gui,
 
 	}
 
-	
-
 	char[27] buffer = void;
 	auto tf = GuiTextfield(&gui, rect, style, &standardFilter, &errorFilter);
 	if(gui.nextHasFocus())
@@ -462,10 +460,12 @@ bool colorfield(ref Gui gui, Rect rect, ref Color color, HashID styleID = HashID
 
 	bool result = false;
 
-	result |= numberfield(gui, Rect(rect.x,										 rect.y, rect.w / 4 - 5, rect.h), r, 0, 255, styleID);
-	result |= numberfield(gui, Rect(rect.x + rect.w / 4,					     rect.y, rect.w / 4 - 5, rect.h), g, 0, 255, styleID);
-	result |= numberfield(gui, Rect(rect.x + rect.w / 2,					     rect.y, rect.w / 4 - 5, rect.h), b, 0, 255, styleID);
-	result |= numberfield(gui, Rect(rect.x + (rect.w  / 2) + rect.w / 4,         rect.y, rect.w / 4 - 5, rect.h), a, 0, 255, styleID);
+	float move = 5 / 3.0f;
+
+	result |= numberfield(gui, Rect(rect.x,										     rect.y, move + rect.w / 4 - 5, rect.h), r, 0, 255, styleID);
+	result |= numberfield(gui, Rect(rect.x + rect.w / 4 + move,					     rect.y, move + rect.w / 4 - 5, rect.h), g, 0, 255, styleID);
+	result |= numberfield(gui, Rect(rect.x + rect.w / 2 + move,					     rect.y, move + rect.w / 4 - 5, rect.h), b, 0, 255, styleID);
+	result |= numberfield(gui, Rect(rect.x + (rect.w  / 2) + rect.w / 4 + move * 2,      rect.y, move + rect.w / 4 - 5, rect.h), a, 0, 255, styleID);
 
 	if(result)
 	{

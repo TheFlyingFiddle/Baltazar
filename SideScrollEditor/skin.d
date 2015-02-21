@@ -168,7 +168,6 @@ struct MenuStyleContent
 	GuiFrameContent focus, highlight, idle;	
 }
 
-
 struct ListBoxContent
 {
 	string name;
@@ -297,7 +296,7 @@ auto loadGui(A)(ref A all, Application* app, string file)
 	auto loader = app.locate!AsyncContentLoader;
 	auto font	= loader.load!FontAtlas(config.fonts);
 	auto atlas  = loader.load!TextureAtlas(config.images);
-	auto renderer = all.allocate!Renderer2D(all, RenderConfig(0xFFFF, 3));
+	auto renderer =  app.locate!Renderer2D;
 	auto wind   = app.locate!Window;
 	return Gui(all, atlas, font, skin, renderer, 
 			   app.locate!Keyboard, 

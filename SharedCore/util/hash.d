@@ -55,7 +55,7 @@ struct ShortHash
 
 template shortHash(T)
 {
-	enum hash = cHash!T;
+	enum hash = typeHash!T;
 	enum shortHash = ShortHash((hash.value & 0xFFFF) ^ ((hash.value >> 16) & 0xFFFF));
 }
 
@@ -66,11 +66,11 @@ template shortHash(string name)
 }
 
 ///Gets the hash of the type T (hash on the fully qualified name)
-template cHash(T)
+template typeHash(T)
 {
 	import std.traits;
 	enum name = fullyQualifiedName!T;
-	enum cHash = TypeHash(bytesHash(name.ptr, name.length, 0).value);
+	enum typeHash = TypeHash(bytesHash(name.ptr, name.length, 0).value);
 }
 
 HashID bytesHash(T)(T[] buffer, uint seed = 0)

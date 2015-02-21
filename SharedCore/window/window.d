@@ -76,7 +76,7 @@ struct WindowManager
 							 cast(int)(msize.x / 2 - size.x / 2));
 		}
 
-		return 	Window(glfwWindow, blocking);;
+		return 	Window(glfwWindow, blocking);
 	}
 
 	static void obliterate(Window window)
@@ -365,7 +365,7 @@ struct Monitor
 
 struct Window
 {
-	package GLFWwindow* _windowHandle;
+	public GLFWwindow* _windowHandle;
 	private bool blocking;
 
 	@property void* nativeHandle()

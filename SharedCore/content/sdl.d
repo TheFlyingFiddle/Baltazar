@@ -29,6 +29,13 @@ private enum int nextIndexNumBits	= 16;
 
 private enum int noNameValue = (1<<nameIndexNumBits) - 1;
 
+
+class ObjectNotFoundException : Exception
+{
+	this(string msg) { super(msg); }
+}
+
+
 struct SDLObject
 {
     enum Type { _float, _string, _int, _parent}
@@ -140,20 +147,6 @@ struct SDLIterator(C)
     SDLContainer* over;
     ushort currentIndex;
 
-    ref SDLIterator opDispatch(string name)()
-	{
-        goToChild!name;
-        return this;
-	}
-	/**
-    //I kind of wanted to do this, but it seems to be impossible.
-    T opDispatch(string name, T)()
-	{
-		goToChild!name;
-		return over.root[currentIndex].as!T;
-	}
-	*/  
-
 	@property 
 		ref IAllocator allocator() { return over.allocator; }
 
@@ -235,6 +228,11 @@ struct SDLIterator(C)
 
     void goToNext(string name)()
 	{
+		goToNext(name);
+	}
+
+	void goToNext(string name)
+	{
         auto range = mixin(curObjObjRange);
 		SDLObject obj;
         while(currentIndex)//An index of zero is analogous to null.
@@ -252,11 +250,6 @@ struct SDLIterator(C)
 										  "Search terminated on object " ~ 
 										  readIdentifier(nameRange)
 										  );
-	}
-
-	class ObjectNotFoundException : Exception
-	{
-		this(string msg) { super(msg); }
 	}
 
 	bool hasNext()
@@ -337,7 +330,7 @@ struct SDLIterator(C)
         assert(over.root[currentIndex].type == TypeID._string);
 
         auto range = mixin(curObjObjRange);
-        string str = .readString!T(range);
+        auto str = .readString!T(range);
         char[] s = allocator.allocate!(char[])(str.length);
         s[] = str;
         return cast(T)s;
@@ -520,6 +513,7 @@ struct SDLIterator(C)
 
     T as(T)()
 	{        
+		
 		enum context_compiles = __traits(compiles, () => context.read!(T, C)(&this));
 		static if(context_compiles)
 		{
@@ -580,9 +574,9 @@ struct SDLContainer
 	private IAllocator allocator;
 
     @property
-		SDLIterator opDispatch(string s)()
+		SDLIterator!(C) opDispatch(string s, C)(auto ref C context)
 	{
-        auto it = SDLIterator();
+        auto it = SDLIterator!(C)(&context, &this, 0);
         it.over = &this;
 		it.goToChild!s;
         return it;
@@ -648,6 +642,7 @@ void toSDL(T, Sink)(auto ref T value, ref Sink s)
 
 void toSDL(T, Sink, C)(auto ref T value, ref Sink sink, C* context, int level = 0)
 {
+
 	enum context_compiles = __traits(compiles, () => context.write(value, sink, level));
 	static if(context_compiles)
 	{
@@ -713,7 +708,7 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) i
 	formattedWrite(sink, "0x%x", value.packedValue);
 }
 
-void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if(is(T == string))
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if(isSomeString!T)
 {
 	sink.put(stringSeperator);
 	sink.put(cast(char[])value);
@@ -729,7 +724,7 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) i
 	}
 }
 
-void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if((isArray!T || isList!(T)) && !is(T == string))
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if((isArray!T || isList!(T)) && !isSomeString!T)
 {
 	sink.put(arrayOpener);
 	foreach(i; 0 .. value.length) {
@@ -910,7 +905,7 @@ if (isStringOrVoid!StringOrVoid)
 			static if (isSomeString!StringOrVoid) {
 				string s = str(saved, range);
 				range.popFront();
-				return s;
+				return cast(StringOrVoid)s;
 			} else {
 				range.popFront();
 				return;
@@ -938,7 +933,7 @@ StringOrVoid readIdentifier(StringOrVoid = string)(ref ForwardRange range)
 		   c == '}' ||
 		   c == ']') {
 			   static if(isSomeString!StringOrVoid)
-				   return str(saved, range);
+				   return cast(StringOrVoid)str(saved, range);
 			   else
 				   return;
 		   }
@@ -947,7 +942,7 @@ StringOrVoid readIdentifier(StringOrVoid = string)(ref ForwardRange range)
 	}
 
    static if(isSomeString!StringOrVoid)
-	   return str(saved, range);
+	   return cast(StringOrVoid)str(saved, range);
    else
 	   return;
 	// If we reach end of file, we actually just want to stop parsing.
@@ -1249,12 +1244,12 @@ long parseHex(ForwardRange saved, ForwardRange range)
 	return acc;
 }
 
-T fromSDLSource(T, A)(ref A allocator, string source)
+T fromSDLSource(T = SDLContainer, A)(ref A allocator, string source)
 {
 	return fromSDLSource!T(allocator, source, default_context);
 }
 
-T fromSDLSource(T, A, C)(ref A allocator, string source, C context) if(is(C == struct))
+T fromSDLSource(T = SDLContainer, A, C)(ref A allocator, string source, C context) if(is(C == struct))
 {
 	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
 	scope(exit) Mallocator.it.deallocate(iall);
@@ -1272,19 +1267,22 @@ T fromSDLSource(T, A, C)(ref A allocator, string source, C context) if(is(C == s
 
     auto cont = fromSDL(app, source);
 	static if(is(T == SDLContainer))
+	{
 		return cont;
-
-	cont.allocator = iall;
-
-    return cont.as!T(context);
+	}
+	else 
+	{
+		cont.allocator = iall;
+	    return cont.as!T(context);
+	}
 }
 
-T fromSDLFile(T, A)(ref A al, string fp)
+T fromSDLFile(T = SDLContainer, A)(ref A al, const(char)[] fp)
 {
-	return fromSDLFile!(T, A, SDLContext)(al, fp, default_context);
+	return fromSDLFile!(T, A, SDLContext)(al, cast(string)fp, default_context);
 }
 
-T fromSDLFile(T, A, C)(ref A allocator, string filePath, C context) if(is(C == struct))
+T fromSDLFile(T = SDLContainer, A, C)(ref A allocator, string filePath, C context) if(is(C == struct))
 {
     import allocation.native;
 	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
@@ -1310,7 +1308,7 @@ T fromSDLFile(T, A, C)(ref A allocator, string filePath, C context) if(is(C == s
     return cont.as!T(context);
 }
 
-T fromSDL(T, A, C)(ref A allocator, string source, C context) if(is(C == struct))
+T fromSDL(T = SDLContainer, A, C)(ref A allocator, string source, C context) if(is(C == struct))
 {
 	return fromSDL(allocator, source).as!T(allocator, context);
 }

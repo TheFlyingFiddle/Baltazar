@@ -8,6 +8,7 @@ public import util.variant;
 public import util.hash;
 public import rendering;
 public import ui.window;
+public import math.rect : Rect;
 
 enum HorizontalAlignment : ubyte
 {
@@ -21,49 +22,6 @@ enum VerticalAlignment : ubyte
 	bottom,
 	top, 
 	center
-}
-
-struct Rect
-{
-	float x, y, w, h;
-	this(float x, float y, float w, float h)
-	{
-		this.x = x; this.y = y;
-		this.w = w; this.h = h;
-	}
-
-	this(float4 f)
-	{
-		this(f.x, f.y, f.z - f.x, f.w - f.y);
-	}
-
-
-	alias toFloat4 this;
-
-	float4 toFloat4()
-	{
-		return float4(x, y, x + w, y + h);
-	}
-
-	bool contains(float2 point)
-	{
-		return x < point.x &&  x + w > point.x &&
-			y < point.y &&  y + h > point.y;
-	}
-
-	void displace(float2 offset)
-	{
-		this.x += offset.x;
-		this.y += offset.y;
-	}
-
-	static Rect empty() { return Rect(0,0,0,0); }
-
-
-	float left() { return x; }
-	float right() { return x + w; }
-	float top() { return y + h; }
-	float bottom() { return y; }
 }
 
 Rect intersection(ref Rect first, ref Rect second)
@@ -450,7 +408,7 @@ struct Gui
 		if(horizontal == HorizontalAlignment.center)
 			fontPos.x += rect.w / 2 - textSize.x / 2;
 		else if(horizontal == HorizontalAlignment.right)
-			fontPos.x += rect.w - textSize.x;
+			fontPos.x += rect.w  - textSize.x;
 
 		drawText(text, fontPos, rect, font, bounds);
 	}

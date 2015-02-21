@@ -14,5 +14,5 @@ items =
 	{ name = |circle.png| },
 	{ name = |minusbtn.png| }
 ]
-width = 1024
-height = 1024
+width = 512
+height = 512

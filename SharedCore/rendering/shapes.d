@@ -62,8 +62,7 @@ void drawText(R)(ref R renderer, const(char)[] text, float2 pos, float2 size, re
 void drawDistQuad(R)(ref R renderer, ref float4 quad, ref Frame frame, ref float3 thresh, Color color)
 {
 	import rendering.renderer;
-
-	static uint[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
+	__gshared static ushort[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
 
 	float4 coords = frame.coords;
 
@@ -132,7 +131,7 @@ void fixQuad(ref float4 quad, ref float4 coords, ref float4 bounds)
 void drawQuad(R)(ref R renderer, float4 quad, Frame frame, Color color, float4 bounds)
 {
 	import rendering.renderer;
-	static uint[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
+	__gshared static ushort[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
 
 	if(quad.x > bounds.z ||
 	   quad.y > bounds.w ||
@@ -162,7 +161,7 @@ void drawQuad(R)(ref R renderer, float4 quad, float rotation, Frame frame, Color
 {
 	import rendering.renderer;
 
-	static uint[6] indecies = [0, 1, 2, 0, 2, 3];
+	__gshared static ushort[6] indecies = [0, 1, 2, 0, 2, 3];
 
 	float4 coords = frame.coords;
 
@@ -184,7 +183,7 @@ void drawQuad(R)(ref R renderer, float4 quad, float rotation, Frame frame, Color
 
 void drawTriangle(R)(ref R renderer, float2 a, float2 b, float2 c, Texture2D texture, Color color)
 {
-	static uint[3] indices = [0, 1, 2];
+	static ushort[3] indices = [0, 1, 2];
 
 	alias Vertex = R.Vertex;
 	Vertex[3] vertices;
@@ -200,8 +199,7 @@ void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, C
 	import rendering.renderer;
 	if(rect.x == rect.z || rect.y == rect.w) return;
 
-
-	static uint[24] indices =
+	__gshared static ushort[24] indices =
 	[	
 		0, 3, 1,
 		3, 2, 1,
@@ -242,7 +240,7 @@ void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, C
 void drawLine(R)(ref R renderer, float2 start, float2 end, float width, Frame frame, Color color)
 {
 	import rendering.renderer;
-	static uint[6] indices = [0, 1, 2,  0, 2, 3];
+	__gshared static ushort[6] indices = [0, 1, 2,  0, 2, 3];
 	Vertex[4] vertices;
 
 	float2 perp = float2((end - start).y, -(end - start).x).normalized;
@@ -255,9 +253,9 @@ void drawLine(R)(ref R renderer, float2 start, float2 end, float width, Frame fr
 	renderer.addItems(vertices, indices, frame.texture);
 }
 
-uint[N * 3] makeNGonIndices(size_t N)()
+ushort[N * 3] makeNGonIndices(size_t N)()
 {
-	uint[N * 3] indices;
+	ushort[N * 3] indices;
 	foreach(i; 0 .. N - 1)
 	{
 		indices[i * 3] = 0;
@@ -272,11 +270,6 @@ uint[N * 3] makeNGonIndices(size_t N)()
 	return indices;
 }
 
-Vertex[N] makeNGonVertices(size_t N, Vertex)()
-{
-
-}
-
 import rendering.combined;
 void drawNGon(size_t N, R)(ref R renderer, float2 origin, 
 						   float radius, Frame frame,
@@ -286,7 +279,7 @@ void drawNGon(size_t N, R)(ref R renderer, float2 origin,
 
 
 	import rendering.renderer;
-	static uint[N * 3]   indecies   = makeNGonIndices!N;
+	static ushort[N * 3]   indecies   = makeNGonIndices!N;
 
 	Vertex[N] vertices;
 	foreach(i; 0 .. N)
@@ -317,18 +310,18 @@ void drawNGon(size_t N, R)(ref R renderer, float2 origin,
 }
 
 
-uint[N * 12] makeNGonOutlineIndices(size_t N)()
+ushort[N * 12] makeNGonOutlineIndices(ubyte N)()
 {
-	uint[N * 12] indices;
+	ushort[N * 12] indices;
 	foreach(i; 0 .. N * 2)
 	{
-		indices[i * 6 + 0] = i;
-		indices[i * 6 + 1] = (i + 1) % (N * 2);
-		indices[i * 6 + 2] = (i + 2) % (N * 2);
+		indices[i * 6 + 0] = cast(ushort)i;
+		indices[i * 6 + 1] = cast(ushort)((i + 1) % (N * 2));
+		indices[i * 6 + 2] = cast(ushort)((i + 2) % (N * 2));
 
-		indices[i * 6 + 3] = (i + 2) % (N * 2);
-		indices[i * 6 + 4] = (i + 1) % (N * 2);
-		indices[i * 6 + 5] = (i + 3) % (N * 2);
+		indices[i * 6 + 3] = cast(ushort)((i + 2) % (N * 2));
+		indices[i * 6 + 4] = cast(ushort)((i + 1) % (N * 2));
+		indices[i * 6 + 5] = cast(ushort)((i + 3) % (N * 2));
 	}
 	return indices;
 }
@@ -338,7 +331,7 @@ void drawNGonOutline(size_t N, R)(ref R renderer, float2 origin,
 								  Frame frame, Color color)
 {
 	import rendering.renderer;
-	static uint[N * 12]   indecies   = makeNGonOutlineIndices!N;
+	__gshared static ushort[N * 12]   indecies   = makeNGonOutlineIndices!N;
 
 	Vertex[N] vertices;
 	foreach(i; 0 .. N)
@@ -371,9 +364,9 @@ void drawNGonOutline(size_t N, R)(ref R renderer, float2 origin,
 	renderer.addItems(verts, indecies, frame.texture);
 }
 
-uint[N * 3] makeCircleSectionIndices(size_t N)()
+ushort[N * 3] makeCircleSectionIndices(size_t N)()
 {
-	uint[N * 3] indices;
+	ushort[N * 3] indices;
 	foreach(i; 0 .. N)
 	{
 		indices[i * 3] = 0;
@@ -424,9 +417,9 @@ T cubiqBezier(T)(float t, T a, T b, T c, T d)
 	return  a * (u ^^ 3) + b * 3 * (u ^^ 2) * t + c * 3 * u * t * t + d * (t ^^ 3);
 }
 
-uint[N * 6] makeBezierIndices(size_t N)()
+ushort[N * 6] makeBezierIndices(size_t N)()
 {
-	uint[N * 6] indices;
+	ushort[N * 6] indices;
 	foreach(i; 0 .. N  * 2)
 	{
 		indices[i * 3 + 0] = i;
@@ -444,7 +437,7 @@ void drawBezier(size_t N, R)(ref R renderer,
 							 Color color, float rotation = 0)
 {
 	alias Vertex = R.Vertex;
-	uint[N * 6] indices  = makeBezierIndices!(N);
+	ushort[N * 6] indices  = makeBezierIndices!(N);
 	Vertex[(N + 1) * 2]   vertices; 
 
 	float2 perp = Polar!(float)(rotation, width / 2).toCartesian;

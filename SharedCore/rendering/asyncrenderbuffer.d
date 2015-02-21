@@ -89,3 +89,69 @@ struct AsyncRenderBuffer(Vertex)
 		drawElements!(uint, Vertex, U)(this.vao, program, PrimitiveType.triangles, start, count);
 	}
 }
+
+struct SubBufferRenderBuffer(Vertex)
+{
+	private VAO!Vertex vao;
+	private VBO vbo;
+	private IBO ibo;
+
+	private int batchSize;
+	private int numIndices;
+	private int numVertices;
+
+	private ushort[] indices;
+	private Vertex[] vertices;
+
+	this(A, U)(ref A all, size_t batchSize,  ref Program!(U, Vertex) program)
+	{
+		import allocation;
+
+		this.numIndices = this.numVertices = 0;
+		this.batchSize  = batchSize;
+
+		this.indices    = all.allocate!(ushort[])(batchSize * 3);
+		this.vertices   = all.allocate!(Vertex[])(batchSize);
+
+		this.vbo = VBO.create(BufferHint.streamDraw);
+		this.vbo.bind();
+		this.vbo.initialize(Vertex.sizeof * batchSize);
+
+		this.ibo = IBO.create(BufferHint.streamDraw);
+		this.ibo.bind();
+		this.ibo.initialize(batchSize * 6);
+
+		this.vao = VAO!Vertex.create();
+		setupVertexBindings(vao, program, vbo, &ibo);
+		vao.unbind();
+	}
+
+	void addItems(Vertex[] vertices, ushort[] indecies)
+	{
+		assert(numIndices  + indecies.length <= batchSize * 3);
+		assert(numVertices + vertices.length <= batchSize);
+
+		this.indices [numIndices  .. numIndices  + indecies.length] = indecies[] + cast(ushort)numVertices;
+		this.vertices[numVertices .. numVertices + vertices.length] = vertices[];  
+
+		numIndices   += cast(int)indecies.length;
+		numVertices  += cast(int)vertices.length;
+	}
+
+	void pushToGL()
+	{
+		vbo.bind();
+		vbo.bufferSubData(vertices[0 .. numVertices], 0);
+
+		ibo.bind();
+		ibo.bufferSubData(indices[0 .. numIndices], 0);
+		
+		numIndices  = 0;
+		numVertices = 0;
+	}
+
+	void render(U)(uint start, uint count, ref Program!(U,Vertex) program)
+	{
+		drawElements!(ushort, Vertex, U)(this.vao, program, PrimitiveType.triangles, start, count);
+	}
+}	

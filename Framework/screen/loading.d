@@ -6,6 +6,7 @@ import rendering.combined;
 
 struct LoadingConfig
 {
+	bool loadAll;
 	string[] toLoad;
 	string font;
 }
@@ -28,17 +29,29 @@ class LoadingScreen : Screen
 	{
 		import content;
 		loader = app.locate!AsyncContentLoader;
-
 		font = loader.load!FontAtlas(config.font);
 
-		foreach(item; config.toLoad)
-			loader.asyncLoad(item);
+		if(config.loadAll)
+		{
+			foreach(ref item; loader.avalibleResources.dependencies)
+			{
+				loader.asyncLoad(item.name);
+			}
+		}
+		else 
+		{
+			foreach(item; config.toLoad)
+				loader.asyncLoad(item);
+		}
 	}
 
 	override void update(Time time)
 	{
 		if(loader.areAllLoaded)
 		{
+			import log;
+			logInfo("Loading finished!");
+
 			owner.pop();
 			owner.push(next);
 		}
@@ -48,6 +61,8 @@ class LoadingScreen : Screen
 	override void render(Time time)
 	{
 		import std.range, util.strings, window.window;
+		import log;
+		logInfo("We are loading!");
 
 		auto screen   = app.locate!Window;
 		auto renderer = app.locate!Renderer2D;

@@ -14,8 +14,8 @@ import distancefont;
 
 void main(string[] argv)
 {
-	string inDirectory  = "..\\resources"; //argv[1];
-	string outDirectory = "..\\compiled_resources"; //argv[2];
+	string inDirectory  = argv[1];
+	string outDirectory = argv[2];
 	
 	auto watcher = FileWatcher(inDirectory);
 	spawnReloadingService();
@@ -23,6 +23,7 @@ void main(string[] argv)
 	initializeRemoteLogging("Content_Pipeline");
 	scope (exit) termRemoteLogging();
 
+	logInfo("Content Pipeline running!");
 	while(true)
 	{
 		try
@@ -125,6 +126,7 @@ static this()
 		FileCompiler(".jpg", 10, &compileImage),
 		FileCompiler(".lua", 10, &passThrough),
 		FileCompiler(".sdl", 10, &passThrough),
+		FileCompiler(".psys", 10, &passThrough),
 		FileCompiler(".wav", 10, &passThrough),
 		FileCompiler(".ogg", 10, &passThrough),
 		FileCompiler(".luac", 10, &passThrough),
@@ -137,7 +139,7 @@ static this()
 int order(string ext)
 {
 	auto index = fileCompilers.countUntil!(x => x.ext == ext);
-	return index != -1 ? fileCompilers[index].order : index;
+	return index != -1 ? fileCompilers[index].order : -1;
 }
 
 enum Platform
@@ -182,8 +184,9 @@ void compileFolder(string inFolder, string outFolder, Platform platform)
 	{
 		auto name     = entry.name[inFolder.length + 1 .. $ - entry.name.extension.length];
 		fileCache.itemChanged  ~= ItemChanged(name ~ entry.name.extension,  timeLastModified(entry.name).stdTime);
-	
+
 		if(context.usedNames.canFind(name)) continue;
+	
 		import std.datetime;
 		StopWatch watch;
 		watch.start();
@@ -210,6 +213,16 @@ void compileFolder(string inFolder, string outFolder, Platform platform)
 
 		reloadChanged(compiled.items, nameHash);
 		fileCache.dependencies ~= Dependencies(name ~ entry.name.extension, compiled.dependencies);
+
+		foreach(dep; compiled.dependencies)
+		{
+			auto idx = fileCache.itemChanged.countUntil!(x => x.name == dep);
+			if(idx == -1)
+			{
+				auto fName = buildPath(entry.name.dirName, dep);
+				fileCache.itemChanged ~= ItemChanged(dep, timeLastModified(fName).stdTime);
+			}
+		}
 
 		watch.stop();
 		logInfo("Took ", watch.peek().msecs, " msecs.");

@@ -33,6 +33,7 @@ struct List(T)
 	static assert(isForwardRange!(List!T));
 	static assert(isBidirectionalRange!(List!T));
 	static assert(isRandomAccessRange!(List!T));
+
 	
 	//This could potentially length + capacity at the begining of the buffer
 	//instead. This would lead to reference like behaviour.
@@ -155,7 +156,7 @@ struct List(T)
 		return result;
 	}
 
-	int opApply(int delegate(uint, ref T) dg)
+	int opApply(int delegate(uint, ref T) dg) 
 	{
 		int result;
 		foreach(i; 0 .. length)
@@ -270,6 +271,7 @@ struct GrowingList(T)
 	enum defaultStartCapacity = 10;
 
 	List!(T) base_;
+
 	alias base_ this;
 	IAllocator allocator;
 

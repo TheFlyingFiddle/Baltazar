@@ -215,10 +215,15 @@ NameGen itemNameGen(Items)(Items items)
 {
 	static bool impl(int i, ref string s, void* context)
 	{
+		import std.algorithm, std.range;
 		Items items = *cast(Items*)context;
-		if(i >= items.length) return false;
+		auto length = items.count;
+
+		if(i >= length) return false;
 		
-		s = items[i];
+		auto cpy = items.drop(i);
+		s = cpy.front;
+
 		return true;
 	}
 

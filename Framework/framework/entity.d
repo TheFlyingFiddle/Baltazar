@@ -7,6 +7,19 @@ import util.hash;
 import std.traits;
 import allocation;
 
+
+//Attribute type
+struct EntitySystem
+{
+	size_t order;
+}
+
+//Attribute type
+struct EntityInitializer
+{
+	size_t order;
+}
+
 struct World
 {
 	IAllocator allocator;
@@ -33,18 +46,18 @@ struct World
 		this.toRemove		= List!int(allocator, maxEntities);
 	}
 
-	void addSystem(T)(size_t numEntities, size_t order) if(is(T : System))
+	void addSystem(T, Args...)(size_t numEntities, size_t order, auto ref Args args) if(is(T : System))
 	{
-		T sys = allocator.allocate!(T)();
+		T sys = allocator.allocate!(T)(args);
 		sys.setup(allocator, &this, numEntities, order);
 		this.systems ~= cast(System)sys;
 	}
 
-	void addInitializer(T)() if(is(T : Initializer))
+	void addInitializer(T, Args...)(size_t order, auto ref Args args) if(is(T : Initializer))
 	{
 		import allocation;
-
-		T inits = allocator.allocate!(T)();
+		T inits = allocator.allocate!(T)(args);
+		inits.order = order;
 		inits.world = &this;
 		initializers ~= cast(Initializer)inits;
 	}
@@ -68,12 +81,12 @@ struct World
 
 		import std.algorithm;
 		systems.sort!((a,b) => a.order < b.order);
+		initializers.sort!((a,b) => a.order < b.order);
 	}
 
 	void deinitialize()
 	{
 		entities.destroyAll(this);
-
 		foreach(ref i; initializers)
 		{
 			i.deinitialize(allocator);
@@ -83,6 +96,7 @@ struct World
 		foreach(ref s; systems)
 		{
 			s.deinitialize(allocator);
+			s.desetup(allocator);
 			allocator.deallocate(s);
 		}
 
@@ -178,6 +192,7 @@ struct World
 class Initializer 
 {
 	World* world;
+	size_t order;
 
 	private final void doInitializeEntity(ref Entity e)
 	{
@@ -198,14 +213,21 @@ class System
 	World* world;
 	size_t order;
 
-	void setup(A)(ref A all, World* world, size_t numEntities, size_t order)
+	final void setup(A)(ref A all, World* world, size_t numEntities, size_t order)
 	{
 		this.entities = List!Entity(all, numEntities);
 		this.world	  = world;
 		this.order    = order;
 	}
 
-	void entityAdded(ref Entity entity)
+	final void desetup(A)(ref A all)
+	{
+		entities.deallocate(all);
+		world = null;
+		order = 0;
+	}
+
+	final void entityAdded(ref Entity entity)
 	{
 		if(shouldAddEntity(entity))
 		{
@@ -213,7 +235,7 @@ class System
 		}
 	}
 
-	void entityChanged(ref Entity entity)
+	final void entityChanged(ref Entity entity)
 	{
 		import std.algorithm;
 
@@ -224,13 +246,15 @@ class System
 			entities.removeAt(index);
 	}
 
-	void entityRemoved(int entity)
+	final void entityRemoved(int entity)
 	{
 		import std.algorithm;
 		int index = entities.countUntil!(x => x.id == entity);
 		if(index != -1) 
 			entities.removeAt(index);
 	}
+
+	void entityRemoved(ref Entity e) { }
 
 	void preStep(Time time) { }
 	void postStep(Time time) { }
@@ -243,43 +267,17 @@ class System
 	abstract bool shouldAddEntity(ref Entity entity);
 }
 
-struct Component
-{
-	TypeHash type;
-	void function(ref Component, ref Entity, ref World) destructor;
-	ubyte[48 - 8] data;
-
-	this(T)(auto ref T t)
-	{
-		type = cHash!T;
-		import std.c.string;
-		memcpy(data.ptr, cast(void*)&t, T.sizeof);
-
-		import std.traits;
-		static if(hasMember!(T, "destructor"))
-		{
-			destructor = &T.destructor;
-		}
-		else 
-		{
-			destructor = null;
-		}
-	}
-
-	T opCast(T)()
-	{
-		assert(cHash!T == type);
-		return *cast(T*)(data.ptr);
-	}
-}
-
 enum invalidID = 0;
-
 alias EntityID = int;
+
+import util.variant;
+//48 is way to large should fix somehow!
+alias Component = VariantN!(48);
 
 struct Entity
 {
 	int id;
+	uint uniqueID;
 	int groups;
 	private List!Component components; 
 
@@ -304,7 +302,7 @@ struct Entity
 	{
 		foreach(ref c; components)
 		{
-			if(c.type == cHash!T)
+			if(c.id == typeHash!T)
 				return (cast(T*)c.data.ptr);
 		}
 
@@ -315,7 +313,7 @@ struct Entity
 	{
 		foreach(ref c; components)
 		{
-			if(c.type == cHash!T)
+			if(c.id == typeHash!T)
 				return true;
 		}
 
@@ -327,7 +325,7 @@ struct Entity
 		int index = -1;
 		foreach(i, ref c; components)
 		{
-			if(c.type == cHash!T) 
+			if(c.id == typeHash!T) 
 			{
 				index = i;
 				break;
@@ -346,7 +344,7 @@ struct Entity
 		int index = -1;
 		foreach(i, ref c; components)
 		{
-			if(c.type == cHash!T) 
+			if(c.id == typeHash!T) 
 			{
 				index = i;
 				break;
@@ -375,11 +373,12 @@ struct EntityArchetype
 	Component[] components;
 }
 
+
 struct EntityCollection
 {
 	Entity[] entities;
-	EntityID entityCount;
-	int id;
+	int		 entityCount;
+	int		 id;
 
 	this(A)(ref A all, size_t size, size_t maxComponents)
 	{	
@@ -399,6 +398,7 @@ struct EntityCollection
 	{
 		entities[entityCount].groups = 0;
 		entities[entityCount].id	 = id++;
+		entities[entityCount].uniqueID = 0;
 		entities[entityCount].components.clear();
 
 		return &entities[entityCount++];
@@ -446,13 +446,7 @@ struct EntityCollection
 	{
 		foreach(i; 0 .. entityCount)
 		{
-
-			foreach(ref c; entities[i].components)
-			{
-				if(c.destructor !is null)
-					c.destructor(c, entities[i], world);
-			}
-
+			entities[i].uniqueID = 0;
 			entities[i].id = 0;
 			entities[i].groups = 0;
 			entities[i].components.clear();
@@ -467,12 +461,7 @@ struct EntityCollection
 		int index = entities[0 .. entityCount].countUntil!(x => x.id == id);
 		if(index != -1)
 		{
-			foreach(ref c; entities[index].components)
-			{
-				if(c.destructor !is null)
-					c.destructor(c, entities[index], world);
-			}
-
+			entities[index].uniqueID = 0;
 			entities[index].id = 0;
 			entities[index].groups = 0;
 			entities[index].components.clear();

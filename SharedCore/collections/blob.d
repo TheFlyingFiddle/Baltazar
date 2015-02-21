@@ -93,7 +93,6 @@ struct Blob
 		length += alignedSize!(T, alignment) - T.sizeof;
 	}
 
-
 	T readAligned(T, size_t alignment)()
 	{	
 		enum alignedSize = alignedSize!(T, alignment);

@@ -11,8 +11,8 @@ void writelnLogger(string channel, Verbosity verbosity, const(char)[] msg) nothr
 {
 	try
 	{
-		import std.stdio;
-		writeln(channel, " ", msg);
+		import std.c.stdio;
+		printf("%s\n", msg.ptr);
 	}
 	catch(Error e)
 	{
@@ -94,19 +94,24 @@ private void makeMsg(T...)(string channel, Verbosity verbosity, string file, siz
 {
 	template staticFormatString(size_t u)
 	{
-		static if(u == 1) enum staticFormatString = "%s\t%s(%s)";
-
+		static if(u == 1) enum staticFormatString = "%s\t%s(%s)\0";
 		else enum staticFormatString = "%s" ~ staticFormatString!(u - 1) ;
 	}
 
 	import std.format, collections.list;
 	scope(failure) return;
 
-
+	if(file[0 .. 2] == "..")
+	{
+		import std.string;
+		auto idx = indexOf(file[4 .. $], "\\");
+		file = file[idx + 5 .. $];
+	}
 
 	char[8192] buffer = void;
 	auto list = List!(char)(buffer);
 	auto appender = &list;
+
 
 	formattedWrite(appender, staticFormatString!(T.length), t, file, line);
 	logger(channel, verbosity, appender.array);
@@ -116,6 +121,13 @@ private void makeFormatMsg(T...)(string channel, string f, Verbosity verbosity, 
 {
 	import std.format, collections.list;
 	scope(failure) return; //We were unable to log what to do?
+
+	if(file[0 .. 2] == "..")
+	{
+		import std.string;
+		auto idx = indexOf(file[4 .. $], "\\");
+		file = file[idx + 5 .. $];
+	}
 
 	import std.array;
 	char[8192] buffer = void;

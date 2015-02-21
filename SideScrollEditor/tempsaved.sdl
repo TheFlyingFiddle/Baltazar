@@ -1,0 +1,15 @@
+
+data=[
+	{
+		type = |plugin.editor.data.WorldData|
+		value = 
+		{
+			items=
+			[
+			]
+			archetypes=
+			[
+			]
+			selected_=|null|
+		}
+	}]

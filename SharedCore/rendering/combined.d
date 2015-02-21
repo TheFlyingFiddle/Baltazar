@@ -13,7 +13,7 @@ struct Renderer2D
         _renderer = Renderer!(DistVertex)(allocator, config, vertexShader, fragmentShader);
     }
 
-    void addItems(Vertex[] vertices, uint[] indecies, ref Texture2D texture)
+    void addItems(Vertex[] vertices, ushort[] indecies, ref Texture2D texture)
     {
         import std.c.stdlib;
 
@@ -30,7 +30,7 @@ struct Renderer2D
         _renderer.addItems(distVertex[0 .. len], indecies, texture);
     }
 
-    void addItems(DistVertex[] vertices, uint[] indecies, ref Texture2D texture)
+    void addItems(DistVertex[] vertices, ushort[] indecies, ref Texture2D texture)
     {
         _renderer.addItems(vertices, indecies, texture);
     }

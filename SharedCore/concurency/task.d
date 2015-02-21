@@ -43,6 +43,17 @@ void consumeTasks()
 	}
 }
 
+
+void consumeTask()
+{
+	foreach(ref thread; threads) 
+		if(thread.id == g_id)
+		{
+			thread.consumeTask();
+			return;
+		}
+}
+
 struct ConcurencyConfig
 {
 	size_t numThreads;
@@ -99,6 +110,7 @@ struct Task(alias fun, Args...)
 {
 	bool isDone;
 
+	string id;
 	Args args;
 	static if(!is(ReturnType!fun == void))
 		ReturnType!fun rt;
@@ -119,8 +131,6 @@ struct Task(alias fun, Args...)
 		isDone = true;
 	}
 }
-
-
 
 auto task(F, Args...)(F fun, Args args)
 {
@@ -206,6 +216,21 @@ struct TaskThread
 		static if(!is(ReturnType!fun == void))
 		{
 			return t.rt;
+		}
+	}
+
+	void consumeTask()
+	{
+		static void taskfun(Message message)
+		{
+			message.del();
+			if(message.ownsData)
+				messageAllocator.deallocate(message.del.ptr[0 .. 1]);
+		}
+
+		if(queue.receive(&taskfun))
+		{
+			waitCond.notifyAll();
 		}
 	}
 

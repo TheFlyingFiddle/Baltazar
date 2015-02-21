@@ -4,24 +4,7 @@ archetypes =
 [
 	{
 		name = Entity
-		components = { }
-	},
-	{
-		name = Images
-		components =
-		{
-			Transform=
-			{
-				position = { x = 0 y = 0}
-				scale    = { x = 1 y = 1}
-				rotation = 0
-			}
-
-			Sprite =
-			{
-				tint = 0xFFFFFFFF
-				name = ||
-			}
-		}
+		id   = 0
+		components = [ ]
 	}
 ]

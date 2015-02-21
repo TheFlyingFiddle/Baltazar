@@ -93,8 +93,22 @@ void renderWindow(ref Gui gui,
 			gui.drawQuad(Rect(copy.x + copy.w - 20, copy.y + 1, copy.h - 2, copy.h - 2), GuiFrame(style.submenuIcon, Color.white));
 
 		gui.drawText(item.name, area, style.font, HorizontalAlignment.left, VerticalAlignment.center);
-		area.y -= height;
 
+		if(item.command.key != Key.unknown)
+		{
+			bool isCtrl  = (item.command.modifiers & KeyModifiers.control) == KeyModifiers.control;
+			bool isShift = (item.command.modifiers & KeyModifiers.shift)   == KeyModifiers.shift;
+			bool isAlt   = (item.command.modifiers & KeyModifiers.alt)     == KeyModifiers.alt;
+
+			Rect cpy = area;
+			cpy.x    = area.right - style.iconSpace - 70;
+
+			import util.strings;
+			auto cmd = text1024(isCtrl ? "ctrl+" : "", isShift ? "shift+" : "", isAlt ? "alt+" : "", item.command.key);
+			gui.drawText(cmd, cpy, style.font, HorizontalAlignment.left, VerticalAlignment.center);
+		}
+
+		area.y -= height;
 		childCount++;
 	}
 
@@ -121,6 +135,11 @@ private void showPopupMenu(ref Gui gui,Rect area,  int windowID, ref Menu menu, 
 	auto hash = HashID("menu", windowID);
 	//Need to do this i guess.
 	auto windowState = gui.fetchState(hash, GuiMenu.State(-1, item));
+	if(windowState.parent != item)
+	{
+		windowState.parent = item;
+		windowState.selected   = -1;
+	}
 	gui.state(hash, windowState);
 
 	if(gui.guiwindow(windowID, -1, area, &menu.handleMenu, HashID("menuwindow"), false))
@@ -147,6 +166,18 @@ bool menu(ref Gui gui, ref Menu gmenu, HashID menuID = "menu")
 	if(!gui.hasFocus())
 	{
 	    state.selected = -1;
+	}
+
+	foreach(item; gmenu.items)
+	{
+		if(item.command.key != Key.unknown)
+		{
+			if(gui.keyboard.wasPressed(item.command.key) && 
+			   gui.keyboard.isModifiersDown(item.command.modifiers))
+			{
+				item.method();
+			}
+		}
 	}
 
 	int childCount = 0;
@@ -199,11 +230,42 @@ struct Menu
 		constructMenu(*context, this, -1);
 	}
 
+	void clear()
+	{
+		items.clear();
+	}
+
 	this(A)(ref A allocator, int size)
 	{
 		context = null;
 		items = List!MenuItem(allocator, size);
 	}
+
+
+	void addItem(string name, void delegate() method, KeyCommand cmd = KeyCommand.init)
+	{
+		import std.algorithm, std.string;
+		auto idx	 = lastIndexOf(name, ".");
+		auto item    = name[idx + 1.. $];
+		auto parents = name[0 .. idx];
+
+		auto prevparent = -1;
+		foreach(parent; parents.splitter("."))
+		{
+			auto p = items.countUntil!(x => x.name == parent);
+			if(p == -1)
+			{
+				prevparent = addSubmenu(parent, prevparent);
+			}
+			else 
+			{
+				prevparent = p;
+			}
+		}
+	
+		addItem(item, method, prevparent, cmd);
+	}
+
 
 	int addSubmenu(string name, int parent = -1)
 	{
@@ -211,9 +273,9 @@ struct Menu
 		return items.length - 1;
 	}
 
-	void addItem(string name, void delegate() method, int parent)
+	void addItem(string name, void delegate() method, int parent, KeyCommand cmd = KeyCommand.init)
 	{
-		items ~= MenuItem(parent, HashID.init, name, method, MenuItemType.normal);
+		items ~= MenuItem(parent, HashID.init, name, method, MenuItemType.normal, cmd);
 	}
 
 	private void handleMenu(ref Gui gui, ref GuiWindow window)
@@ -241,6 +303,13 @@ struct MenuItem
 	string name;
 	void delegate() method;
 	MenuItemType type;
+	KeyCommand command;
+}
+
+struct KeyCommand
+{
+	uint		 modifiers = KeyModifiers.none;
+	Key key				   = Key.unknown;
 }
 
 enum MenuItemType
@@ -248,7 +317,6 @@ enum MenuItemType
 	normal, 
 	submenu
 }
-
 
 void constructMenu(T)(ref T t, ref Menu menu, int parent)
 {

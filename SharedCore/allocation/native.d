@@ -12,7 +12,7 @@ version(X86)
 		size_t bytesAllocated;
 		size_t numAllocations;
 
-		package void[] allocate_impl(size_t bytes, size_t alignment) @nogc nothrow
+		package void[] allocate_impl(size_t bytes, size_t alignment) 
 		{
 			bytesAllocated += bytes;
 			numAllocations++;
@@ -29,11 +29,12 @@ version(X86)
 			size_t* ptr = cast(size_t*)allocated;
 			*(--ptr) = addr;
 
-			//logChnl.info(bytes + aligner," bytes allocated by Mallocator at " , cast(void*)addr);
+			//import log;
+			//logInfo(bytes + aligner," bytes allocated by Mallocator at " , cast(void*)addr);
 			return allocated[0 .. bytes];
 		}	
 
-		package void deallocate_impl(void[] memory) nothrow @nogc
+		package void deallocate_impl(void[] memory)
 		{
 			bytesAllocated -= memory.length;
 			numAllocations--;
@@ -43,7 +44,8 @@ version(X86)
 			void* toFree = cast(void*)addr;
 			free(toFree);
 
-			//logChnl.info(cast(size_t)memory.ptr - addr + memory.length, " bytes deallocated by Mallocator at ", cast(void*)addr);
+			//import log;
+			//logInfo(cast(size_t)memory.ptr - addr + memory.length, " bytes deallocated by Mallocator at ", cast(void*)addr);
 		}
 
 
