@@ -23,6 +23,8 @@ enum defSpacing   = 3;
 @DontReflect
 struct ComponentsPanelImpl
 {
+	import util.traits;
+
 	WorldData* state;
 	EditText textData;
 	float2 scroll;
@@ -142,10 +144,13 @@ struct ComponentsPanelImpl
 									  uint,   int,
 									  float,  double, 
 									  real,   bool,
+									  string,
 									  float2, float3,
-									  float4, Color);
+									  float4, Color,
+									  Structs!(common.identifiers));
+
 		enum Dummy { a, b };
-		if(info.type.enum_)
+		if(info.type == RTTI.Type.enum_)
 		{
 			Dummy d;
 			return gui.typefieldHeight(d);
@@ -154,7 +159,9 @@ struct ComponentsPanelImpl
 		foreach(type; base)
 		{
 			if(info.isTypeOf!type)
+			{
 				return gui.typefieldHeight(*cast(type*)value);
+			}
 		}
 
 		return 0;
@@ -169,8 +176,6 @@ struct ComponentsPanelImpl
 									  real,   bool,
 									  float2, float3,
 									  float4, Color);
-		import util.traits;
-
 		foreach(type; base)
 		{
 			if(t.isTypeOf!type)
@@ -188,7 +193,8 @@ struct ComponentsPanelImpl
 				auto m   = t.metaEnum.constants.map!(x => x.name);
 				auto idx = t.metaEnum.constants.countUntil!(x => x.value == *cast(uint*)value); 
 				auto res = gui.selectionfield(r, idx, m);
-				*cast(uint*)value = t.metaEnum.constants[idx].value;
+				if(res)
+					*cast(uint*)value = t.metaEnum.constants[idx].value;
 				return res;
 			case array:
 				if(t.isTypeOf!(char[]))
@@ -208,16 +214,22 @@ struct ComponentsPanelImpl
 					}
 				}
 
+				offset += 20;
+
 				bool changed = false;
 				foreach(field; t.metaType.instanceFields)
 				{
-					Rect r   = Rect(left, offset, width, size(gui, t, value));
+					auto   s = size(gui, field.typeInfo, value);
+					offset  -= style.itemSpacing + s;
+
+					Rect r   = Rect(left, offset, width, s);
 					r.w = style.nameWidth + style.itemSpacing;
 					gui.label(r, field.name);
 					changed |= comp(gui, value + field.offset, field.typeInfo, offset, r.w, width - r.w + defSpacing);
-
-					offset  -= style.itemSpacing + r.h;
 				}
+
+				offset -= 20;
+
 				return changed;
 			case pointer:
 				break;
@@ -231,29 +243,60 @@ struct ComponentsPanelImpl
 
 	bool handle(ref Gui gui, Rect r, ref TextureID t, HashID styleID)
 	{
-		/*
-		auto idx = state.images.countUntil!(x => x.name == t.name);
-		if(gui.selectionfield(r, idx, state.images.map!(x => x.name)))
+		auto atlases = Editor.assets.loadedAssets("atl");
+		auto aIdx = atlases.countUntil!(x => x.name == t.atlas);
+		auto iIdx = -1;
+		if(aIdx != -1) 
 		{
-			t.name = state.images[idx].name;
-			return true;
-		}*/
+			iIdx = atlases[aIdx].subitems.countUntil!(x => x == t.image);
+		}
 
-		return false;
+		Rect atlasRect = Rect(r.x, r.y + 23, r.w, 20);
+		Rect imgRect   = Rect(r.x, r.y, r.w, 20);
+
+		bool result = false;
+		if(gui.selectionfield(atlasRect, aIdx, atlases.array.map!(x => x.name)))
+		{
+			t.atlas = atlases[aIdx].name;
+			result = true;
+		}
+
+		if(aIdx != -1 && gui.selectionfield(imgRect, iIdx, atlases[aIdx].subitems))
+		{
+			t.image = atlases[aIdx].subitems[iIdx];
+			result = true;
+		}
+
+		return result;
 	}
 
 	bool handle(ref Gui gui, Rect r, ref FontID t, HashID styleID)
 	{
-		/*
-		auto idx = state.fonts.countUntil!(x => x.name == t.name);
-		if(gui.selectionfield(r, idx, state.fonts.map!(x => x.name)))
+		auto atlases = Editor.assets.loadedAssets("fontatl");
+		auto aIdx = atlases.countUntil!(x => x.name == t.atlas);
+		auto fIdx = -1;
+		if(aIdx != -1) 
 		{
-			t.name = state.fonts[idx].name;
-			return true;
+			fIdx = atlases[aIdx].subitems.countUntil!(x => x == t.font);
 		}
-		*/
 
-		return false;
+		Rect atlasRect = Rect(r.x, r.y + 23, r.w, 20);
+		Rect fntRect   = Rect(r.x, r.y, r.w, 20);
+
+		bool result = false;
+		if(gui.selectionfield(atlasRect, aIdx, atlases.array.map!(x => x.name)))
+		{
+			t.atlas = atlases[aIdx].name;
+			result = true;
+		}
+
+		if(aIdx != -1 && gui.selectionfield(fntRect, fIdx, atlases[aIdx].subitems))
+		{
+			t.font = atlases[aIdx].subitems[fIdx];
+			result = true;
+		}
+
+		return result;
 	}
 
 	bool handle(ref Gui gui, Rect r, ref ParticleID t, HashID styleID)
@@ -384,6 +427,40 @@ struct ArchetypesPanel
 				data.archetypes.removeAt(data.selectedArchetype);
 				data.selectedItem = max(0, min(data.selectedArchetype, data.items.length));
 			}
+		}
+	}
+}
+
+@EditorPanel("World", PanelPos.center)
+struct WorldPanel
+{
+	import graphics.textureatlas;
+
+	this(IAllocator all) { }
+	void show(PanelContext* context) 
+	{
+		auto area = context.area;
+		auto atlas = Editor.assets.locate!TextureAtlas("Atlas");
+		if(atlas)
+		{
+			float width = area.w;
+			foreach(i; 0 .. cast(int)(width / 64) + 1)
+			{
+				float2 s0 = float2(i * 64 + area.x, area.y);
+				float2 e0 = float2(i * 64 + area.x, area.y + area.h);
+
+				context.gui.renderer.drawLine(s0, e0, 1, (*atlas)["pixel"], Color(0xAAAAAAAA));
+			}
+
+			float height = area.h;
+			foreach(i; 0 .. cast(int)(height / 64) + 1)
+			{
+				float2 s0 = float2(area.x, i * 64 + area.y);
+				float2 e0 = float2(area.x + area.w, i * 64 + area.y);
+
+				context.gui.renderer.drawLine(s0, e0, 1, (*atlas)["pixel"], Color(0xAAAAAAAA));
+			}
+
 		}
 	}
 }

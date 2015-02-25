@@ -40,6 +40,7 @@ struct WorldData
 	void deallocate(IAllocator allocator)
 	{
 		items.deallocate();
+		archetypes.deallocate();
 	}
 }
 

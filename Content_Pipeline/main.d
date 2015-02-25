@@ -16,7 +16,9 @@ void main(string[] argv)
 {
 	string inDirectory  = argv[1];
 	string outDirectory = argv[2];
-	
+
+	initializeScratchSpace(1024 * 1024);
+
 	auto watcher = FileWatcher(inDirectory);
 	spawnReloadingService();
 

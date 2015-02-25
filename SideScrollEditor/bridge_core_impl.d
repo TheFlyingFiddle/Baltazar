@@ -84,12 +84,12 @@ class EditorServiceLocator : IServiceLocator
 		this.locator = locator;
 	}
 
-	override void* locateService(TypeHash th, string name) 
+	override void* locateService(TypeHash th, string name) nothrow
 	{
 		return locator.tryFind(th, name);
 	}
 
-	override void addService(void* service, TypeHash hash, string name) 
+	override void addService(void* service, TypeHash hash, string name) nothrow
 	{
 		locator.add(service, hash, name);
 	}
@@ -97,9 +97,59 @@ class EditorServiceLocator : IServiceLocator
 
 class Assets : IAssets
 {
-	void* locateAsset(TypeHash type, HashID asset)
+	import content;
+
+	struct TypedAssets
 	{
-		//No assets yet!
-		return null;
+		string type;
+		List!Asset assets;
+	}
+
+	AsyncContentLoader* loader;
+	List!(TypedAssets) typed;
+	this(IAllocator allocator, AsyncContentLoader* loader)
+	{
+		import std.path;
+		this.loader = loader;
+		this.typed = List!TypedAssets(allocator, 15);
+		
+		auto files = loader.avalibleResources;
+		foreach(item; files.dependencies)
+		{
+			string ext  = item.name.extension[1 .. $];
+			string name = item.name.stripExtension;
+			auto idx = typed.countUntil!(x => x.type == ext);
+			if(idx == -1)
+			{
+				typed ~= TypedAssets(ext, List!Asset(allocator, 100));
+				idx = typed.length - 1;
+			}	
+
+			typed[idx].assets ~= Asset(name, item.deps);
+		}
+
+		import log;
+		foreach(loaded; typed)
+		{
+			logInfo("Assets of type: ", loaded.type);
+			logInfo(loaded.assets);
+		}
+	}
+
+	override List!Asset loadedAssets(string type) nothrow
+	{
+		scope (failure) return List!(Asset).init;
+
+		import std.algorithm;
+		return typed.find!(x => x.type == type)[0].assets;
+	}
+
+	override void* locateAsset(TypeHash type, string asset) nothrow
+	{
+		auto a = loader.getItem(asset);
+		if(a.typeHash == type)
+			return a.item;
+		else 
+			return null;
 	}
 }

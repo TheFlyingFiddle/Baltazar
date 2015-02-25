@@ -2,12 +2,14 @@ module common.identifiers;
 
 struct TextureID
 {
-	string name;
+	string atlas;
+	string image;
 }
 
 struct FontID
 {
-	string name;
+	string atlas;
+	string font;
 }
 
 struct ArchetypeID

@@ -59,7 +59,7 @@ final class MainScreen : Screen, IEditor
 		auto pluginConfig = fromSDLFile!PluginConfig(Mallocator.it, "pluginsConfig.sdl");
 		app.addComponent(Mallocator.it.allocate!PluginComponent(Mallocator.it, pluginConfig));
 
-		auto all = Mallocator.it;
+		auto all = Mallocator.cit;
 		gui = loadGui(all, app, "guiconfig.sdl");
 
 
@@ -74,7 +74,7 @@ final class MainScreen : Screen, IEditor
 		}
 
 		locator   = all.allocate!EditorServiceLocator(&app.services);
-		assets_	  = all.allocate!Assets();
+		assets_	  = all.allocate!Assets(all, app.locate!AsyncContentLoader);
 	
 		IFileFinder finder = all.allocate!FileFinder();
 		locator.add(finder);
@@ -230,6 +230,7 @@ final class MainScreen : Screen, IEditor
 		editorData.clear();
 		leftPanels.clear();
 		rightPanels.clear();
+		centerPanels.clear();
 		doUndo.clear();
 
 
@@ -245,165 +246,15 @@ final class MainScreen : Screen, IEditor
 		setupPlugins();
 		leftPanels .addPanels(Mallocator.cit, this.plugin);
 		rightPanels.addPanels(Mallocator.cit, this.plugin);
+		centerPanels.addPanels(Mallocator.cit, this.plugin);
 
 
 		//tools.addTools(this.plugin);
 		//createMenu();
 	}
 
-
-	/*
-	void newProj()
-	{
-		save();
-		state.items.clear();
-		state.archetypes.clear();
-	}
-
-	void addComponent(const(MetaType)* type)
-	{
-		auto item = state.item(state.selected);
-		if(item && !item.hasComponent(type.typeInfo))
-		{
-			state.doUndo.apply(&state, AddComponent(&state, type.initial!48));
-		}
-	}
-
-	EditorStateContent openStateFile(string path)
-	{
-		import plugins, reflection.serialization;
-		auto plugin = app.locate!Plugins;
-
-		auto context = ReflectionContext(plugin.assemblies.array);
-		return fromSDLFile!EditorStateContent(Mallocator.it, path, context);
-	}
-
-	void open()
-	{
-		if(openFileDialog("Map\0*.sidal\0", savePath.path[]))
-		{
-			import std.c.string;
-			auto len = strlen(savePath.path.ptr);			
-			auto c = openStateFile(cast(string)savePath.path[0 .. len]);
-			state.initialize(c);
-		}
-	}
-
-	void save()
-	{		
-		if(savePath.path[0] != 0)
-		{
-			import std.c.string;
-			saveFile(cast(string)savePath.path[0 .. strlen(savePath.path.ptr)]);
-		}
-		else 
-		{
-			saveAs();
-		}
-	}
-
-	void saveAs()
-	{
-		char[256] buffer;
-		if(saveFileDialog("Map\0*.sidal\0", buffer[]))
-		{
-			import std.c.string, std.path;
-			auto len = strlen(buffer.ptr);
-			if(buffer[0 .. len].extension != ".sidal")
-				buffer[len .. len + ".sidal".length + 1] = ".sidal\0"; 
-			
-			len = strlen(buffer.ptr);
-			savePath.path[0 .. len + 1] = buffer[0 .. len + 1];
-			saveFile(cast(string)savePath.path[0 .. len]);
-		}
-	}
-
-	void exit()
-	{
-		save();
-	
-		import window.window;
-		auto wnd = app.locate!(Window);
-		wnd.shouldClose = true;
-	}
-
-	void asArch()
-	{
-		auto item = state.item(state.selected);
-		if(item)
-		{
-			state.archetypes ~= item.clone();
-		}
-	}
-
-	void addItem()
-	{
-		state.doUndo.apply(&state, AddItem(&state));
-	}
-
-	void removeItem()
-	{
-		if(state.item(state.selected) is null) return;
-		state.doUndo.apply(&state, RemoveItem(&state));
-	}
-
-	void saveFile(string path)
-	{
-		EditorStateContent content;
-		content.archetypes = state.archetypes;
-		content.items	   = state.items;
-
-		import plugins, reflection.serialization;
-		auto plugin = app.locate!Plugins;
-
-		auto context = ReflectionContext(plugin.assemblies.array);
-		return toSDLFile(content, &context, path);
-	}
-
-	*/
-
 	override void update(Time time)
 	{
-		//tools.use(&state, gui);
-
-		/*
-		auto kboard = gui.keyboard;
-		auto mouse  = gui.mouse;
-		if(kboard.wasPressed(Key.z))
-		{
-			if(kboard.isModifiersDown(KeyModifiers.control | KeyModifiers.shift))
-			{
-				state.doUndo.redo(&state);
-			}
-			else if(kboard.isModifiersDown(KeyModifiers.control))
-			{
-				state.doUndo.undo(&state);
-			}
-		}
-
-		if(kboard.wasPressed(Key.c))
-		{
-			if(kboard.isModifiersDown(KeyModifiers.control))
-			{
-				auto item = state.item(state.selected);
-				if(item)
-				{
-					if(!state.clipboard.empty)
-						state.clipboard.item.deallocate();
-
-					state.clipboard.item = item.clone();
-				}
-			}
-		}
-
-		if(kboard.wasPressed(Key.v))
-		{
-			if(kboard.isModifiersDown(KeyModifiers.control))
-			{
-				state.doUndo.apply(&state, CopyItem(&state));
-			}
-		}
-		*/
 	}	
 	
 	override void render(Time time)
@@ -423,6 +274,10 @@ final class MainScreen : Screen, IEditor
 
 		auto rightSide = Rect(wr.right + defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
 		rightPanels.show(gui, rightSide);
+
+		auto center = wr;
+		centerPanels.show(gui, center);
+
 
 		/*
 		import std.range : repeat, take;
@@ -622,6 +477,17 @@ struct Panels
 		context.gui	  = &gui;
 		context.area  = area;
 		
+
+		import graphics;
+		import derelict.opengl3.gl3;
+
+		auto renderer = gui.renderer;
+		renderer.end();
+
+		gl.enable(GL_SCISSOR_TEST);
+		gl.scissor(cast(int)area.x, cast(int)area.y,  cast(int)area.w, cast(int)area.h);
+		renderer.begin();
+
 		try
 		{
 			func.invoke(panel.data, &context);
@@ -631,6 +497,10 @@ struct Panels
 			import log;
 			logInfo(e);
 		}
+
+		renderer.end();	
+		gl.disable(GL_SCISSOR_TEST);
+		renderer.begin();
 	}
 
 	auto toTabPage(Panel* p)

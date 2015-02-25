@@ -10,9 +10,9 @@ import std.traits,
 
 struct Handle
 {
-	private HashID hashID;
-	private TypeHash typeHash;
-	private	void* item;
+	HashID hashID;
+	TypeHash typeHash;
+	void* item;
 }
 
 struct ContentHandle(T)
@@ -113,7 +113,7 @@ struct ContentLoader
 		this.fileLoaders ~= fileLoader;
 	}
 
-	private uint indexOf(HashID hash)
+	private uint indexOf(HashID hash) nothrow
 	{
 		auto index = items.countUntil!(x => x.hashID == hash);
 		return index;
@@ -138,15 +138,15 @@ struct ContentLoader
 		assert(0, "Resources full!");
 	}
 
-	private ContentHandle!T getItem(T)(HashID hash)
+	private ContentHandle!T getItem(T)(HashID hash) nothrow
 	{
 		ContentHandle!T handle  = ContentHandle!T(&items[indexOf(hash)]);
 		return handle;
 	}
 
-	private Handle getItem(string path)
+	Handle* getItem(string path) nothrow
 	{
-		return items[indexOf(bytesHash(path))];
+		return &items[indexOf(bytesHash(path))];
 	}
 	
 	bool isLoaded(string path)
@@ -162,7 +162,7 @@ struct ContentLoader
 	ContentHandle!(T) load(T)(string path)
 	{
 		auto hash = bytesHash(path);
-		if(isLoaded(path)) 
+		if(isLoaded(hash)) 
 		{
 			auto item = items[indexOf(hash)];
 			assert(item.typeHash == typeHash!T);
@@ -338,7 +338,12 @@ struct AsyncContentLoader
 		return numRequests == 0;
 	}
 
-	ContentHandle!T item(T)(string path)
+	Handle* getItem(string path) nothrow
+	{
+		return loader.getItem(path);
+	}
+
+	ContentHandle!T item(T)(string path) nothrow
 	{
 		return loader.getItem!T(bytesHash(path));
 	}

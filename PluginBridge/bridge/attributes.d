@@ -17,16 +17,6 @@ struct EditorPanel
 
 struct EditorTool { }
 
-struct WorldRenderer 
-{
-	string name;
-}
-
-struct ItemRenderer 
-{
-	string name;
-}
-
 public import ui.menu : KeyCommand;
 public import window.keyboard : KeyModifiers, Key;
 

@@ -3,6 +3,7 @@ module bridge.core;
 import bridge.attributes;
 import util.hash;
 import util.variant;
+import collections.list;
 import reflection;
 
 @DontReflect
@@ -52,18 +53,21 @@ template isData(T)
 @DontReflect
 interface IAssets
 {
-	void* locateAsset(TypeHash type, HashID asset) nothrow;
+	void* locateAsset(TypeHash type, string asset) nothrow;
+	List!Asset loadedAssets(string type) nothrow;
 	
 	final T* locate(T)(string item) nothrow
 	{
-		return locate!(T)(HashID(item));
-	}
-
-	final T* locate(T)(HashID asset) nothrow
-	{
-		return cast(T*)locateAsset(typeHash!T, asset);
+		return cast(T*)locateAsset(typeHash!T, item);
 	}
 }
+
+@DontReflect
+struct Asset
+{
+	string   name;
+	string[] subitems;
+}	
 
 @DontReflect
 interface IEditor

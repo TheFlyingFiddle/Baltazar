@@ -41,8 +41,18 @@ data=[
 								}
 								texture=
 								{
-									name=||
+									atlas=|Atlas|
+									image=|boulder.png|
 								}
+							}
+						},
+						{
+							type = |common.components.Input|
+							value = 
+							{
+								gamepad=one
+								jumpSpeed=|Hello World|
+								walkSpeed=|Dance Monkey Dance!|
 							}
 						},
 						{
@@ -55,120 +65,20 @@ data=[
 								}
 								font=
 								{
-									name=||
+									atlas=|Fonts|
+									font=|seguisli.ttf|
 								}
 								thresh=
 								{
 									x=0.25
 									y=0.75
 								}
-								text=||
-							}
-						},
-						{
-							type = |common.components.Fan|
-							value = 
-							{
-								force=0.
-								effect=0.
-								active=true
-							}
-						},
-						{
-							type = |common.components.Switch|
-							value = 
-							{
-								fan=
-								{
-									id=673595561
-								}
-							}
-						},
-						{
-							type = |common.components.PressurePlate|
-							value = 
-							{
-								elev=
-								{
-									id=353078099
-								}
+								text=|Hello there little guy|
 							}
 						}
 					]
-					name=|Entity|
-					id=673595561
-				},
-				{
-					components=
-					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0.
-									y=0.
-								}
-								scale=
-								{
-									x=1.
-									y=1.
-								}
-								rotation=0.
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									name=||
-								}
-							}
-						},
-						{
-							type = |common.components.Text|
-							value = 
-							{
-								color=
-								{
-									packedValue=4278190080
-								}
-								font=
-								{
-									name=||
-								}
-								thresh=
-								{
-									x=0.25
-									y=0.75
-								}
-								text=||
-							}
-						}
-					]
-					name=|Entity|
-					id=3525682228
-				},
-				{
-					components=
-					[
-					]
-					name=|Entity|
-					id=353078099
-				},
-				{
-					components=
-					[
-					]
-					name=|Entity|
-					id=1665327188
+					name=|TestEntity1|
+					id=2200565559
 				}
 			]
 			archetypes=
