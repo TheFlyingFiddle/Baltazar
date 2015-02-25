@@ -9,13 +9,29 @@ public import allocation.freelist;
 __gshared static Mallocator GlobalAllocator;
 
 private static RegionAllocator p_scratch_alloc;
+private __gshared static size_t scratch_space;
+
 RegionAllocator* scratch_alloc()
 {
 	return &p_scratch_alloc;
 }
 
-void initializeScratchSpace(A)(ref A allocator, size_t spaceSize)
+void initializeScratchSpace(size_t spaceSize)
 {
-	auto mem = allocator.allocateRaw(spaceSize, 64);
-	p_scratch_alloc = RegionAllocator(mem);
+	scratch_space = spaceSize;
+	p_scratch_alloc = RegionAllocator(Mallocator.cit, scratch_space);
+}
+
+static this()
+{
+	if(scratch_space) 
+	{
+		p_scratch_alloc = RegionAllocator(Mallocator.cit, scratch_space);
+	}
+}
+
+static ~this()
+{
+	//Ugly but it does the job!
+	p_scratch_alloc.__dtor();
 }

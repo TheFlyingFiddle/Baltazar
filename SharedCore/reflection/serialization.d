@@ -89,7 +89,7 @@ struct ReflectionContext
 					*cast(size_t*)(store + size_t.sizeof * 2)	  = data.length / info.inner.size;
 
 					//This needs to be fixed imho
-					*cast(IAllocator*)(store + size_t.sizeof * 3) = Mallocator.cit;
+					*cast(IAllocator*)(store + size_t.sizeof * 3) = cast(IAllocator)Mallocator.cit;
 				
 				}
 				else if(info.name.startsWith("List"))
@@ -117,6 +117,9 @@ struct ReflectionContext
 					}
 
 					assert(info, "Cannot find reflection info for type " ~ id);
+					auto tmp = cast(ubyte*)store;
+					tmp[0 .. inner.size] = (cast(ubyte*)inner.defaultValue)[0 .. inner.size];
+
 					readMetaInfo(iter, inner, store);
 					auto ptr_ = store + info.size - TypeHash.sizeof;
 					*cast(TypeHash*)(ptr_) = TypeHash(bytesHash(id));
@@ -173,6 +176,7 @@ struct ReflectionContext
 		auto data       = iter.allocator.allocateRaw(listLength * info.size, 4);
 		iter.goToChild();
 
+
 		foreach(i; 0 .. listLength) {
 			auto obj =  iter.over.root[iter.currentIndex];
 			auto next = obj.nextIndex;
@@ -193,9 +197,10 @@ struct ReflectionContext
 		{
 			try 
 			{
+				import log;
+				logInfo("Reading field: ", field.name, " of type ", field.typeInfo.name);
 				iter.goToNext(field.name); 
 				readMetaInfo(iter, field.typeInfo, store + field.offset);
-
 			}
 			catch(Exception e)
 			{
@@ -445,7 +450,6 @@ unittest
 		};
 
 
-		import log;
 		import collections.list;
 		ReflectionContext().read!(VariantN!(48), ReflectionContext)(null);
 		

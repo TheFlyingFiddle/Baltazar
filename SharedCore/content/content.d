@@ -48,11 +48,22 @@ FileLoader makeLoader(Loader, string ext)()
 	alias BaseT = typeof(*T);
 	static assert(is(ParameterTypeTuple!(Loader.unload)[1] == T), "Wrong item type for unloader!");
 
+	static void* load(IAllocator all, string path, bool async)
+	{
+		return cast(void*)Loader.load(all, path, async);
+	}
+
+	static void unload(IAllocator all, void* item)
+	{
+		Loader.unload(all, cast(T)item);
+	}
+
+
 	FileLoader loader;
 	loader.typeHash  = typeHash!BaseT;
 	loader.extension = ext;
-	loader.load		 = (aloc, path, async) => cast(void*)Loader.load(aloc, path, async);
-	loader.unload	 = (aloc, item) => Loader.unload(aloc, cast(T)item);
+	loader.load		 = &load;
+	loader.unload	 = &unload;
 	return loader;
 }
 

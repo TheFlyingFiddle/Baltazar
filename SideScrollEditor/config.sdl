@@ -40,9 +40,9 @@ serverConfig =
 
 concurencyConfig = 
 {
-	numThreads   = 4
-	stackSize    = 1024_000 //1mb
-	inboxSize    = 0xFFFF   
+	numThreads   = 2
+	stackSize    = 1024_00 //100kb
+	inboxSize    = 1024    //1kb -- Should not make excessive use of this anyways!   
 }
 
 soundConfig =

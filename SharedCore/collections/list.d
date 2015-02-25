@@ -268,17 +268,12 @@ struct GrowingList(T)
 	static assert(isRandomAccessRange!(GrowingList!T));
 
 
-	enum defaultStartCapacity = 10;
+	enum defaultStartCapacity = 4;
 
 	List!(T) base_;
-
 	alias base_ this;
 	IAllocator allocator;
 
-	@property const(T)[] array()
-	{
-		return buffer[0 .. length];
-	}
 
 	this(IAllocator allocator, size_t startCapacity = defaultStartCapacity)
 	{
@@ -286,9 +281,10 @@ struct GrowingList(T)
 		this.base_	   = List!T(allocator, startCapacity);
 	}
 
-	void reallocate()
+	private void reallocate()
 	{
-		auto new_ = List!T(allocator, cast(size_t)(base_.capacity * 1.5));
+		size_t val = base_.capacity > 0 ? base_.capacity : defaultStartCapacity;
+		auto new_ = List!T(allocator, cast(size_t)(val * 1.5));
 		new_.length = base_.capacity;
 		(cast(T[])new_.array)[] = base_.array;
 
@@ -405,7 +401,7 @@ struct GrowingList(T)
 	}
 
 	@property GrowingList!T save() { return this; }
-	@property bool empty() { return length == 0; }
+	@property bool empty() { return base_.length == 0; }
 
 	@property ref T front() { return base_.front; }
 	@property ref T back()  { return base_.back; }

@@ -35,7 +35,6 @@ class ObjectNotFoundException : Exception
 	this(string msg) { super(msg); }
 }
 
-
 struct SDLObject
 {
     enum Type { _float, _string, _int, _parent}
@@ -54,8 +53,8 @@ struct SDLObject
     string toString()
 	{
         import std.conv : text;
-        return text("name: ", nameIndex, 
-					"\tobj: ", objectIndex, 
+        return text("name: ",   nameIndex, 
+					"\tobj: ",  objectIndex, 
 					"\ttype: ", type, 
 					"\tnext: ", nextIndex, "\n");
 	}
@@ -122,7 +121,6 @@ struct PostModify(T, A)
 		this.modify = modify;
 	}
 }
-
 
 struct SDLContext
 {
@@ -318,7 +316,7 @@ struct SDLIterator(C)
 
 	T as_impl(T)() if(is(T==bool))
 	{
-		assert(over.root[currentIndex].type == TypeID._string,
+		enforce(over.root[currentIndex].type == TypeID._string,
 				getSDLIterError() ~ "\n" ~
 	 			"SDLObject wasn't a boolean, which was requested");
 		auto range = mixin(curObjObjRange);
@@ -327,7 +325,7 @@ struct SDLIterator(C)
 
     T as_impl(T)() if(isSomeString!T)
 	{
-        assert(over.root[currentIndex].type == TypeID._string);
+        enforce(over.root[currentIndex].type == TypeID._string, getSDLIterError());
 
         auto range = mixin(curObjObjRange);
         auto str = .readString!T(range);
@@ -377,7 +375,7 @@ struct SDLIterator(C)
 
 	T as_impl(T)() if (is(T == enum))
 	{
-		assert(over.root[currentIndex].type == TypeID._string,
+		enforce(over.root[currentIndex].type == TypeID._string,
 					 getSDLIterError() ~ "\n" ~
 					 "SDLObject wasn't an enum, which was requested");
 		auto range = mixin(curObjObjRange);
@@ -389,8 +387,9 @@ struct SDLIterator(C)
 			if(member.to!string == name)
 				return member;
 		}
-		assert(0, getSDLIterError() ~ "\n" ~ 
+		enforce(0, getSDLIterError() ~ "\n" ~ 
 			   name ~ " is not a valid value of enum type " ~ T.stringof);
+		assert(0);
 	}
 
 	T as_impl(T)() if(is(T == Color))
@@ -570,7 +569,7 @@ private template UnknownType(T)
 struct SDLContainer
 {
     SDLObject* root;
-    private string source;
+    private const(char)[] source;
 	private IAllocator allocator;
 
     @property
@@ -662,8 +661,7 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is
 		sink.put("false");
 }
 
-void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is(T == struct) && !isList!(T) &&
-																			  !is(T == Color))
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is(T == struct) && !isList!(T) && !is(T == Color))
 {
 	if(level != 0) {
 		sink.put('\n');
@@ -735,96 +733,10 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) i
 	sink.put(arrayCloser);
 }
 
-void toLua(Sink)(SDLIterator it, ref Sink sink, uint level = 0)
-{
-	import std.algorithm;
-	// Always assume you have a new line to yourself (simple)
-	sink.put('\t'.repeat(level));
-
-	//Do we have a name? (Or are we an array element?)
-	if(it.current.hasName)
-		sink.put(cast(char[])(it.readName~" = "));
-
-	//Check what kind of object we have
-	final switch(it.current.type) with (SDLObject.Type)
-	{
-		case _parent:
-			if(it.current.hasName)
-			{
-				sink.put('\n');
-				sink.put('\t'.repeat(level));
-			}
-			sink.put('{');
-			sink.put('\n');
-			if(it.hasChildren)
-			{
-				auto save = it.currentIndex;
-				it.goToChild;
-				toLua(it, sink, level+1);
-				it.currentIndex = save;
-			}
-			sink.put('\t'.repeat(level));
-			sink.put('}');
-			break;
-		case _float:
-			sink.put(it.readFloat.to!(char[]));
-			break;
-		case _string:
-			sink.put('"');
-			sink.put(cast(char[])it.readString);
-			sink.put('"');
-			break;
-		case _int:
-			sink.put(it.readInt.to!(char[]));
-			break;
-	}
-
-	// Commas are always welcome in Lua! (If not at root level)
-	if(level)
-		sink.put(',');
-	sink.put('\n');
-	if(!it.empty)
-	{
-		it.goToNext;
-		toLua(it, sink, level);
-	}
-}
-
-/*
-string toLuaFromSource(A)(ref A appender, string sdlSource)
-	if (__traits(compiles, appender.put('\n')))
-{
-	ubyte[5*1024] objBuf = void;
-	auto alloc = RegionAllocator(objBuf);
-	auto cont = fromSDLSource(alloc, sdlSource, default_context);
-
-	appender.put(cast(char[])("local sdlObject =\n{\n"));
-	toLua(SDLIterator(&cont, 1), appender, 1);
-	appender.put(cast(char[])"}\nreturn sdlObject");
-
-	auto luaList = appender.data;
-	return cast(string)luaList.buffer[0..luaList.length];
-}
-
-void toLuaFileFromFile(string sdlFile, string luaFile)
-{
-	import std.file;
-	auto sdlSource = cast(string)read(sdlFile);
-
-	char[5*1024] luaBuffer = void;
-	auto luaAlloc = RegionAllocator(luaBuffer);
-	auto luaApp = RegionAppender!char(luaAlloc);
-
-	auto luaSource = toLuaFromSource(luaApp, sdlSource);
-
-	//Save it to a file;
-	write(luaFile, cast(void[])luaSource);
-} */
-
 struct ForwardRange
 {
 	size_t position;
-	string over;
+	const(char)[] over;
 
 	@property ForwardRange save() 
 	{ 
@@ -843,13 +755,13 @@ struct ForwardRange
 
 	@property char front() { return over[position]; }
 
-	this(size_t position, string over)
+	this(size_t position, const(char)[] over)
 	{
 		this.position = position;
 		this.over = over;
 	}
 
-	this(string over)
+	this(const(char)[] over)
 	{
 		this.position = 0;
 		this.over = over;
@@ -858,10 +770,10 @@ struct ForwardRange
 
 bool isWhiteSpace(char c)
 {
-	return	c == '\n' ||
+	return	c == ' ' ||
+		    c == '\n' ||
 			c == '\r' ||
-			c == '\t' ||
-			c == ' ';
+			c == '\t';
 }
 
 void skipWhitespace(ref ForwardRange range)
@@ -892,6 +804,7 @@ template isStringOrVoid(T)
 {
 	enum isStringOrVoid = is(T == void) || isSomeString!T;
 }
+
 StringOrVoid readString(StringOrVoid = string)(ref ForwardRange range)
 if (isStringOrVoid!StringOrVoid)
 {
@@ -903,7 +816,7 @@ if (isStringOrVoid!StringOrVoid)
 	while(!range.empty) {
 		if(range.front == stringSeperator)  {
 			static if (isSomeString!StringOrVoid) {
-				string s = str(saved, range);
+				const(char)[] s = str(saved, range);
 				range.popFront();
 				return cast(StringOrVoid)s;
 			} else {
@@ -950,38 +863,39 @@ StringOrVoid readIdentifier(StringOrVoid = string)(ref ForwardRange range)
 	//assert(0);
 }
 
-template isBoolOrVoid(T) {
-    enum isBoolOrVoid = is(T==void) || is(T==bool);
-}
+
+enum isBoolOrVoid(T) = is(T==void) || is(T==bool);
 
 BoolOrVoid readBool(BoolOrVoid = bool)(ref ForwardRange range)
 if (isBoolOrVoid!BoolOrVoid)
 {
-	static if (is(BoolOrVoid==bool))
+	static if (is(BoolOrVoid == bool))
 		auto saved = range.save;
-	while(!isWhiteSpace(range.front)) {
+	
+	while(!isWhiteSpace(range.front)) 
+	{
 		range.popFront;
 	}
-	static if(is(BoolOrVoid==void)) 
+
+	static if(is(BoolOrVoid == void)) 
 		return;
 
 	static if (is(BoolOrVoid==bool)) {
 		import std.string : capitalize;
-		string trueOrFalse = str(saved, range);
-		if (trueOrFalse == "False" ||
-			trueOrFalse == "false")
+		auto trueOrFalse = str(saved, range);
+		if (trueOrFalse == "False" || trueOrFalse == "false")
 			return  false;
-		if (trueOrFalse == "True" ||
-			trueOrFalse == "true")
+		if (trueOrFalse == "True"  || trueOrFalse == "true")
 			return  true;
+
 		enforce(0, "Invalid bool " ~ trueOrFalse);
 	}
-	assert(0, "Invalid codepath in readBool.");
+	enforce(0, "Invalid codepath in readBool.");
+	assert(0);
 }
 
-template isNumericVoidOrType(T) {
-	enum isNumericVoidOrType = is(T==void) || is(T==TypeID) || isNumeric!T;
-}
+enum isNumericVoidOrType(T) = is(T==void) || is(T==TypeID) || isNumeric!T;
+
 NumericVoidOrType readNumber(NumericVoidOrType)(ref ForwardRange range)
 if (isNumericVoidOrType!NumericVoidOrType)
 {
@@ -1014,9 +928,10 @@ if (isNumericVoidOrType!NumericVoidOrType)
 	{
 		char c = range.front;
 
-		if(c == '_') { // Support for underscores in numbers.
-			range.popFront(); // TODO:	A lot of numbers which might not actually be legal
-			continue;			//		such as -__1234__23214_ are accepted...	
+		if(c == '_') // Support for underscores in numbers.
+		{ 
+			range.popFront();  // TODO:	A lot of numbers which might not actually be legal
+			continue;		   //		such as -__1234__23214_ are accepted...	
 		}
 
 		switch(state)
@@ -1159,9 +1074,12 @@ if (isNumericVoidOrType!NumericVoidOrType)
 		range.popFront();
 	}
 
-	static if(is(NumericVoidOrType==void)) {
+	static if(is(NumericVoidOrType==void)) 
+	{
 		return;
-	} else {
+	} 
+	else 
+	{
 		import std.conv;
 		switch (state) {
 			case 1:
@@ -1190,7 +1108,7 @@ if (isNumericVoidOrType!NumericVoidOrType)
 	}
 }
 
-string str(ForwardRange a, ForwardRange b)
+const(char)[] str(ForwardRange a, ForwardRange b)
 {
 	return a.over[a.position .. b.position];
 }
@@ -1203,10 +1121,11 @@ T number(T)(ForwardRange a, ForwardRange b) if(isNumeric!T)
 	//And a static array saved the day :)
 	char[128] no_;
 	int counter = 0;
-	while(a.position != b.position) {
-		if(a.front != '_') {
+	while(a.position != b.position) 
+	{
+		if(a.front != '_') 
 			no_[counter++] = a.front;
-		}
+		
 		a.popFront();
 	}
 	return no_[0 .. counter].to!T;
@@ -1244,76 +1163,48 @@ long parseHex(ForwardRange saved, ForwardRange range)
 	return acc;
 }
 
-T fromSDLSource(T = SDLContainer, A)(ref A allocator, string source)
+T fromSDLSource(T, A)(ref A allocator, const(char)[] source)
 {
 	return fromSDLSource!T(allocator, source, default_context);
 }
 
-T fromSDLSource(T = SDLContainer, A, C)(ref A allocator, string source, C context) if(is(C == struct))
+T fromSDLSource(T, A, C)(ref A allocator, const(char)[] source, C context) if(is(C == struct))
 {
 	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
 	scope(exit) Mallocator.it.deallocate(iall);
 
-
-	import allocation.native;
-    auto app = MallocAppender!SDLObject(1024);
-
-	if(source[0] == 0xEF &&
-	   source[1] == 0xBB &&
-	   source[2] == 0xBF)
-	{
-		source = source[3..$];
-	}
+	auto app = RegionAppender!SDLObject(scratch_alloc);
+	scope(exit) Mallocator.it.deallocate(source);
 
     auto cont = fromSDL(app, source);
-	static if(is(T == SDLContainer))
-	{
-		return cont;
-	}
-	else 
-	{
-		cont.allocator = iall;
-	    return cont.as!T(context);
-	}
-}
-
-T fromSDLFile(T = SDLContainer, A)(ref A al, const(char)[] fp)
-{
-	return fromSDLFile!(T, A, SDLContext)(al, cast(string)fp, default_context);
-}
-
-T fromSDLFile(T = SDLContainer, A, C)(ref A allocator, string filePath, C context) if(is(C == struct))
-{
-    import allocation.native;
-	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
-	scope(exit) Mallocator.it.deallocate(iall);
-
-    auto app = MallocAppender!SDLObject(1024);
-    auto source = readText(filePath);
-
-	// Trim BOM (byte order mark) from utf8
-	// The standard library really should handle this...
-	if(source[0] == 0xEF &&
-	   source[1] == 0xBB &&
-	   source[2] == 0xBF)
-	{
-		source = source[3..$];
-	}
-    auto cont = fromSDL(app, source);
-	static if(is(T == SDLContainer))
-		return cont;
-
-		
 	cont.allocator = iall;
     return cont.as!T(context);
 }
 
-T fromSDL(T = SDLContainer, A, C)(ref A allocator, string source, C context) if(is(C == struct))
+T fromSDLFile(T, A)(ref A al, const(char)[] fp)
 {
-	return fromSDL(allocator, source).as!T(allocator, context);
+	return fromSDLFile!(T, A, SDLContext)(al, cast(string)fp, default_context);
 }
 
-SDLContainer fromSDL(Sink)(ref Sink sink, string source)
+T fromSDLFile(T, A, C)(ref A allocator, const(char)[] filePath, C context) if(is(C == struct))
+{
+    import allocation.native;
+	import io.file;
+
+	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
+	scope(exit) Mallocator.it.deallocate(iall);
+
+	import log;
+	auto app = RegionAppender!SDLObject(scratch_alloc);
+    auto source = readText(Mallocator.it, filePath);
+	scope(exit) Mallocator.it.deallocate(source);
+
+    auto cont = fromSDL(app, source);
+	cont.allocator = iall;
+    return cont.as!T(context);
+}
+
+SDLContainer fromSDL(Sink)(ref Sink sink, const(char)[] source)
 {
     auto container = SDLContainer();
     auto root = SDLObject();
@@ -1489,7 +1380,7 @@ void readArray(Sink)(ref Sink sink, ref ForwardRange range, ref ushort nextVacan
 }
 
 private enum errorlength = 50;
-string getSDLError(ref ForwardRange currentPos)
+const(char)[] getSDLError(ref ForwardRange currentPos)
 {
 	size_t startPos = (0>currentPos.position-errorlength) ? 0 : currentPos.position-errorlength;
 

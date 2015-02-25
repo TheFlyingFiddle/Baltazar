@@ -68,11 +68,12 @@ interface IAssets
 @DontReflect
 interface IEditor
 {
+	nothrow void create();
 	nothrow void open(string path);
 	nothrow void save(string path);
 	nothrow void close();
 
-	nothrow IServiceLocator	services() ;
+	nothrow IServiceLocator	services();
 	nothrow IAssets			assets();
 	nothrow IEditorData		data();
 }
@@ -81,6 +82,12 @@ interface IEditor
 struct Editor
 {
 	private __gshared static IEditor	editor;
+
+	static void create()
+	{
+		editor.create();
+	}
+
 	static void open(string path)
 	{
 		editor.open(path);

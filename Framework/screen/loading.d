@@ -49,9 +49,6 @@ class LoadingScreen : Screen
 	{
 		if(loader.areAllLoaded)
 		{
-			import log;
-			logInfo("Loading finished!");
-
 			owner.pop();
 			owner.push(next);
 		}
@@ -61,9 +58,6 @@ class LoadingScreen : Screen
 	override void render(Time time)
 	{
 		import std.range, util.strings, window.window;
-		import log;
-		logInfo("We are loading!");
-
 		auto screen   = app.locate!Window;
 		auto renderer = app.locate!Renderer2D;
 		renderer.viewport(float2(screen.size));

@@ -17,7 +17,7 @@ import rendering.shapes;
 void renderGrid(RenderContext* context)
 {
 	auto cam = context.camera;
-	auto frame = context.images.find!(x => x.name == "pixel");
+	auto frame = context.images.find!(x => x.name == "pixel"); 
 	if(frame.empty) return;
 
 	float width = cam.viewport.z - cam.viewport.x;

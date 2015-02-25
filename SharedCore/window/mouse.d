@@ -160,3 +160,14 @@ struct Mouse
 		return newLoc - oldLoc;
 	}
 }	
+
+enum CursorShape
+{
+	arrow     = GLFW_ARROW_CURSOR,
+	ibeam     = GLFW_IBEAM_CURSOR,
+	crosshair = GLFW_CROSSHAIR_CURSOR,
+	hand      = GLFW_HAND_CURSOR,
+	hresize   = GLFW_HRESIZE_CURSOR,
+	vresize   = GLFW_VRESIZE_CURSOR,
+	user      = 0x01
+}

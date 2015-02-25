@@ -60,7 +60,8 @@ class PluginComponent : IApplicationComponent
 			//timeLastModified allocates data.
 			if(plugins.fileChangedInfo[i] != timeLastModified(plugins.paths[i]))
 			{
-				plugins.reloadLibrary(plugins.paths[i]);	
+				if(exists(plugins.paths[i]))
+					plugins.reloadLibrary(plugins.paths[i]);	
 			}
 		}
 	}

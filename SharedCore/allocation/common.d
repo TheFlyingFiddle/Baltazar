@@ -4,8 +4,8 @@ import log;
 import std.traits;
 import std.conv;
 
-auto logChnl = LogChannel("ALLOCATION");
-auto destChnl = LogChannel("DESTRUCTOR ERROR");
+__gshared auto logChnl = LogChannel("ALLOCATION");
+__gshared auto destChnl = LogChannel("DESTRUCTOR ERROR");
 
 
 void destructor(T)(void* ptr) if(is(T == struct))

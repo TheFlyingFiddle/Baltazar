@@ -29,9 +29,9 @@ import common.attributes;
 
 @EntityComponent struct Input
 {
-	PlayerIndex gamepad		= PlayerIndex.zero;
-	float jumpSpeed			= 0;
-	float walkSpeed			= 0;
+	PlayerIndex gamepad		 = PlayerIndex.zero;
+	string jumpSpeed		 = "Hello World";
+	string walkSpeed		 = "Dance Monkey Dance!";
 }
 
 @EntityComponent struct Fan
@@ -43,7 +43,7 @@ import common.attributes;
 
 @EntityComponent struct Switch
 {
-	ComponentID!(Fan) fan;
+	EntityRef fan;
 }	
 
 @EntityComponent struct Elevator
@@ -62,6 +62,7 @@ import common.attributes;
 
 @EntityComponent struct Door
 {
+	int moreOpen;
 	bool open;
 	TextureID openImage;
 	TextureID closedImage;

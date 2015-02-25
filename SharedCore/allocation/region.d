@@ -105,11 +105,12 @@ struct RegionAppender(T)
 		this._allocator = allocator;
 		
 		size_t bytes = (allocator.bytesRemaining() / T.sizeof);
+		_rewindPos = this._allocator._offset; 
+
 		T[] buffer = allocator.allocate!(T[])(bytes, alignment);
 		_capacity  = buffer.length;
 		_buffer    = buffer.ptr;
 		_offset    = 0;
-		_rewindPos = this._allocator._offset; 
 	}
 
 	~this()

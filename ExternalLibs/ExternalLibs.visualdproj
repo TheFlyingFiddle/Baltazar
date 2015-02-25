@@ -467,9 +467,7 @@
     <File path="derelict\freetype\types.d" />
    </Folder>
    <Folder name="glfw3">
-    <File path="derelict\glfw3\functions.d" />
     <File path="derelict\glfw3\glfw3.d" />
-    <File path="derelict\glfw3\types.d" />
    </Folder>
    <Folder name="ogg">
     <File path="derelict\ogg\ogg.d" />
@@ -520,6 +518,5 @@
     <File path="derelict\util\xtypes.d" />
    </Folder>
   </Folder>
-  <File path="lib.d" />
  </Folder>
 </DProject>

@@ -14,7 +14,7 @@ struct ChangeItemName
 	this(const(char[]) newName)
 	{
 		auto d = Editor.data.locate!(WorldData);
-		this.item = d.selected;
+		this.item = d.item;
 		auto tmp =  Mallocator.it.allocate!(char[])(newName.length);	
 		tmp[] = newName;
 		this.newName = cast(string)tmp;
@@ -45,7 +45,7 @@ struct AddComponent
 	this(StateComponent component)
 	{
 		auto d = Editor.data.locate!(WorldData);
-		this.item = d.selected;
+		this.item = d.item;
 		this.component = component;
 	}	
 
@@ -69,7 +69,7 @@ struct RemoveComponent
 	this(int componentIndex)
 	{
 		auto d = Editor.data.locate!(WorldData);
-		this.item = d.selected;
+		this.item = d.item;
 
 		this.componentIndex = componentIndex;
 		this.component = item.components[componentIndex];

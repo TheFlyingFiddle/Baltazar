@@ -43,7 +43,6 @@ void consumeTasks()
 	}
 }
 
-
 void consumeTask()
 {
 	foreach(ref thread; threads) 

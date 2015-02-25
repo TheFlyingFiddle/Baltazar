@@ -17,7 +17,7 @@ struct ParticleLoader
 		mem.particles.allocate(allocator);
 		return mem;
 	}
-
+ 
 	static void unload(IAllocator allocator, ParticleSystem* item)
 	{
 		allocator.deallocate(item);

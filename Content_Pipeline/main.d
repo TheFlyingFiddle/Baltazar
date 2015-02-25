@@ -305,6 +305,7 @@ private void toSDLFile(T)(string folder, string name, T data)
 {
 	auto toWrite = buildPath(folder, name);
 	toSDL(data, sink);
+
 	auto file = File(toWrite, "w");
 	file.write(sink.data);
 	sink.clear();

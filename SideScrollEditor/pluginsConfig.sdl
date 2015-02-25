@@ -1,6 +1,6 @@
 pluginDlls = 
 [
-	|..\Plugin\Release\Plugin.dll|
+	|..\Plugin\Debug\Plugin.dll|
 ]
 
 gameDlls =

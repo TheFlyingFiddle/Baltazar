@@ -92,7 +92,7 @@ final class MainScreen : Screen, IEditor
 		centerPanels.addPanels(Mallocator.cit, plugin);
 
 		doUndo = DoUndo(1000);
-		locator.add(&doUndo);
+		locator.add(&doUndo);   
 
 		/*
 		tools = ToolBox(all, 10);
@@ -128,6 +128,17 @@ final class MainScreen : Screen, IEditor
 
 
 	///IEDITOR INTERFACE
+	override void create() nothrow
+	{
+		scope(failure) assert(0, "Failed to create project!");
+
+		editorData.clear();
+		foreach(ref type; plugin.attributeTypes!(Data))
+		{
+			editorData.addData(&type);
+		}
+	}
+
 	override void save(string path) nothrow
 	{
 		try
@@ -151,9 +162,10 @@ final class MainScreen : Screen, IEditor
 		{
 			import reflection.serialization;
 			auto context = ReflectionContext(plugin.assemblies.array);
-			auto data    = fromSDLFile!SaveData(Mallocator.it, "tempsaved.sdl", context);
+			auto data    = fromSDLFile!SaveData(Mallocator.it, path, context);
 			scope(exit) deallocate(Mallocator.it, cast(void[])data.data);
 
+			editorData.clear();
 			foreach(ref type; plugin.attributeTypes!(Data))
 			{
 				foreach(ref v; data.data)
@@ -206,7 +218,6 @@ final class MainScreen : Screen, IEditor
 	{
 		return editorData;
 	}
-	///
 
 	//Need to save the state of the application here
 	void prePluginReload(Plugin p)

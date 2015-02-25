@@ -9,6 +9,7 @@ import math;
 import util.strings;
 import std.exception;
 import window.keyboard;
+import window.mouse;
 
 private auto logChnl = LogChannel("WINDOW");
 
@@ -238,7 +239,6 @@ struct WindowManager
 	}
 }
 
-
 //Can make this contain more but this is enough for now.
 struct WindowConfig
 {
@@ -368,16 +368,10 @@ struct Window
 	public GLFWwindow* _windowHandle;
 	private bool blocking;
 
-	@property void* nativeHandle()
-	{
-		return glfwGetWin32Window(_windowHandle);
-	}
-
 	@property WindowState* state()
 	{
 		return cast(WindowState*)glfwGetWindowUserPointer(this._windowHandle);
 	}	
-
 
 	@property void onScrollChanged(ScrollCalback cb)
 	{
@@ -427,6 +421,16 @@ struct Window
 	@property void onKey(KeyCallback cb)
 	{
 		state.keyCB = cb;
+	}
+
+	@property void cursor(CursorShape shape)
+	{
+		assert(0, "Not yet implemented!");
+	}
+
+	@property CursorShape cursor()
+	{
+		assert(0,"Not yet implemented!");
 	}
 
 	@property float2 size()
@@ -540,10 +544,5 @@ struct Window
 	void swapBuffer()
 	{
 		glfwSwapBuffers(_windowHandle);
-	}
-
-	void* getNativeHandle()
-	{
-		return glfwGetWin32Window(_windowHandle);
 	}
 }

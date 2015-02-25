@@ -46,6 +46,7 @@ struct ComponentsPanelImpl
 
 	void show(PanelContext* context)
 	{
+
 		Rect area = context.area;
 		this.area = float2(area.w, area.h);
 
@@ -56,7 +57,7 @@ struct ComponentsPanelImpl
 
 	void show(ref Gui gui)
 	{
-		auto item = state.selected;
+		auto item = state.item;
 		if(item)
 		{
 			auto plugin  = Editor.services.locate!(Plugins);
@@ -271,14 +272,12 @@ struct ComponentsPanelImpl
 
 	bool handle(ref Gui gui, Rect r, ref EntityRef t, HashID styleID)
 	{
-		/*
 		auto idx = state.items.countUntil!(x => x.id == t.id);
-		if(gui.selectionfield(r, idx, state.itemNames))
+		if(gui.selectionfield(r, idx, state.items.array.map!(x => x.name)))
 		{
 			t.id = state.items[idx].id;
 			return true;
 		}
-		*/
 
 		return false;
 	}
@@ -306,7 +305,6 @@ struct ComponentsPanelImpl
 	}
 }
 
-
 @EditorPanel("Components", PanelPos.right) 
 struct ComponentsPanel
 {
@@ -322,13 +320,10 @@ struct ComponentsPanel
 	}
 }
 
-
 @EditorPanel("Entity", PanelPos.left)
 struct EntityPanel
 {
-	int selected;
 	this(IAllocator all) { }
-
 	void show(PanelContext* context)
 	{
 		auto gui		   = context.gui;
@@ -339,28 +334,22 @@ struct EntityPanel
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		(*gui).listbox(itemBox, selected, data.items.array.map!(x => x.name));
+		(*gui).listbox(itemBox, data.selectedItem, data.items.array.map!(x => x.name));
 		if((*gui).button(newItemBox, "New"))
 		{
-			data.items ~= WorldItem("Entity");
-			//state.doUndo.apply(state, AddItem(state));
+			data.items ~= WorldItem("Entity"); //This is wrong!
 		}
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
-			if(selected < data.archetypes.length)
+			if(data.selectedItem < data.items.length)
 			{
-				auto item = data.items[selected];
+				auto item = data.items[data.selectedItem];
 				item.deallocate();
-				data.archetypes.removeAt(selected);
+				data.items.removeAt(data.selectedItem);
+				
+				data.selectedItem = max(0, min(data.selectedItem, data.items.length));
 			}
-			//if(state.item(state.selected) is null) return;
-			//state.doUndo.apply(state, RemoveItem(state));
-		}
-
-		if(selected < data.items.length)
-		{
-			data.selected(&data.items[selected]);
 		}
 	}
 }
@@ -368,21 +357,18 @@ struct EntityPanel
 @EditorPanel("Archetypes", PanelPos.left)
 struct ArchetypesPanel
 {
-	int selected;
 	this(IAllocator all) { }
-
 	void show(PanelContext* context)
 	{
 		auto gui		   = context.gui;
 		auto data		   = Editor.data.locate!(WorldData);
-
 
 		Rect lp			   = context.area;
 		Rect newItemBox    = Rect(lp.x, lp.y, lp.w / 2 - defSpacing, defFieldSize);
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		(*gui).listbox(itemBox, selected, data.archetypes.array.map!(x => x.name));
+		(*gui).listbox(itemBox, data.selectedArchetype, data.archetypes.array.map!(x => x.name));
 		if((*gui).button(newItemBox, "New"))
 		{
 			data.archetypes ~= WorldItem("Archetype");
@@ -391,19 +377,13 @@ struct ArchetypesPanel
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
-			if(selected < data.archetypes.length)
+			if(data.selectedArchetype < data.archetypes.length)
 			{
-				auto item = data.archetypes[selected];
+				auto item = data.archetypes[data.selectedArchetype];
 				item.deallocate();
-				data.archetypes.removeAt(selected);
+				data.archetypes.removeAt(data.selectedArchetype);
+				data.selectedItem = max(0, min(data.selectedArchetype, data.items.length));
 			}
-			//if(state.item(state.selected) is null) return;
-			//state.doUndo.apply(state, RemoveItem(state));
-		}
-
-		if(selected < data.archetypes.length)
-		{
-			data.selected(&data.archetypes[selected]);
 		}
 	}
 }

@@ -5,7 +5,7 @@ import core.thread;
 import log;
 
 alias Inbox  = SPMCQueue!(QueueSerializer);
-struct WorkerPool
+ struct WorkerPool
 {
 	private Inbox	_inbox;
 	private Thread[] threads; 	

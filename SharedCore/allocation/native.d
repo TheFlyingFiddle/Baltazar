@@ -2,7 +2,6 @@ module allocation.native;
 
 public import allocation.common;
 
-
 version(X86)
 {
 	struct Mallocator

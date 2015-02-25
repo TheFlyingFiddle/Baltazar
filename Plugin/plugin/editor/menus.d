@@ -9,6 +9,14 @@ import plugin.editor.data;
 void new_()
 {
 	auto files   = Editor.services.locate!(IFileFinder);
+	auto save    = files.saveProjectPath();
+	if(save)
+	{
+		Editor.save(save);
+	}
+
+	Editor.create();
+
 }
 
 @MenuItem("File.Open")

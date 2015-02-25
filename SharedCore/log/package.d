@@ -68,7 +68,6 @@ void logCondWarn(string file = __FILE__, size_t line = __LINE__, T...)(bool cond
 		logWarn!(file, line, T)(t);
 }
 
-
 void logCondErr(string file = __FILE__, size_t line = __LINE__, T...)(bool cond, T t) if(T.length > 0)
 {
 	if(cond)
@@ -111,8 +110,6 @@ private void makeMsg(T...)(string channel, Verbosity verbosity, string file, siz
 	char[8192] buffer = void;
 	auto list = List!(char)(buffer);
 	auto appender = &list;
-
-
 	formattedWrite(appender, staticFormatString!(T.length), t, file, line);
 	logger(channel, verbosity, appender.array);
 }
@@ -129,12 +126,10 @@ private void makeFormatMsg(T...)(string channel, string f, Verbosity verbosity, 
 		file = file[idx + 5 .. $];
 	}
 
-	import std.array;
 	char[8192] buffer = void;
 	auto list = List!(char)(buffer);
 	auto appender = &list;
 	formattedWrite(appender, f, t);
 	formattedWrite(appender, "\t%s(%s)", file, line);
-
 	logger(channel, verbosity, appender.array);
 }

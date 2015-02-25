@@ -25,6 +25,7 @@ void main()
 {
 	import core.memory;
 	GC.disable();
+	initializeScratchSpace(1024 * 1024);
 
 	//import std.process;
 	//char[][] commands;
@@ -32,8 +33,6 @@ void main()
 	//commands ~= cast(char[])"..\\resources";
 	//commands ~= cast(char[])"..\\compiled_resources";
 	//spawnProcess(commands);
-
-	initializeScratchSpace(Mallocator.it, 1024 * 1024);
 
 	init_dlls();
 	scope(exit) shutdown_dlls();

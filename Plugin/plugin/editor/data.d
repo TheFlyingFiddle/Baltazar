@@ -8,32 +8,37 @@ import util.variant;
 @Data
 struct WorldData
 {
+	WorldItemID selected_;
 	GrowingList!WorldItem items;
 	GrowingList!WorldItem archetypes;
 
-	WorldItem* selected_;
+	int selectedItem;
+	int selectedArchetype;
 
-	@property WorldItem* selected()
+	@property WorldItem* item()
 	{
-		return selected_;
+		return selectedItem < items.length ? &items[selectedItem] : null;
 	}
 
-	@property void selected(WorldItem* item)
+	@property WorldItem* archetype()
 	{
-		selected_ = item;
+		return selectedArchetype < archetypes.length ? &archetypes[selectedArchetype] : null;
+	}
+
+	void select(uint index, ubyte type)
+	{
+		selected_.index = cast(ushort)index;
+		selected_.type  = type;
 	}
 
 	this(IAllocator allocator)
 	{
 		items	   = GrowingList!WorldItem(allocator, 100);
 		archetypes = GrowingList!WorldItem(allocator, 5);
-		selected_  = null;
 	}
 
 	void deallocate(IAllocator allocator)
 	{
-		foreach(ref item; items)
-			item.deallocate();
 		items.deallocate();
 	}
 }
@@ -41,14 +46,14 @@ struct WorldData
 alias StateComponent = VariantN!48;
 struct WorldItem
 {
-	List!StateComponent components;
+	GrowingList!StateComponent components;
 	string name;
 	uint   id;
 
 	this(string name)
 	{
-		this.name = name;
-		components = List!StateComponent(Mallocator.it, 20);
+		this.name		= name;
+		this.components = GrowingList!(StateComponent)(Mallocator.cit, 4);
 
 		import std.random;
 		id = uniform(0, uint.max);
@@ -56,7 +61,7 @@ struct WorldItem
 
 	void deallocate()
 	{
-		components.deallocate(Mallocator.it);
+		components.deallocate();
 	}
 
 	T* get(T)()
@@ -104,5 +109,21 @@ struct WorldItem
 		}
 
 		return false;
+	}
+}
+
+struct WorldItemID
+{
+	ushort index;
+	ubyte  type;
+
+	WorldItem* proxy()
+	{
+		import bridge.core;
+		auto wdata = Editor.data.locate!(WorldData);
+		if(type == 0)
+			return index < wdata.items.length ? &wdata.items[index] : null;
+		else 
+			return index < wdata.items.length ? &wdata.archetypes[index] : null;
 	}
 }
