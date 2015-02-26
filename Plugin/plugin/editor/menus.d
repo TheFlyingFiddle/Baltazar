@@ -61,13 +61,13 @@ void exit()
 @MenuItem("Edit.undo", KeyCommand(KeyModifiers.control, Key.z))
 void undo()
 {
-	auto doUndo = Editor.services.locate!(DoUndo);
+	auto doUndo = Editor.data.locate!(DoUndo);
 	doUndo.undo();
 }
 
 @MenuItem("Edit.redo", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.z))
 void redo()
 {
-	auto doUndo = Editor.services.locate!(DoUndo);
+	auto doUndo = Editor.data.locate!(DoUndo);
 	doUndo.redo();
 }

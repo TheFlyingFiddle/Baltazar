@@ -66,7 +66,7 @@ interface IAssets
 struct Asset
 {
 	string   name;
-	string[] subitems;
+	List!string subitems;
 }	
 
 @DontReflect

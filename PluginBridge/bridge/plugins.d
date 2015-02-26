@@ -135,10 +135,23 @@ struct Plugins
 		assemblies.clear();
 	}
 
+	import util.hash;
+	auto findType(TypeHash type)
+	{
+		foreach(ref a; assemblies)
+		{
+			auto info = a.findInfo(type);
+			if(info) return info.metaType;
+		}
+
+		return null;
+	}
+
 	auto functions()
 	{
 		return assemblies.map!(x => x.functions).joiner;
 	}
+
 
 	auto attributeTypes(T)()
 	{

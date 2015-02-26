@@ -424,6 +424,14 @@ struct MetaFunction
 	mixin Interval!(MetaParameter, "parameters");
 }
 
+R invoke(R = void, Params...)(ref const(MetaFunction) func, Params params) 
+{
+	static if(is(R == void))
+		invoke!(R, Params)(&func, params);
+	else
+		return invoke!(R, Params)(&func, params);
+}
+
 R invoke(R = void, Params...)(const(MetaFunction)* func, Params params) 
 {
 	alias R function(Params) fun_t;

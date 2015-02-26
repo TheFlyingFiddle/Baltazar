@@ -59,11 +59,11 @@ struct ComponentsPanelImpl
 
 	void show(ref Gui gui)
 	{
-		auto item = state.item;
+		auto item = state.selected.proxy;
 		if(item)
 		{
 			auto plugin  = Editor.services.locate!(Plugins);
-			auto doUndo	 = Editor.services.locate!(DoUndo);
+			auto doUndo	 = Editor.data.locate!(DoUndo);
 			
 
 			auto comps = plugin.attributeTypes!EntityComponent;
@@ -351,15 +351,15 @@ struct ComponentsPanelImpl
 @EditorPanel("Components", PanelPos.right) 
 struct ComponentsPanel
 {
-	ComponentsPanelImpl panel;
+	ComponentsPanelImpl pimp;
 	this(IAllocator all)
 	{
-		panel = ComponentsPanelImpl(all);
+		pimp = ComponentsPanelImpl(all);
 	}
 
 	void show(PanelContext* context) 
 	{
-		panel.show(context);
+		pimp.show(context);
 	}
 }
 
@@ -371,6 +371,7 @@ struct EntityPanel
 	{
 		auto gui		   = context.gui;
 		auto data		   = Editor.data.locate!(WorldData);
+		auto doundo		   = Editor.data.locate!(DoUndo);
 
 		Rect lp			   = context.area;
 		Rect newItemBox    = Rect(lp.x, lp.y, lp.w / 2 - defSpacing, defFieldSize);
@@ -378,19 +379,23 @@ struct EntityPanel
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
 		(*gui).listbox(itemBox, data.selectedItem, data.items.array.map!(x => x.name));
+		if(data.selectedItem < data.items.length)
+		{	
+			data.select(data.selectedItem, 0);
+		}
+
 		if((*gui).button(newItemBox, "New"))
 		{
-			data.items ~= WorldItem("Entity"); //This is wrong!
+			doundo.apply(AddItem(0));
 		}
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
 			if(data.selectedItem < data.items.length)
 			{
-				auto item = data.items[data.selectedItem];
-				item.deallocate();
-				data.items.removeAt(data.selectedItem);
-				
+				data.select(data.selectedItem, 0);
+				doundo.apply(RemoveItem(0));		
+
 				data.selectedItem = max(0, min(data.selectedItem, data.items.length));
 			}
 		}
@@ -405,6 +410,7 @@ struct ArchetypesPanel
 	{
 		auto gui		   = context.gui;
 		auto data		   = Editor.data.locate!(WorldData);
+		auto doundo		   = Editor.data.locate!(DoUndo);
 
 		Rect lp			   = context.area;
 		Rect newItemBox    = Rect(lp.x, lp.y, lp.w / 2 - defSpacing, defFieldSize);
@@ -412,20 +418,23 @@ struct ArchetypesPanel
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
 		(*gui).listbox(itemBox, data.selectedArchetype, data.archetypes.array.map!(x => x.name));
+		if(data.selectedArchetype < data.archetypes.length)
+		{	
+			data.select(data.selectedArchetype, 1);
+		}
+
 		if((*gui).button(newItemBox, "New"))
 		{
-			data.archetypes ~= WorldItem("Archetype");
-			//state.doUndo.apply(state, AddItem(state));
+			doundo.apply(AddArchetype(0));
 		}
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
 			if(data.selectedArchetype < data.archetypes.length)
 			{
-				auto item = data.archetypes[data.selectedArchetype];
-				item.deallocate();
-				data.archetypes.removeAt(data.selectedArchetype);
-				data.selectedItem = max(0, min(data.selectedArchetype, data.items.length));
+				data.select(data.selectedArchetype, 1);
+				doundo.apply(RemoveItem(0));
+				data.selectedArchetype = max(0, min(data.selectedArchetype, data.items.length));
 			}
 		}
 	}
@@ -434,33 +443,22 @@ struct ArchetypesPanel
 @EditorPanel("World", PanelPos.center)
 struct WorldPanel
 {
-	import graphics.textureatlas;
+	import plugin.attributes;
 
 	this(IAllocator all) { }
 	void show(PanelContext* context) 
 	{
-		auto area = context.area;
-		auto atlas = Editor.assets.locate!TextureAtlas("Atlas");
-		if(atlas)
+		auto data     = Editor.data.locate!(WorldData);
+		auto camera   = Editor.data.locate!(Camera);
+		auto renderer = context.gui.renderer;
+		auto plugin   = Editor.services.locate!(Plugins);
+
+		auto rcontext = RenderContext(data, camera, renderer);
+
+		camera.viewport = context.area.toFloat4;
+		foreach(ref func; plugin.attributeFunctions!WorldRenderer)
 		{
-			float width = area.w;
-			foreach(i; 0 .. cast(int)(width / 64) + 1)
-			{
-				float2 s0 = float2(i * 64 + area.x, area.y);
-				float2 e0 = float2(i * 64 + area.x, area.y + area.h);
-
-				context.gui.renderer.drawLine(s0, e0, 1, (*atlas)["pixel"], Color(0xAAAAAAAA));
-			}
-
-			float height = area.h;
-			foreach(i; 0 .. cast(int)(height / 64) + 1)
-			{
-				float2 s0 = float2(area.x, i * 64 + area.y);
-				float2 e0 = float2(area.x + area.w, i * 64 + area.y);
-
-				context.gui.renderer.drawLine(s0, e0, 1, (*atlas)["pixel"], Color(0xAAAAAAAA));
-			}
-
+			func.invoke(&rcontext);
 		}
 	}
 }

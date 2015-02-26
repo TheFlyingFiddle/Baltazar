@@ -19,7 +19,6 @@ import bridge.os;
 import bridge.contexts;
 import bridge.attributes;
 import bridge.plugins;
-import bridge.do_undo;
 
 enum defFieldSize = 20;
 enum defSpacing   = 3;
@@ -36,7 +35,6 @@ final class MainScreen : Screen, IEditor
 	EditorData			 editorData;	
 	EditorServiceLocator locator;
 	Assets				 assets_;
-	DoUndo				 doUndo;
 
 	/*
 		ToolBox	 tools;
@@ -68,11 +66,6 @@ final class MainScreen : Screen, IEditor
 		plugin.postReload = &postPluginReload; 
 
 		editorData = all.allocate!EditorData(Mallocator.cit, 100);
-		foreach(ref type; plugin.attributeTypes!(Data))
-		{
-			editorData.addData(&type);
-		}
-
 		locator   = all.allocate!EditorServiceLocator(&app.services);
 		assets_	  = all.allocate!Assets(all, app.locate!AsyncContentLoader);
 	
@@ -82,6 +75,11 @@ final class MainScreen : Screen, IEditor
 		createMenu();
 		setupPlugins();
 
+		foreach(ref type; plugin.attributeTypes!(Data))
+		{
+			editorData.addData(&type);
+		}
+
 		leftPanels = Panels(all, 10, PanelPos.left);
 		leftPanels.addPanels(Mallocator.cit, plugin);
 
@@ -90,9 +88,6 @@ final class MainScreen : Screen, IEditor
 
 		centerPanels = Panels(all, 10, PanelPos.center);
 		centerPanels.addPanels(Mallocator.cit, plugin);
-
-		doUndo = DoUndo(1000);
-		locator.add(&doUndo);   
 
 		/*
 		tools = ToolBox(all, 10);
@@ -168,17 +163,23 @@ final class MainScreen : Screen, IEditor
 			editorData.clear();
 			foreach(ref type; plugin.attributeTypes!(Data))
 			{
+				bool res = false;
+				VariantN!(64) variant;
 				foreach(ref v; data.data)
 				{
 					if(type.isTypeOf(v))
 					{
-						editorData.addData(&type, v);
-					}
-					else 
-					{
-						editorData.addData(&type);
+						res = true;
+						variant = v;
+						break;
 					}
 				}
+
+				if(res)
+					editorData.addData(&type, variant);
+				else 
+					editorData.addData(&type);
+
 			}
 
 		}
@@ -231,8 +232,6 @@ final class MainScreen : Screen, IEditor
 		leftPanels.clear();
 		rightPanels.clear();
 		centerPanels.clear();
-		doUndo.clear();
-
 
 		//saveFile("temp.sidal");
 		//tools.tools.clear();
@@ -242,8 +241,8 @@ final class MainScreen : Screen, IEditor
 	void postPluginReload(Plugin plugin)
 	{
 		createMenu();
-		open("tempsaved.sdl");
 		setupPlugins();
+		open("tempsaved.sdl");
 		leftPanels .addPanels(Mallocator.cit, this.plugin);
 		rightPanels.addPanels(Mallocator.cit, this.plugin);
 		centerPanels.addPanels(Mallocator.cit, this.plugin);
@@ -268,7 +267,7 @@ final class MainScreen : Screen, IEditor
 		gui.area = Rect(0,0, w.size.x, w.size.y);
 		gui.begin();
 
-		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 46);
+		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 23);
 		auto leftSide  = Rect(defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
 		leftPanels.show(gui, leftSide);
 
@@ -277,20 +276,6 @@ final class MainScreen : Screen, IEditor
 
 		auto center = wr;
 		centerPanels.show(gui, center);
-
-
-		/*
-		import std.range : repeat, take;
-		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 46);
-		state.camera.viewport = wr.toFloat4;
-		
-	
-		gui.toolbar(Rect(wr.x, wr.top + defSpacing, wr.w, defFieldSize), tools.selected, tools.itemNames);
-
-		float2 p = float2.zero;
-		gui.scrollarea(wr, p, &renderWorld, wr);
-		*/
-
 
 		gui.menu(m);
 		gui.end();

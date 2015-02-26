@@ -399,6 +399,10 @@ struct ReflectionContext
 		}
 
 		foreach(field; s.instanceFields) {
+			import log;
+			logInfo("Writing field: ", s.typeInfo.name, ".", field.name, " of type ", field.typeInfo.name);
+		
+
 			sink.put('\n');
 			sink.put('\t'.repeat(level));
 			sink.put(field.name);

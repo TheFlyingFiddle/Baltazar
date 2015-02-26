@@ -16,6 +16,7 @@ template isTest(T...) if(T.length == 1)
 import reflection;
 mixin GenerateMetaData!(isTest,
                         common.components,
+						plugin.editor.commands,
                         plugin.editor.data,
                         plugin.editor.menus,
                         plugin.editor.renderers, 

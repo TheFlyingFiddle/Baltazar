@@ -97,6 +97,7 @@ class EditorServiceLocator : IServiceLocator
 
 class Assets : IAssets
 {
+	import std.algorithm;
 	import content;
 
 	struct TypedAssets
@@ -125,7 +126,12 @@ class Assets : IAssets
 				idx = typed.length - 1;
 			}	
 
-			typed[idx].assets ~= Asset(name, item.deps);
+			Asset a;
+			a.name		= name;
+			a.subitems  = List!(string)(allocator, item.deps.length);
+			a.subitems ~= item.deps.map!(x => x.stripExtension);
+
+			typed[idx].assets ~= a;
 		}
 
 		import log;

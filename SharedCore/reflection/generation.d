@@ -133,6 +133,8 @@ template ModuleMetaData(alias typeFilter, alias module_name)
 
 	auto makeField(string s)()
 	{
+		pragma(msg, T.stringof ~ "." ~ s);
+
 		alias field = TypeTuple!(__traits(getMember, module_name, s));
 
 		StaticMetaField f;
@@ -416,8 +418,6 @@ template MetaTypeData(alias typeFilter, U) if(is(U == struct) || is(U == class))
 
 			type.instanceFieldsInterval = TinyInterval(assembly.instanceFields.length,
 													   T.tupleof.length);
-
-
 			alias ifields = InstanceFields!(T);
 			foreach(i; staticIota!(0, ifields.length))
 				assembly.instanceFields ~= makeField!(i)(type.rttiOffset);

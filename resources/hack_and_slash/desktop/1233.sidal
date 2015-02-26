@@ -1,12 +1,31 @@
 
 data=[
 	{
+		type = |plugin.editor.data.Camera|
+		value = 
+		{
+			viewport=
+			{
+				x=300.
+				y=3.
+				z=1620.
+				w=977.
+			}
+			position=
+			{
+				x=0.
+				y=0.
+			}
+			scale=64.
+		}
+	},
+	{
 		type = |plugin.editor.data.WorldData|
 		value = 
 		{
-			selected_=
+			selected=
 			{
-				index=0
+				index=2
 				type=0
 			}
 			items=
@@ -20,8 +39,101 @@ data=[
 							{
 								position=
 								{
-									x=0.
-									y=0.
+									x=7.5
+									y=13.5
+								}
+								scale=
+								{
+									x=2.
+									y=3.
+								}
+								rotation=0.
+							}
+						},
+						{
+							type = |common.components.Text|
+							value = 
+							{
+								color=
+								{
+									packedValue=4280301570
+								}
+								font=
+								{
+									atlas=|Fonts|
+									font=|impact|
+								}
+								thresh=
+								{
+									x=0.35
+									y=0.75
+								}
+								text=|This is an interesting topic?|
+							}
+						}
+					]
+					name=|Text|
+					id=1674194328
+				},
+				{
+					components=
+					[
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=|banana|
+								}
+							}
+						},
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=10.
+									y=3.
+								}
+								scale=
+								{
+									x=10.
+									y=0.75
+								}
+								rotation=0.
+							}
+						},
+						{
+							type = |common.components.Fan|
+							value = 
+							{
+								force=50.
+								effect=5.
+								active=true
+							}
+						}
+					]
+					name=|Banana|
+					id=977298301
+				},
+				{
+					components=
+					[
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=10.
+									y=9.
 								}
 								scale=
 								{
@@ -42,19 +154,1152 @@ data=[
 								texture=
 								{
 									atlas=|Atlas|
-									image=|boulder.png|
+									image=|base_tower|
 								}
 							}
 						},
 						{
-							type = |common.components.Input|
+							type = |common.components.Elevator|
 							value = 
 							{
-								gamepad=one
-								jumpSpeed=|Hello World|
-								walkSpeed=|Dance Monkey Dance!|
+								interval=0.
+								sleep=0.
+								direction=
+								{
+									x=0.
+									y=0.
+								}
+								active=false
+								elapsed=0.
+							}
+						}
+					]
+					name=|Mud|
+					id=2089028877
+				}
+			]
+			archetypes=
+			[
+				{
+					components=
+					[
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=|banana|
+								}
 							}
 						},
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0.
+									y=0.
+								}
+								scale=
+								{
+									x=10.
+									y=10.
+								}
+								rotation=0.
+							}
+						}
+					]
+					name=|Let's dance|
+					id=990938259
+				},
+				{
+					components=
+					[
+					]
+					name=|Entity|
+					id=1880743459
+				}
+			]
+			selectedItem=2
+			selectedArchetype=1
+		}
+	},
+	{
+		type = |plugin.editor.data.DoUndo|
+		value = 
+		{
+			redoCount=0
+			commands=
+			[
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=1
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=2
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=3
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=4
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0.
+									y=0.
+								}
+								scale=
+								{
+									x=1.
+									y=1.
+								}
+								rotation=0.
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Switch|
+							value = 
+							{
+								fan=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Elevator|
+							value = 
+							{
+								interval=0.
+								sleep=0.
+								direction=
+								{
+									x=0.
+									y=0.
+								}
+								active=false
+								elapsed=0.
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.PressurePlate|
+							value = 
+							{
+								elev=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=0
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+								{
+									type = |common.components.Transform|
+									value = 
+									{
+										position=
+										{
+											x=0.
+											y=0.
+										}
+										scale=
+										{
+											x=1.
+											y=1.
+										}
+										rotation=0.
+									}
+								},
+								{
+									type = |common.components.Sprite|
+									value = 
+									{
+										tint=
+										{
+											packedValue=4294967295
+										}
+										texture=
+										{
+											atlas=||
+											image=||
+										}
+									}
+								},
+								{
+									type = |common.components.Switch|
+									value = 
+									{
+										fan=
+										{
+											id=0
+										}
+									}
+								},
+								{
+									type = |common.components.Elevator|
+									value = 
+									{
+										interval=0.
+										sleep=0.
+										direction=
+										{
+											x=0.
+											y=0.
+										}
+										active=false
+										elapsed=0.
+									}
+								},
+								{
+									type = |common.components.PressurePlate|
+									value = 
+									{
+										elev=
+										{
+											id=0
+										}
+									}
+								}
+							]
+							name=|Item|
+							id=1622069380
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=4
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=5
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.PressurePlate|
+							value = 
+							{
+								elev=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0.
+									y=0.
+								}
+								scale=
+								{
+									x=1.
+									y=1.
+								}
+								rotation=0.
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddArchetype|
+					value = 
+					{
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0.
+									y=0.
+								}
+								scale=
+								{
+									x=1.
+									y=1.
+								}
+								rotation=0.
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						component=
+						{
+							type = |common.components.Switch|
+							value = 
+							{
+								fan=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						component=
+						{
+							type = |common.components.Fan|
+							value = 
+							{
+								force=0.
+								effect=0.
+								active=false
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						component=
+						{
+							type = |common.components.Weapon|
+							value = 
+							{
+								bulletID=
+								{
+									name=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Archetype|
+						newName=|L|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|L|
+						newName=|Le|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Le|
+						newName=|Let|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let|
+						newName=|Letä|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Letä|
+						newName=|Letäs|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Letäs|
+						newName=|Letäs |
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Letäs |
+						newName=|Letäs|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Letäs|
+						newName=|Letä|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Letä|
+						newName=|Let|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let|
+						newName=|Let'|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let'|
+						newName=|Let's|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's|
+						newName=|Let's |
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's |
+						newName=|Let's d|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's d|
+						newName=|Let's da|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's da|
+						newName=|Let's dan|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's dan|
+						newName=|Let's danc|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						oldName=|Let's danc|
+						newName=|Let's dance|
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Item|
+							id=1683777217
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddArchetype|
+					value = 
+					{
+						index=1
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Item|
+							id=685390221
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Item|
+							id=2819153663
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Item|
+							id=3914900644
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Item|
+							id=4122364430
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=1
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=1
+							type=1
+						}
+						item=
+						{
+							components=
+							[
+							]
+							name=|Archetype|
+							id=3235412038
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						componentIndex=4
+						component=
+						{
+							type = |common.components.Weapon|
+							value = 
+							{
+								bulletID=
+								{
+									name=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						componentIndex=3
+						component=
+						{
+							type = |common.components.Fan|
+							value = 
+							{
+								force=0.
+								effect=0.
+								active=false
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=1
+						}
+						componentIndex=2
+						component=
+						{
+							type = |common.components.Switch|
+							value = 
+							{
+								fan=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=2
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						componentIndex=0
+						component=
+						{
+							type = |common.components.PressurePlate|
+							value = 
+							{
+								elev=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
 						{
 							type = |common.components.Text|
 							value = 
@@ -65,26 +1310,548 @@ data=[
 								}
 								font=
 								{
-									atlas=|Fonts|
-									font=|seguisli.ttf|
+									atlas=||
+									font=||
 								}
 								thresh=
 								{
 									x=0.25
 									y=0.75
 								}
-								text=|Hello there little guy|
+								text=||
 							}
 						}
-					]
-					name=|TestEntity1|
-					id=2200565559
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						componentIndex=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=|baws|
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|Let's dance|
+						newName=|B|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|B|
+						newName=|Ba|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|Ba|
+						newName=|Ban|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|Ban|
+						newName=|Bana|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|Bana|
+						newName=|Banan|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						oldName=|Banan|
+						newName=|Banana|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						oldName=|Item|
+						newName=|T|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						oldName=|T|
+						newName=|Te|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						oldName=|Te|
+						newName=|Tex|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						oldName=|Tex|
+						newName=|Text|
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=2
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+								{
+									type = |common.components.Sprite|
+									value = 
+									{
+										tint=
+										{
+											packedValue=4294967295
+										}
+										texture=
+										{
+											atlas=|GuiAtlas|
+											image=|pixel|
+										}
+									}
+								},
+								{
+									type = |common.components.Transform|
+									value = 
+									{
+										position=
+										{
+											x=3.
+											y=5.
+										}
+										scale=
+										{
+											x=5.
+											y=0.4
+										}
+										rotation=2.6
+									}
+								}
+							]
+							name=|Let's dance|
+							id=1200458204
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						componentIndex=4
+						component=
+						{
+							type = |common.components.Weapon|
+							value = 
+							{
+								bulletID=
+								{
+									name=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveComponent|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						componentIndex=2
+						component=
+						{
+							type = |common.components.Switch|
+							value = 
+							{
+								fan=
+								{
+									id=0
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=2
+					}
+				},
+				{
+					type = |plugin.editor.commands.RemoveItem|
+					value = 
+					{
+						id=
+						{
+							index=2
+							type=0
+						}
+						item=
+						{
+							components=
+							[
+								{
+									type = |common.components.Sprite|
+									value = 
+									{
+										tint=
+										{
+											packedValue=4294967295
+										}
+										texture=
+										{
+											atlas=|Atlas|
+											image=|banana|
+										}
+									}
+								},
+								{
+									type = |common.components.Transform|
+									value = 
+									{
+										position=
+										{
+											x=0.
+											y=0.
+										}
+										scale=
+										{
+											x=10.
+											y=10.
+										}
+										rotation=0.
+									}
+								}
+							]
+							name=|Let's dance|
+							id=4025657607
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddArchetype|
+					value = 
+					{
+						index=1
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|Archetype|
+						newName=|E|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|E|
+						newName=|En|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|En|
+						newName=|Ent|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|Ent|
+						newName=|Enti|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|Enti|
+						newName=|Entit|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=1
+						}
+						oldName=|Entit|
+						newName=|Entity|
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddItem|
+					value = 
+					{
+						archetype=1
+						index=2
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0.
+									y=0.
+								}
+								scale=
+								{
+									x=1.
+									y=1.
+								}
+								rotation=0.
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						oldName=|Entity|
+						newName=|M|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						oldName=|M|
+						newName=|Mu|
+					}
+				},
+				{
+					type = |plugin.editor.commands.ChangeItemName|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						oldName=|Mu|
+						newName=|Mud|
+					}
+				},
+				{
+					type = |plugin.editor.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=2
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Elevator|
+							value = 
+							{
+								interval=0.
+								sleep=0.
+								direction=
+								{
+									x=0.
+									y=0.
+								}
+								active=false
+								elapsed=0.
+							}
+						}
+					}
 				}
 			]
-			archetypes=
-			[
-			]
-			selectedItem=0
-			selectedArchetype=0
 		}
 	}]

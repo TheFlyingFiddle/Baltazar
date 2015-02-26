@@ -201,24 +201,17 @@ void drawQuadOutline(R)(ref R renderer, float4 rect, float width, Frame frame, C
 
 	__gshared static ushort[24] indices =
 	[	
-		0, 3, 1,
-		3, 2, 1,
-		3, 5, 2,
-		5, 4, 2,
-
-		5, 7, 4,
-		7, 6, 4,
-		7, 0, 6,
-		0, 1, 6
+		0, 3, 1, 3, 2, 1, 3, 5, 2, 5, 4, 2,
+		5, 7, 4, 7, 6, 4, 7, 0, 6, 0, 1, 6
 	];
 
 	float2 center = (frame.coords.xy + frame.coords.zw) / 2;
 
 	float2 rcenter     = float2((rect.x + rect.z) / 2, (rect.y + rect.w) / 2);
-	float2 bl  = (float2(rect.x, rect.y) - rcenter).rotate(rotation) + rcenter;
-	float2 br = (float2(rect.z, rect.y) - rcenter).rotate(rotation) + rcenter;
-	float2 tr    = (float2(rect.z, rect.w) - rcenter).rotate(rotation) + rcenter;
-	float2 tl     = (float2(rect.x, rect.w) - rcenter).rotate(rotation) + rcenter;
+	float2 bl		   = (float2(rect.x, rect.y) - rcenter).rotate(rotation) + rcenter;
+	float2 br		   = (float2(rect.z, rect.y) - rcenter).rotate(rotation) + rcenter;
+	float2 tr		   = (float2(rect.z, rect.w) - rcenter).rotate(rotation) + rcenter;
+	float2 tl		   = (float2(rect.x, rect.w) - rcenter).rotate(rotation) + rcenter;
 
 	Vertex[8] vertices;
 	vertices[0] = Vertex(bl, center, color);

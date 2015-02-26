@@ -4,9 +4,9 @@ data=[
 		type = |plugin.editor.data.WorldData|
 		value = 
 		{
-			selected_=
+			selected=
 			{
-				index=2
+				index=0
 				type=0
 			}
 			items=
@@ -14,116 +14,37 @@ data=[
 				{
 					components=
 					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0.
-									y=0.
-								}
-								scale=
-								{
-									x=1.
-									y=1.
-								}
-								rotation=0.
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									name=||
-								}
-							}
-						}
 					]
-					length=0
-					name=|Entity|
-					index=26208
+					name=|Item|
+					id=1162348225
 				},
 				{
 					components=
 					[
 					]
-					length=7209065
-					name=|Entity|
-					index=37376
+					name=|Item|
+					id=611021813
 				},
 				{
 					components=
 					[
 					]
-					length=6815860
-					name=|Entity|
-					index=40608
+					name=|Item|
+					id=453289041
 				},
 				{
 					components=
 					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0.
-									y=0.
-								}
-								scale=
-								{
-									x=1.
-									y=1.
-								}
-								rotation=0.
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									name=||
-								}
-							}
-						},
-						{
-							type = |common.components.Text|
-							value = 
-							{
-								color=
-								{
-									packedValue=4278190080
-								}
-								font=
-								{
-									name=||
-								}
-								thresh=
-								{
-									x=0.25
-									y=0.75
-								}
-								text=|Dance in the land of gods!|
-							}
-						}
 					]
-					length=67108868
-					name=|Entity|
-					index=36072
+					name=|Item|
+					id=2656687658
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=3357083389
 				}
 			]
 			archetypes=
@@ -132,4 +53,10 @@ data=[
 			selectedItem=0
 			selectedArchetype=0
 		}
-	}]
+	},
+	{
+		type = |plugin.editor.data.DoUndo|
+		value = 
+		{
+			redoCount=0
+			pimp=

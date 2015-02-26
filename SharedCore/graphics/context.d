@@ -13,7 +13,7 @@ struct gl
 		enum glName = "gl" ~ name[0].toUpper.to!string ~ name[1 .. $];
 
 		//logChnl.info(glName,"(", args, ")");
-		debug scope(exit) checkGLError(name, args);
+		debug scope(exit) checkGLError(glName, args);
 
 		mixin("return " ~ glName ~ "(args);");
 	}
@@ -48,10 +48,10 @@ void checkGLError(Args...)(string name, Args args)
 				break;
 		}	
 
-		logChnl.info("Called with arguments");
+		logChnl.error("Called with arguments");
 		foreach(i, arg; args)
 		{
-			logChnl.info("Arg ", i, "=", arg);
+			logChnl.error("Arg ", i, "=", arg);
 		}
 
 

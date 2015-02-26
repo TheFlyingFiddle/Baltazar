@@ -29,9 +29,9 @@ import common.attributes;
 
 @EntityComponent struct Input
 {
-	PlayerIndex gamepad		 = PlayerIndex.zero;
-	string jumpSpeed		 = "Hello World";
-	string walkSpeed		 = "Dance Monkey Dance!";
+	PlayerIndex gamepad	 = PlayerIndex.zero;
+	float jumpSpeed		 = 0;
+	float walkSpeed		 = 0;
 }
 
 @EntityComponent struct Fan
