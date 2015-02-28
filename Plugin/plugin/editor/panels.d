@@ -499,7 +499,7 @@ struct WorldPanel
 
 
 		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, &camera);
-		Rect lowerLeft = Rect(context.area.x + 200, context.area.y + 3, context.area.w - 203, 20);
+		Rect lowerLeft = Rect(context.area.x + 400, context.area.y + 3, context.area.w - 403, 20);
 		toolbar(*context.gui, lowerLeft, selected, tools.map!(x => x.name));
 		
 		if(selected < tools.length)

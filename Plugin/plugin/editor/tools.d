@@ -61,24 +61,19 @@ struct Select
 	}
 }
 
-
-import reflection.generation;
-enum Filter(T) = true;
-mixin GenerateMetaData!(Filter, plugin.editor.tools);
-
-/*
-@EditorTool
+@WorldTool("Grab")
 struct Grab
 {
-	bool isMoving = false;
-	void use(ToolContext* context)
+	void use(WorldToolContext* context)
 	{
 		if(context.mouse.isDown(MouseButton.left))
 		{
-			float2 offset = context.mouse.moveDelta / context.state.camera.scale;
-			context.state.camera.offset -= offset;
+			float2 offset = context.mouse.moveDelta / context.camera.scale;
+			context.camera.position -= offset;
 		}
 	}
 }
 
-*/
+import reflection.generation;
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.editor.tools);
