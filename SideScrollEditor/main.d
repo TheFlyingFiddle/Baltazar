@@ -21,7 +21,7 @@ import core.sys.windows.windows;
 import core.runtime;
 import plugins;
 
-void main()
+int main()
 {
 	import core.memory;
 	GC.disable();
@@ -53,8 +53,7 @@ void main()
 		readln;
 	}
 
-	import std.stdio;
-	readln;
+	return 0;
 }
 
 void run(DesktopAppConfig config) 
