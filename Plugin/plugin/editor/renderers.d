@@ -84,7 +84,7 @@ void renderBasic(RenderContext* context)
 				auto font	 = (*atlas)[text.font.font];
 
 				float2 trans = context.camera.worldToScreen(transform.position); 
-				float2 size  = transform.scale * font.size;
+				float2 size  = transform.scale * font.size * (context.camera.scale / 64);
 
 				context.renderer.drawText(text.text, trans, size, font, text.color, text.thresh);
 			}

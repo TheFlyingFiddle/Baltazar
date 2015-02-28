@@ -491,6 +491,11 @@ struct WorldPanel
 		auto renderer = context.gui.renderer;
 		auto plugin   = Editor.services.locate!(Plugins);
 
+
+		if(context.area.contains(context.gui.mouse.location))
+			camera.scale = clamp(context.gui.mouse.scrollDelta.y + camera.scale, 5, 128);
+
+
 		auto rcontext = RenderContext(data, &camera, renderer);
 
 		camera.viewport = context.area.toFloat4;
@@ -505,8 +510,8 @@ struct WorldPanel
 		auto ftools = tools.filter!(x => x.usable.isNotNull ? x.usable(&tcontext) : true);
 		toolbar(*context.gui, lowerLeft, selected, ftools.map!(x => x.name));
 	
+		
 		import std.range;
-
 		ftools = ftools.drop(selected);
 		if(!ftools.empty)
 		{
