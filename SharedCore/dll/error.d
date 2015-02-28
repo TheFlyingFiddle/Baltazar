@@ -40,9 +40,6 @@ version(Windows)
 		import std.traits;
 		static auto ref wrapped(ParameterTypeTuple!F params)
 		{
-			import log;
-			logInfo("Calling function: ", Identifier!F);
-
 			try
 			{
 				auto ptr = &F;
@@ -50,6 +47,9 @@ version(Windows)
 			}
 			catch(Throwable t)
 			{
+				import log;
+				logInfo("Error while calling function: ", Identifier!F);
+
 				import allocation, std.format, collections.list;
 				List!char errors = List!char(errorData.ptr, 0, 1024 * 10);
 				formattedWrite(&errors, "%s", t);
@@ -69,9 +69,6 @@ version(Windows)
 	import util.traits;
 	auto ref wrap(alias D, T)(void* ptr, ParameterTypeTuple!D params) if(is(T == struct))
 	{
-		import log;
-		logInfo("Calling delegate: ", Identifier!T, ".", Identifier!D);
-
 		try
 		{
 			T* self = cast(T*)ptr;
@@ -79,6 +76,9 @@ version(Windows)
 		}
 		catch(Throwable t)
 		{
+			import log;
+			logInfo("Error while calling delegate: ", Identifier!T, ".", Identifier!D);
+
 			import allocation, std.format, collections.list;
 			List!char errors = List!char(errorData.ptr, 0, 1024 * 10);
 			formattedWrite(&errors, "%s", t);

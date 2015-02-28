@@ -58,11 +58,11 @@ struct List(T)
 		this.capacity = cast(uint)buffer.length;
 	}
 
-	this(T* buffer, uint length, uint capacity)
+	this(T* buffer, size_t length, size_t capacity)
 	{
 		this.buffer   = buffer;
-		this.length   = length;
-		this.capacity = capacity; 
+		this.length   = cast(uint)length;
+		this.capacity = cast(uint)capacity; 
 	}
 
 	void deallocate(A)(ref A allocator)
@@ -115,7 +115,7 @@ struct List(T)
 	}
 
 
-	uint opDollar(size_t pos)()
+	size_t opDollar(size_t pos)()
 	{
 		return length;
 	}
@@ -338,7 +338,7 @@ struct GrowingList(T)
 	}
 
 
-	uint opDollar(size_t pos)()
+	size_t opDollar(size_t pos)()
 	{
 		return base_.opDollar!(pos)();
 	}

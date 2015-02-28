@@ -13,8 +13,8 @@ import common.attributes;
 import common.identifiers;
 import bridge;
 
-import plugin.editor.commands;
-import plugin.editor.data;
+import plugin.core.commands;
+import plugin.core.data;
 
 enum defFieldSize = 20;
 enum defSpacing   = 3;
@@ -102,7 +102,7 @@ struct ComponentsPanelImpl
 			}
 			offset -= 15;
 
-			int toRemove = -1;
+			size_t toRemove = -1;
 			foreach(i, ref component; item.components)
 			{
 				auto type = &components.find!(x => x.isTypeOf(component))[0];
@@ -123,8 +123,13 @@ struct ComponentsPanelImpl
 
 				offset -= defFieldSize + defSpacing;
 				if(active[i]) 
-					comp(gui, component.data.ptr, type.typeInfo, offset, defSpacing, gui.area.w - defSpacing * 2);
-
+				{
+					auto tmp = component;
+					if(comp(gui, tmp.data.ptr, type.typeInfo, offset, defSpacing, gui.area.w - defSpacing * 2))
+					{
+						doUndo.apply(ComponentChanged(i, tmp));
+					}
+				}
 				r = Rect(defSpacing, offset, gui.area.w - defSpacing * 2, 20);
 				gui.separator(r, Color(0xFFB3B0A9));
 			}
@@ -191,7 +196,7 @@ struct ComponentsPanelImpl
 			case enum_:
 				Rect r   = Rect(left, offset, width, size(gui, t, value));
 				auto m   = t.metaEnum.constants.map!(x => x.name);
-				auto idx = t.metaEnum.constants.countUntil!(x => x.value == *cast(uint*)value); 
+				auto idx = cast(int)t.metaEnum.constants.countUntil!(x => x.value == *cast(uint*)value); 
 				auto res = gui.selectionfield(r, idx, m);
 				if(res)
 					*cast(uint*)value = t.metaEnum.constants[idx].value;
@@ -244,11 +249,11 @@ struct ComponentsPanelImpl
 	bool handle(ref Gui gui, Rect r, ref TextureID t, HashID styleID)
 	{
 		auto atlases = Editor.assets.loadedAssets("atl");
-		auto aIdx = atlases.countUntil!(x => x.name == t.atlas);
-		auto iIdx = -1;
+		int aIdx    = cast(uint)atlases.countUntil!(x => x.name == t.atlas);
+		int iIdx  = -1;
 		if(aIdx != -1) 
 		{
-			iIdx = atlases[aIdx].subitems.countUntil!(x => x == t.image);
+			iIdx = cast(uint)atlases[aIdx].subitems.countUntil!(x => x == t.image);
 		}
 
 		Rect atlasRect = Rect(r.x, r.y + 23, r.w, 20);
@@ -273,11 +278,11 @@ struct ComponentsPanelImpl
 	bool handle(ref Gui gui, Rect r, ref FontID t, HashID styleID)
 	{
 		auto atlases = Editor.assets.loadedAssets("fontatl");
-		auto aIdx = atlases.countUntil!(x => x.name == t.atlas);
-		auto fIdx = -1;
+		int aIdx = cast(int)atlases.countUntil!(x => x.name == t.atlas);
+		int fIdx = -1;
 		if(aIdx != -1) 
 		{
-			fIdx = atlases[aIdx].subitems.countUntil!(x => x == t.font);
+			fIdx = cast(int)atlases[aIdx].subitems.countUntil!(x => x == t.font);
 		}
 
 		Rect atlasRect = Rect(r.x, r.y + 23, r.w, 20);
@@ -315,7 +320,7 @@ struct ComponentsPanelImpl
 
 	bool handle(ref Gui gui, Rect r, ref EntityRef t, HashID styleID)
 	{
-		auto idx = state.items.countUntil!(x => x.id == t.id);
+		int idx  = cast(int)state.items.countUntil!(x => x.id == t.id);
 		if(gui.selectionfield(r, idx, state.items.array.map!(x => x.name)))
 		{
 			t.id = state.items[idx].id;
@@ -444,21 +449,67 @@ struct ArchetypesPanel
 struct WorldPanel
 {
 	import plugin.attributes;
+	Camera camera;
+	int   selected;
+	List!ToolItem tools;
 
-	this(IAllocator all) { }
+	struct ToolItem
+	{
+		string name;
+		VariantN!32 data;
+		Binding!(void delegate(WorldToolContext*)) use;
+		Binding!(void delegate(RenderContext*))    render;
+
+		this(const(MetaType)* type, string name)
+		{	
+			this.name   = name;
+			this.data   = type.initial!32;
+			this.use    = type.tryBind!(void delegate(WorldToolContext*))(data, "use");
+			this.render = type.tryBind!(void delegate(RenderContext*))(data, "render");
+		}
+	}
+
+	this(IAllocator all)
+	{
+		this.selected = 0;
+		camera = Camera(float4.zero, float2.zero, 64);
+		tools  = List!ToolItem(all, 20);
+
+		auto plugin   = Editor.services.locate!(Plugins);
+		foreach(ref type; plugin.attributeTypes!WorldTool)
+		{
+			auto attrib = type.getAttribute!WorldTool;
+			tools ~= ToolItem(&type, attrib.name);
+		}
+	}
+
 	void show(PanelContext* context) 
 	{
 		auto data     = Editor.data.locate!(WorldData);
-		auto camera   = Editor.data.locate!(Camera);
 		auto renderer = context.gui.renderer;
 		auto plugin   = Editor.services.locate!(Plugins);
 
-		auto rcontext = RenderContext(data, camera, renderer);
+		auto rcontext = RenderContext(data, &camera, renderer);
 
 		camera.viewport = context.area.toFloat4;
 		foreach(ref func; plugin.attributeFunctions!WorldRenderer)
 		{
 			func.invoke(&rcontext);
 		}
+
+
+		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, &camera);
+		Rect lowerLeft = Rect(context.area.x + 200, context.area.y + 3, context.area.w - 203, 20);
+		toolbar(*context.gui, lowerLeft, selected, tools.map!(x => x.name));
+		
+		if(selected < tools.length)
+		{
+			auto tool = &tools[selected];
+			if(tool.use) tool.use(&tcontext);
+			if(tool.render) tool.render(&rcontext);
+		}
 	}
 }
+
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.editor.panels);

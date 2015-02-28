@@ -1,9 +1,8 @@
 module plugin.editor.menus;
 
-import bridge;
+import bridge.attributes;
 import bridge.core;
-import plugin.editor.data;
-
+import plugin.core.data : DoUndo;
 
 @MenuItem("File.New.Project")
 void new_()
@@ -29,6 +28,7 @@ void open()
 		Editor.open(path);
 	}
 }
+
 
 @MenuItem("File.Save", KeyCommand(KeyModifiers.control, Key.s))
 void save()
@@ -71,3 +71,9 @@ void redo()
 	auto doUndo = Editor.data.locate!(DoUndo);
 	doUndo.redo();
 }
+
+
+
+import reflection.generation;
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.editor.menus);

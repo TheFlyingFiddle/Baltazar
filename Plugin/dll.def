@@ -13,6 +13,3 @@ DATA         PRELOAD MULTIPLE
 ; The workaround is to list the names in the EXPORT section translating the name to itself:
 ; EXPORTS
 ;    Symbol Symbol
-
-EXPORTS
-	GetAssembly

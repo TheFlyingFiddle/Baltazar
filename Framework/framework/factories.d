@@ -50,16 +50,17 @@ Application* createDesktopApp(A)(ref A al, DesktopAppConfig config)
 	auto task		= al.allocate!TaskComponent(al, config.concurencyConfig);
 	auto screen		= al.allocate!ScreenComponent(al, 20);
 	auto time		= al.allocate!TimerComponent(al, 100);
-	auto sound		= al.allocate!SoundComponent(al, config.soundConfig);
+	//auto sound		= al.allocate!SoundComponent(al, config.soundConfig);
 
 
-	auto render     = new RenderComponent(al, config.renderConfig);
+	auto render     = al.allocate!RenderComponent(al, config.renderConfig);
 	app.addComponent(window);
 	app.addComponent(task);
 	app.addComponent(screen);
 	app.addComponent(render);
 	app.addComponent(time);
-	app.addComponent(sound);
+
+	//app.addComponent(sound);
 
 	version(RELOADING)
 	{

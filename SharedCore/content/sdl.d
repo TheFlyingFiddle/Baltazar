@@ -716,10 +716,6 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) i
 void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if(isNumeric!T)
 {
 	sink.put(cast(char[])value.to!string);
-	static if(isFloatingPoint!T) {
-		if(std.math.floor(value) == value)	// Is integer
-			sink.put('.');
-	}
 }
 
 void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if((isArray!T || isList!(T)) && !isSomeString!T)

@@ -139,7 +139,7 @@ struct Server
 
 	private void sendLeftovers()
 	{
-		for(int i = activeConnections.length - 1; i >= 0; i--)
+		for(size_t i = activeConnections.length - 1; i >= 0; i--)
 		{
 			auto con = activeConnections[i];
 			if(con.outBuffer.length > 0)
@@ -157,7 +157,7 @@ struct Server
 	{
 		ubyte[ulong.sizeof] buffer;
 		
-		for(int i = pendingConnections.length - 1; i >= 0; i--)
+		for(size_t i = pendingConnections.length - 1; i >= 0; i--)
 		{
 			auto con = pendingConnections[i];
 			auto r   = con.socket.receive(buffer);
@@ -206,7 +206,7 @@ struct Server
 						if(index2 != -1)
 						{
 							logChnl.warn("Reconnected but connection was stil active!:  ", id);
-							closeConnection(activeConnections, index2, true, false);
+							closeConnection(activeConnections, cast(int)index2, true, false);
 
 							ubyte ok = 1;
 							con.socket.send((&ok)[0 .. 1]);
@@ -253,7 +253,7 @@ struct Server
 	void processMessages(float elapsed)
 	{
 		ubyte[8192] buffer = void;
-		for(int i = activeConnections.length - 1; i >= 0; i--)
+		for(size_t i = activeConnections.length - 1; i >= 0; i--)
 		{
 			auto con = &activeConnections[i];
 			if(!con.socket.isAlive()) 
@@ -308,10 +308,10 @@ struct Server
 	{
 		con.timeSinceLastMessage = 0;
 
-		auto sent = con.socket.send(data);
+		int sent = cast(int)con.socket.send(data);
 		if(sent > 0) 
 		{
-			return sent;
+			return cast(int)sent;
 		}
 		else if(sent == Socket.ERROR)
 		{
@@ -323,7 +323,7 @@ struct Server
 			{
 				logChnl.warn("Failed to send data to connection! ", con.id);
 				auto index = activeConnections.countUntil!(x => x.id == con.id);
-				closeConnection(activeConnections, index, true, true);
+				closeConnection(activeConnections, cast(int)index, true, true);
 				return -1;
 			}
 		}
@@ -343,7 +343,7 @@ struct Server
 		send(activeConnections[index], message);
 	}
 
-	private void forwardMessages(uint listIndex, ref Connection con, ubyte[] buffer)
+	private void forwardMessages(size_t listIndex, ref Connection con, ubyte[] buffer)
 	{
 		import util.bitmanip;
 		while(buffer.length)
@@ -432,7 +432,7 @@ struct Server
 	}
 
 	void closeConnection(ref List!Connection connections, 
-						 int i, bool wasConnected, bool addToLost)
+						 size_t i, bool wasConnected, bool addToLost)
 	{
 		auto con = connections[i];
 		connections.removeAt(i);

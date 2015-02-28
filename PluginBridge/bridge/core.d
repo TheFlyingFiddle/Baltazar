@@ -83,6 +83,16 @@ interface IEditor
 }
 
 @DontReflect
+interface IFileFinder
+{
+	string findOpenProjectPath() nothrow;
+	string openProjectPath() nothrow;
+
+	string findSaveProjectPath() nothrow;
+	string saveProjectPath() nothrow;
+}
+
+@DontReflect
 struct Editor
 {
 	private __gshared static IEditor	editor;

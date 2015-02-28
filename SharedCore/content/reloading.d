@@ -21,7 +21,7 @@ version(RELOADING)
 		ubyte[256] buffer;
 		while(true)
 		{
-			uint i = socket.receive(buffer);
+			uint i = cast(uint)socket.receive(buffer);
 			if(i == Socket.ERROR)
 			{
 				if(wouldHaveBlocked())

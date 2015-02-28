@@ -5,8 +5,8 @@ import rendering.asyncrenderbuffer;
 
 struct RenderConfig
 {
-	size_t maxBatchSize;
-	size_t batchCount;
+	uint maxBatchSize;
+	uint batchCount;
 	Color  clearColor;
 }
 

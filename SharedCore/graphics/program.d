@@ -16,7 +16,7 @@ struct Program(U, V)
 		foreach(shader; shaders)
 			gl.attachShader(glName, shader.glName);
 
-		foreach(i, dummy; V.init.tupleof)
+		foreach(uint i, dummy; V.init.tupleof)
 			gl.bindAttribLocation(glName, i, cast(char*)V.tupleof[i].stringof.ptr);
 
 
@@ -261,7 +261,7 @@ void setupVertexBindings(A, U)(ref VertexArrayObject!A vao,
 		ibo.bind();
 
 	uint offset = 0;
-	foreach(i, field; A.init.tupleof)
+	foreach(uint i, field; A.init.tupleof)
 	{
 		enum name = A.tupleof[i].stringof;
 		alias type = typeof(A.tupleof[i]);
@@ -272,7 +272,7 @@ void setupVertexBindings(A, U)(ref VertexArrayObject!A vao,
 		bool normalized = attribs.length == 1 && is(attribs[0] == Normalized);
 
 		gl.vertexAttribPointer(program.attributeLocs[i], glUnitSize!type,
-							   glType!type, normalized, A.sizeof, cast(void*)offset);
+							   glType!type, normalized, cast(int)A.sizeof, cast(void*)offset);
 		
 		offset += type.sizeof;
 	}

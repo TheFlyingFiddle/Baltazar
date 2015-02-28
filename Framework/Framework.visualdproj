@@ -237,7 +237,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\Derelict; ..\SharedCore; ..\Graphics; ..\ContentCore;</imppath>
+  <imppath>..\SharedCore; ..\ExternalLibs; </imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -273,8 +273,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>SharedCore.lib Graphics.lib Derelict.lib ContentConfig.lib</libfiles>
-  <libpaths>..\SharedCore\Debug ..\Graphics\Debug ..\Derelict\Debug  ..\ContentConfig\Debug</libpaths>
+  <libfiles>SharedCore.lib ExternalLibs.lib</libfiles>
+  <libpaths>..\SharedCore\Debug ..\ExternalLibs\Debug</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).lib</exefile>

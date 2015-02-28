@@ -42,7 +42,7 @@ struct SpriteSystem
 		{
 			auto trans  = e.getComp!(Transform);
 			auto sprite = e.getComp!(Sprite);
-			auto frame  = atlas[sprite.texture.name];
+			auto frame  = atlas[sprite.texture.image];
 
 			float2 min = trans.position - trans.scale / 2;
 			float2 max = trans.position + trans.scale / 2;
@@ -260,7 +260,7 @@ struct SwitchInitializer
 		auto sw = this_.getComp!(Switch);
 		foreach(ref e; world.entities)
 		{
-			if(e.hasComp!(Fan) && e.uniqueID == sw.fan.entityID)
+			if(e.hasComp!(Fan) && e.uniqueID == sw.fan.id)
 			{
 				auto fan = e.getComp!(Fan);
 				fan.active = !fan.active;

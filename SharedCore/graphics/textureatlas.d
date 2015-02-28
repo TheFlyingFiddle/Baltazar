@@ -24,6 +24,16 @@ struct TextureAtlas
 		return rects.length;
 	}	
 
+	bool contains(HashID id)
+	{
+		return rects.countUntil!(x => x.hash == id.value) != -1;
+	}
+
+	bool contains(string id)
+	{
+		return contains(bytesHash(id));
+	}
+
 	Frame opIndex(HashID id)
 	{
 		import std.algorithm;
@@ -51,7 +61,7 @@ struct TextureAtlas
 		return this[s];
 	}
 
-	int opApply(int delegate(uint, Frame) dg)
+	int opApply(int delegate(size_t, Frame) dg)
 	{
 		int result;
 		foreach(i; 0 .. rects.length)

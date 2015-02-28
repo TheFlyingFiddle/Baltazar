@@ -33,7 +33,7 @@ void addGeneratedFile(string name, void[] data)
 
 private void throwingSend(Socket socket, void[] buffer)
 {
-	int sent = socket.send(buffer);
+	size_t sent = socket.send(buffer);
 	if(sent == Socket.ERROR)
 		throw new Exception("Failed to send data!");
 }
@@ -45,7 +45,7 @@ size_t writeFileMetadata(ubyte[] buffer, const(char)[] fileName, size_t fileSize
 
 	buffer.write!ubyte(FileMessages.sentFile, &offset);
 	buffer.write!(char[])(cast(char[])fileName, &offset);
-	buffer.write!uint(fileSize, &offset);
+	buffer.write!uint(cast(uint)fileSize, &offset);
 
 	return offset;
 }

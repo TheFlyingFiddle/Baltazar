@@ -64,7 +64,7 @@ struct NetworkServices
 				auto index = services.countUntil!(x => x.id == s);
 				if(index != -1)
 				{
-					sendService(index, addr);
+					sendService(cast(int)index, addr);
 				}
 			}
 		} else {
@@ -72,7 +72,7 @@ struct NetworkServices
 		}
 	}
 
-	private void sendService(uint index, Address to)
+	private void sendService(size_t index, Address to)
 	{
 		import util.bitmanip;
 		ubyte[serviceMessageMax] buffer = void; ubyte[] buf = buffer[];

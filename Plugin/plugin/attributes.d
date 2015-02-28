@@ -1,6 +1,8 @@
 module plugin.attributes;
-import plugin.editor.data;
+import plugin.core.data;
 import reflection;
+import window.keyboard;
+import window.mouse;
 
 @DontReflect
 struct RenderContext
@@ -10,6 +12,20 @@ struct RenderContext
 	WorldData*  world;
 	Camera*     camera;
 	Renderer2D* renderer;
+}
+
+@DontReflect
+struct WorldToolContext
+{
+	WorldData* world;
+	Keyboard*  keyboard;
+	Mouse*     mouse;
+	Camera*    camera;
+}
+
+struct WorldTool
+{
+	string name;
 }
 
 struct WorldRenderer 

@@ -35,8 +35,8 @@ struct FontLoader
 		auto texPath = text1024(path[0 .. $ - path.extension.length], ".png", "\0");
 		auto texture = loadTexture(texPath.ptr, 0, false, async, ColorFormat.rgba);
 
-		int dataSize = FontAtlas.sizeof + Font.sizeof * header.length;
-		int length = dataSize;
+		auto dataSize = FontAtlas.sizeof + Font.sizeof * header.length;
+		auto length = dataSize;
 		foreach(font; header)
 			length += font.dataLength * CharInfo.sizeof;
 
@@ -53,8 +53,8 @@ struct FontLoader
 			font.page       = atlas.page;
 			font.hashID		= HashID(header[i].hashID);
 			
-			int start = dataSize + header[i].dataOffset;
-			int end   = start + header[i].dataLength * CharInfo.sizeof;
+			auto start = dataSize + header[i].dataOffset;
+			auto end   = start + header[i].dataLength * CharInfo.sizeof;
 
 			font.chars = cast(CharInfo[])(data[start .. end]);
 			font.layer = header[i].layer;

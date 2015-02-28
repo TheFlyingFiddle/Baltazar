@@ -20,6 +20,16 @@ struct FontAtlas
 	Texture2D page;
 	Font[] fonts;
 
+	bool contains(HashID id)
+	{
+		return fonts.countUntil!(x => x.hashID == id) != -1;
+	}
+
+	bool contains(string id)
+	{
+		return contains(bytesHash(id));
+	}
+
 	ref Font opIndex(string s)
 	{
 		auto id = bytesHash(s);
@@ -119,7 +129,7 @@ auto measureUntil(alias pred)(ref Font font, const(char)[] input)
 {
 	import std.math, std.utf;
 	float width = 0, height = 0, cursor = 0;
-	uint index = 0, codepoint = 0;
+	size_t index = 0, codepoint = 0;
 
 	char[] text = cast(char[])input;
 	while(index < input.length)
@@ -143,8 +153,8 @@ auto measureUntil(alias pred)(ref Font font, const(char)[] input)
 		}
 		
 		if(pred(float2(fmax(width, cursor), height + font.size) / font.size, float2(info.advance, info.srcRect.w) / font.size))
-			return  Measure(index, codepoint, float2(fmax(width, cursor), height + font.size) / font.size);
+			return  Measure(cast(int)index, cast(int)codepoint, float2(fmax(width, cursor), height + font.size) / font.size);
 	}
 
-	return  Measure(-1, codepoint, float2(fmax(width, cursor), height + font.size) / font.size);
+	return  Measure(-1, cast(int)codepoint, float2(fmax(width, cursor), height + font.size) / font.size);
 }

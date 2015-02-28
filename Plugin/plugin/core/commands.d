@@ -1,8 +1,8 @@
-module plugin.editor.commands;
+module plugin.core.commands;
 
 import bridge;
 import allocation;
-import plugin.editor.data;
+import plugin.core.data;
 import collections.list;
 
 struct AddItem
@@ -10,7 +10,7 @@ struct AddItem
 	uint archetype;
 	uint index;
 
-	this(int)
+	this(int i)
 	{
 		auto d = Editor.data.locate!(WorldData);
 		archetype = d.selectedArchetype;
@@ -25,7 +25,7 @@ struct AddItem
 		else 
 			item = WorldItem("Item");
 
-		index = d.items.length;
+		index	 = cast(uint)d.items.length;
 		d.items ~= item;
 	}
 
@@ -41,13 +41,13 @@ struct AddItem
 struct AddArchetype
 {
 	uint index;
-	this(int) { }
+	this(int i) { }
 
 	void apply()
 	{
 		auto d = Editor.data.locate!(WorldData);
 		d.archetypes ~= WorldItem("Archetype");
-		index = d.archetypes.length - 1;
+		index = cast(uint)d.archetypes.length - 1;
 	}
 
 	void revert()
@@ -58,10 +58,39 @@ struct AddArchetype
 	}
 }
 
-struct RemoveItem
+struct ComponentChanged
 {
-	WorldItemID id;
+	WorldItemID item;
+	uint index;
+	StateComponent component;
+
+	this(size_t index, StateComponent component)
+	{
+		auto d	       = Editor.data.locate!(WorldData);
+		item	       = d.selected;
+		this.index	   = cast(uint)index;
+		this.component = component; 
+	}
+
+	void apply()
+	{
+	    auto tmp = item.proxy.components[index];
+		item.proxy.components[index] = component;
+		this.component = tmp;
+	}
+
+	void revert()
+	{
+	    auto tmp = item.proxy.components[index];
+		item.proxy.components[index] = component;
+		this.component = tmp;
+	}
+}
+
+align(4) struct RemoveItem
+{
 	WorldItem   item;
+	WorldItemID id;
 
 	this(int i)
 	{
@@ -142,12 +171,12 @@ struct RemoveComponent
 	int componentIndex;
 	StateComponent component;
 
-	this(int componentIndex)
+	this(size_t componentIndex)
 	{
 		auto d = Editor.data.locate!(WorldData);
 		this.item = d.selected;
 
-		this.componentIndex = componentIndex;
+		this.componentIndex = cast(int)componentIndex;
 		this.component = item.proxy.components[componentIndex];
 	}
 
@@ -161,3 +190,8 @@ struct RemoveComponent
 		item.proxy.components.insert(componentIndex, component);
 	}
 }
+
+
+import reflection.generation;
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.core.commands);

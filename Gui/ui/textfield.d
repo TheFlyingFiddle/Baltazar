@@ -94,7 +94,7 @@ struct GuiTextfield
 		if(messure.index > 0) 
 			messure.index -= text.strideBack(messure.index);
 		if(messure.index == -1) 
-			messure.index = text.length;
+			messure.index = cast(uint)text.length;
 
 		return messure.index;
 	}
@@ -108,8 +108,8 @@ struct GuiTextfield
 			state.cursor -= s;	
 			if(keyboard.isModifiersDown(KeyModifiers.shift)) 
 			{
-				state.selection.x = state.cursor + s;
-				state.selection.y = state.cursor;
+				state.selection.x = cast(int)(state.cursor + s);
+				state.selection.y = cast(int)state.cursor;
 			}
 		}
 		else if(keyboard.wasInput(Key.right) && state.cursor < text.length)
@@ -118,8 +118,8 @@ struct GuiTextfield
 			state.cursor += s;	
 			if(keyboard.isModifiersDown(KeyModifiers.shift)) 
 			{
-				state.selection.x = state.cursor - s;
-				state.selection.y = state.cursor;
+				state.selection.x =  cast(int)(state.cursor - s);
+				state.selection.y =  cast(int)(state.cursor);
 			}
 		}
 
@@ -160,8 +160,8 @@ struct GuiTextfield
 		if(keyboard.wasInput(Key.a) && keyboard.isModifiersDown(KeyModifiers.control))
 		{
 			state.selection.x = 0;
-			state.selection.y = text.length;
-			state.cursor      = text.length;
+			state.selection.y = cast(uint)text.length;
+			state.cursor      = cast(uint)text.length;
 		}
 
 	}
@@ -204,7 +204,7 @@ struct GuiTextfield
 			size_t low  = min(state.selection.x, state.selection.y);
 			size_t high = max(state.selection.x, state.selection.y);
 			text.removeSection(low, high);
-			state.cursor = low;
+			state.cursor = cast(int)low;
 			state.cancelSelection();
 			changed = true;
 		}
@@ -236,8 +236,8 @@ struct GuiTextfield
 		if(keyboard.wasInput(Key.a) && keyboard.isModifiersDown(KeyModifiers.control))
 		{
 			state.selection.x = 0;
-			state.selection.y = text.length;
-			state.cursor      = text.length;
+			state.selection.y = cast(uint)text.length;
+			state.cursor      = cast(uint)text.length;
 		}
 	}
 
@@ -270,12 +270,12 @@ struct GuiTextfield
 
 		if(hasFocus())
 		{
-			state = gui.fetchState(HashID(rect), State(text.length, uint2(text.length,text.length)));
+			state = gui.fetchState(HashID(rect), State(cast(uint)text.length, uint2(cast(uint)text.length,cast(uint)text.length)));
 
 			import math;
-			state.cursor	  = clamp(state.cursor, 0, text.length);
-			state.selection.x = clamp(state.selection.x, 0, text.length);
-			state.selection.y = clamp(state.selection.y, 0, text.length);
+			state.cursor	  = clamp(state.cursor, 0,      cast(uint)text.length);
+			state.selection.x = clamp(state.selection.x, 0, cast(uint)text.length);
+			state.selection.y = clamp(state.selection.y, 0, cast(uint)text.length);
 
 			textfieldMouseSelection(text);
 
@@ -336,7 +336,7 @@ float2 numberfieldSize(T)(ref Gui gui, ref T number, HashID style = HashID("text
 {
 	import util.strings;
 	auto t        = cast(char[])text1024(T.max);
-	auto edittext = EditText(t.ptr, t.length, t.length);
+	auto edittext = EditText(t.ptr, cast(uint)t.length, cast(uint)t.length);
 
 	return textfieldSize(gui, edittext, "", style);
 }
@@ -394,7 +394,7 @@ bool numberfield(T)(ref Gui gui,
 		if(result)
 		{
 			auto text_    = text(buffer, number);
-			auto edittext = EditText(cast(char*)text_.ptr, text_.length, 27);
+			auto edittext = EditText(cast(char*)text_.ptr, cast(uint)text_.length, 27);
 			tf(edittext, "");
 			return true;
 		}
@@ -431,7 +431,7 @@ bool numberfield(T)(ref Gui gui,
 	else 
 	{
 		auto tmp = cast(char[])text(buffer, number);
-		auto edittext = EditText(tmp.ptr, tmp.length, 27);
+		auto edittext = EditText(tmp.ptr, cast(uint)tmp.length, 27);
 		return tf(edittext, "");
 	}
 }

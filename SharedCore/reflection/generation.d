@@ -2,22 +2,14 @@ module reflection.generation;
 
 import reflection.data;
 import std.typetuple;
-import std.bitmanip;
-import std.exception;
 import std.traits;
 
 import util.variant;
 import util.hash;
 import util.traits;
 
-__gshared static this()
+private __gshared static this()
 {
-	import core.memory;
-	import util.variant;
-	import util.hash;
-	import util.traits;
-	import std.traits;
-
 	alias primitives = TypeTuple!(ubyte,  byte,
 								  ushort, short,
 								  uint,   int,
@@ -33,13 +25,8 @@ __gshared static this()
 
 mixin template GenerateMetaData(alias typeFilter, modules...)
 {
-	__gshared static this()
+	private __gshared static this()
 	{
-		import core.memory;
-		import util.variant;
-		import util.hash;
-		import util.traits;
-
 		try
 		{
 			foreach(mod; modules)
@@ -49,13 +36,7 @@ mixin template GenerateMetaData(alias typeFilter, modules...)
 		{
 			import log;
 			logInfo(t);
-			import std.stdio;
-			readln;
 		}
-
-		//Todo determine sizes of all arrays at compiletime and don't allocate.
-		GC.collect();
-		GC.minimize();
 	}
 }
 

@@ -16,7 +16,7 @@ bool openFileDialog(const(char)[] filterString, char[] result) nothrow
 	ofn.nFilterIndex = 1;
 	ofn.Flags		= 0x00001000;
 	ofn.lpstrFile   = result.ptr;
-	ofn.nMaxFile    = result.length;
+	ofn.nMaxFile    = cast(uint)result.length;
 
 	DWORD len = 256;
 	char[256] directory;
@@ -39,7 +39,7 @@ bool saveFileDialog(const(char)[] filterString, char[] result) nothrow
 	ofn.nFilterIndex = 1;
 	ofn.Flags		= 0x00001000;
 	ofn.lpstrFile   = result.ptr;
-	ofn.nMaxFile    = result.length;
+	ofn.nMaxFile    = cast(uint)result.length;
 
 
 	DWORD len = 256;

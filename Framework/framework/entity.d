@@ -239,7 +239,7 @@ class System
 	{
 		import std.algorithm;
 
-		int index = entities.countUntil!(x => x.id == entity.id);
+		auto index = entities.countUntil!(x => x.id == entity.id);
 		if(index == -1 && shouldAddEntity(entity))
 			entities ~= entity;
 		else if(index != -1 && !shouldAddEntity(entity))
@@ -249,7 +249,7 @@ class System
 	final void entityRemoved(int entity)
 	{
 		import std.algorithm;
-		int index = entities.countUntil!(x => x.id == entity);
+		auto index = entities.countUntil!(x => x.id == entity);
 		if(index != -1) 
 			entities.removeAt(index);
 	}
@@ -458,7 +458,7 @@ struct EntityCollection
 	void destroy(EntityID id, ref World world)
 	{
 		import std.algorithm;
-		int index = entities[0 .. entityCount].countUntil!(x => x.id == id);
+		auto index = entities[0 .. entityCount].countUntil!(x => x.id == id);
 		if(index != -1)
 		{
 			entities[index].uniqueID = 0;

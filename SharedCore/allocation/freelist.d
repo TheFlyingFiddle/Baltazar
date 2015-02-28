@@ -63,12 +63,12 @@ struct FreeList(T) if(is(T == class))
 		
 	struct Item
 	{
-		uint next;
+		size_t next;
 		ubyte[tsize] value;
 	}
 
 	Item[] items;
-	uint free;
+	size_t free;
 
 	this(A)(ref A allocator, size_t maxItems)
 	{
@@ -113,7 +113,7 @@ struct FreeList(T) if(is(T == class))
 	
 		assert(free != uint.max);
 
-		uint newFree = items[free].next; 
+		auto newFree = items[free].next; 
 		auto t = emplace!(T, Args)(items[free].value[], args);
 		free = newFree;
 		return t;

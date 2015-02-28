@@ -36,9 +36,6 @@ final class MainScreen : Screen, IEditor
 	EditorServiceLocator locator;
 	Assets				 assets_;
 
-	/*
-		ToolBox	 tools;
-	*/
 
 	Panels   centerPanels;
 	Panels	 leftPanels;

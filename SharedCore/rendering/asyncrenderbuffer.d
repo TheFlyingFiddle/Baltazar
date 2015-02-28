@@ -103,7 +103,7 @@ struct SubBufferRenderBuffer(Vertex)
 	private ushort[] indices;
 	private Vertex[] vertices;
 
-	this(A, U)(ref A all, size_t batchSize,  ref Program!(U, Vertex) program)
+	this(A, U)(ref A all, uint batchSize,  ref Program!(U, Vertex) program)
 	{
 		import allocation;
 
@@ -115,7 +115,7 @@ struct SubBufferRenderBuffer(Vertex)
 
 		this.vbo = VBO.create(BufferHint.streamDraw);
 		this.vbo.bind();
-		this.vbo.initialize(Vertex.sizeof * batchSize);
+		this.vbo.initialize(cast(uint)(Vertex.sizeof * batchSize));
 
 		this.ibo = IBO.create(BufferHint.streamDraw);
 		this.ibo.bind();

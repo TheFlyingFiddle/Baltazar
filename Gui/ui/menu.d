@@ -118,7 +118,7 @@ struct NotMenuMember{ }
 alias Alias(T...) = T;
 
 
-float2 menuSize(ref Font font, GuiMenu.Style style, ref Menu menu, int parent)
+float2 menuSize(ref Font font, GuiMenu.Style style, ref Menu menu, size_t parent)
 {
 	float x = 0, y = 0;
 	foreach(i, item; menu.items) if(item.parent == parent) 
@@ -130,14 +130,14 @@ float2 menuSize(ref Font font, GuiMenu.Style style, ref Menu menu, int parent)
 	return float2(x + style.width, y + style.padding.w);
 }
 
-private void showPopupMenu(ref Gui gui,Rect area,  int windowID, ref Menu menu, int item)
+private void showPopupMenu(ref Gui gui,Rect area,  int windowID, ref Menu menu, size_t item)
 {
 	auto hash = HashID("menu", windowID);
 	//Need to do this i guess.
-	auto windowState = gui.fetchState(hash, GuiMenu.State(-1, item));
+	auto windowState = gui.fetchState(hash, GuiMenu.State(-1, cast(int)item));
 	if(windowState.parent != item)
 	{
-		windowState.parent = item;
+		windowState.parent = cast(int)item;
 		windowState.selected   = -1;
 	}
 	gui.state(hash, windowState);
@@ -193,7 +193,7 @@ bool menu(ref Gui gui, ref Menu gmenu, HashID menuID = "menu")
 	    GuiFrame frame = style.idle;
 	    if(gui.hasFocus() && gui.isHovering(copy) || state.selected == i)
 	    {
-	        state.selected = i;
+	        state.selected = cast(int)i;
 	        frame = style.focus;	
 			if(item.type == MenuItemType.submenu)
 			{
@@ -259,7 +259,7 @@ struct Menu
 			}
 			else 
 			{
-				prevparent = p;
+				prevparent = cast(int)p;
 			}
 		}
 	
@@ -270,7 +270,7 @@ struct Menu
 	int addSubmenu(string name, int parent = -1)
 	{
 		items ~= MenuItem(parent, HashID.init, name, null, MenuItemType.submenu);
-		return items.length - 1;
+		return cast(int)(items.length - 1);
 	}
 
 	void addItem(string name, void delegate() method, int parent, KeyCommand cmd = KeyCommand.init)

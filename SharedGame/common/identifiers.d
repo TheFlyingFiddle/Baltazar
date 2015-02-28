@@ -26,8 +26,3 @@ struct EntityRef
 {
 	uint id;
 }
-
-struct ComponentID(T)
-{
-	uint entityID;
-}

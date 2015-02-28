@@ -1,40 +1,11 @@
-module plugin.editor.data;
+module plugin.core.data;
 
 import allocation;
 import bridge.attributes;
 import collections.list;
 import util.variant;
 import math.vector;
-
 import reflection;
-
-
-@Data
-struct Camera
-{
-	float4 viewport;
-	float2 position;
-	float  scale;
-
-	this(IAllocator) 
-	{
-		this.position = float2.zero;
-		this.scale	  = 64;
-	}
-
-	float2 screenToWorld(float2 screenPos)
-	{
-		screenPos = (screenPos + position * scale) - viewport.xy;
-		return screenPos / scale;
-	}
-
-	float2 worldToScreen(float2 world)
-	{
-		world = (world - position) * scale;
-		return world + viewport.xy;
-	}
-
-}
 
 @Data
 struct WorldData
@@ -57,7 +28,7 @@ struct WorldData
 		return selectedArchetype < archetypes.length ? &archetypes[selectedArchetype] : null;
 	}
 
-	
+
 	void select(uint index, ubyte type)
 	{
 		selected.index = cast(ushort)index;
@@ -197,7 +168,7 @@ struct DoUndo
 
 	alias Command = VariantN!(64);
 
-	size_t redoCount;
+	uint redoCount;
 	GrowingList!Command commands;
 
 	this(IAllocator allocator)
@@ -272,3 +243,30 @@ struct DoUndo
 		}
 	}
 }
+
+
+struct Camera
+{
+	float4 viewport = float4.zero;
+	float2 position = float2.zero;
+	float  scale    = 0;
+
+
+	float2 screenToWorld(float2 screenPos)
+	{
+		screenPos = (screenPos + position * scale) - viewport.xy;
+		return screenPos / scale;
+	}
+
+	float2 worldToScreen(float2 world)
+	{
+		world = (world - position) * scale;
+		return world + viewport.xy;
+	}
+}
+
+
+
+import reflection.generation;
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.core.data);

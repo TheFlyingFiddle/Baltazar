@@ -384,6 +384,7 @@
   <Folder name="common">
    <File path="common\attributes.d" />
    <File path="common\components.d" />
+   <File path="common\data.d" />
    <File path="common\identifiers.d" />
   </Folder>
  </Folder>

@@ -35,7 +35,7 @@ bool listbox(T)(ref Gui gui,
 
 	auto style = gui.fetchStyle!(Style)(s);
 
-	auto length    = count(items);
+	uint length    = cast(uint)count(items);
 	auto scrollMax =  length * style.itemSize - rect.h;
 	
 	auto hash  = HashID(rect);
@@ -59,7 +59,7 @@ bool listbox(T)(ref Gui gui,
 	bool result = false;
 	if(gui.wasClicked(rect))
 	{
-		selected = length - 1 - cast(int)((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize);
+		selected = cast(int)(length - 1 - ((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize));
 		selected = clamp(selected, -1, cast(int)(length - 1));
 		result   = true;
 	}

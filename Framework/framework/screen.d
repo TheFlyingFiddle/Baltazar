@@ -56,8 +56,8 @@ final class ScreenComponent : IApplicationComponent
 
 	override void step(Time time)
 	{
-		int uIndex = screens.countUntil!(x => x.blockUpdate);
-		int rIndex = screens.countUntil!(x => x.blockRender);
+		auto uIndex = screens.countUntil!(x => x.blockUpdate);
+		auto rIndex = screens.countUntil!(x => x.blockRender);
 
 		foreach(i, screen; screens)
 		{

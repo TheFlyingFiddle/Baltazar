@@ -2,9 +2,8 @@ module plugin.editor.renderers;
 
 import bridge.core;
 import plugin.attributes;
-import plugin.editor.data;
+import plugin.core.data;
 import common.components;
-
 
 import math.vector;
 import graphics.textureatlas;
@@ -63,7 +62,7 @@ void renderBasic(RenderContext* context)
 		if(transform && sprite)
 		{
 			auto atlas = Editor.assets.locate!(TextureAtlas)(sprite.texture.atlas);
-			if(atlas)
+			if(atlas && atlas.contains(sprite.texture.image))
 			{
 				auto frame = (*atlas)[sprite.texture.image];
 
@@ -77,7 +76,7 @@ void renderBasic(RenderContext* context)
 		if(transform && text)
 		{
 			auto atlas	 = Editor.assets.locate!(FontAtlas)(text.font.atlas);
-			if(atlas)
+			if(atlas && atlas.contains(text.font.font))
 			{
 				auto font	 = (*atlas)[text.font.font];
 
@@ -104,7 +103,7 @@ void renderBasic(RenderContext* context)
 		{
 			auto used    = door.open ? door.openImage : door.closedImage;
 			auto atlas = Editor.assets.locate!(TextureAtlas)(used.atlas);
-			if(atlas)
+			if(atlas && atlas.contains(used.image))
 			{
 				auto frame = (*atlas)[used.image];
 
@@ -141,3 +140,9 @@ void renderSelected(RenderContext* context)
 		}
 	}
 }
+
+
+import reflection;
+
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.editor.renderers);

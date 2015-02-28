@@ -128,14 +128,16 @@ struct GuiState
 	int controlCount;
 }
 
+alias StateVariant = VariantN!(64);
+
 struct Gui
 {
 	import std.algorithm;
 
 	Renderer2D* renderer;
 	private VariantTable!(64) skin;
-	private Table!(HashID, VariantN!32) oldControlStates;
-	private Table!(HashID, VariantN!32) controlStates;
+	private Table!(HashID, StateVariant) oldControlStates;
+	private Table!(HashID, StateVariant) controlStates;
 	WindowManager windows;
 
 	//Diffrent items use diffrent overlapping rectangles. 
@@ -187,8 +189,8 @@ struct Gui
 		this.clipboard    = clipboard;
 
 
-		oldControlStates	  = Table!(HashID, VariantN!32)(allocator, 100);
-		controlStates		  = Table!(HashID, VariantN!32)(allocator, 100); 
+		oldControlStates	  = Table!(HashID, StateVariant)(allocator, 100);
+		controlStates		  = Table!(HashID, StateVariant)(allocator, 100); 
 		overlaping			  = List!Rect(allocator, 50);
 		windows				  = WindowManager(allocator);
 
@@ -299,7 +301,7 @@ struct Gui
 
 	void state(T)(HashID id, T state)
 	{
-		controlStates[id] = VariantN!(32)(state);
+		controlStates[id] = StateVariant(state);
 	}
 
 	void fixRect(ref Rect rect)

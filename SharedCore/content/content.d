@@ -29,6 +29,7 @@ struct ContentHandle(T)
 		auto item = cast(T*)(handle.item);
 		return *item;
 	}
+
 	alias asset this;
 }
 
@@ -113,7 +114,7 @@ struct ContentLoader
 		this.fileLoaders ~= fileLoader;
 	}
 
-	private uint indexOf(HashID hash) nothrow
+	private size_t indexOf(HashID hash) nothrow
 	{
 		auto index = items.countUntil!(x => x.hashID == hash);
 		return index;
@@ -124,7 +125,7 @@ struct ContentLoader
 		return addItem(hash, typeHash!T, cast(void*)item);
 	}
 
-	private uint addItem(HashID hash, TypeHash typeHash, void* item)
+	private size_t addItem(HashID hash, TypeHash typeHash, void* item)
 	{
 		foreach(i, ref handle; items)
 		{

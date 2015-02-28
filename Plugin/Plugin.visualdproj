@@ -6,7 +6,7 @@
   <lib>2</lib>
   <subsystem>0</subsystem>
   <multiobj>0</multiobj>
-  <singleFileCompilation>0</singleFileCompilation>
+  <singleFileCompilation>1</singleFileCompilation>
   <oneobj>0</oneobj>
   <trace>0</trace>
   <quiet>0</quiet>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\SharedGame;</imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\SharedGame; </imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -83,7 +83,7 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles> ExternalLibs.lib SharedCore.lib PluginBridge.lib Gui.lib SharedGame.lib</libfiles>
+  <libfiles> ExternalLibs.lib SharedCore.lib PluginBridge.lib Gui.lib SharedGame.lib </libfiles>
   <libpaths>..\ExternalLibs\Debug ..\SharedCore\Debug ..\PluginBridge\Debug ..\Gui\Debug ..\SharedGame\Debug</libpaths>
   <deffile />
   <resfile />
@@ -202,8 +202,8 @@
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>1</symdebug>
-  <optimize>0</optimize>
+  <symdebug>0</symdebug>
+  <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>1</isX86_64>
   <isLinux>0</isLinux>
@@ -223,7 +223,7 @@
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
-  <release>0</release>
+  <release>1</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -279,7 +279,7 @@
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).dll</exefile>
   <useStdLibPath>1</useStdLibPath>
-  <cRuntime>2</cRuntime>
+  <cRuntime>3</cRuntime>
   <additionalOptions />
   <preBuildCommand />
   <postBuildCommand />
@@ -382,9 +382,11 @@
  </Config>
  <Folder name="Plugin">
   <Folder name="plugin">
+   <Folder name="core">
+    <File path="plugin\core\commands.d" />
+    <File path="plugin\core\data.d" />
+   </Folder>
    <Folder name="editor">
-    <File path="plugin\editor\commands.d" />
-    <File path="plugin\editor\data.d" />
     <File path="plugin\editor\menus.d" />
     <File path="plugin\editor\panels.d" />
     <File path="plugin\editor\renderers.d" />

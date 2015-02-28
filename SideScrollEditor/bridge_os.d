@@ -1,5 +1,5 @@
 module bridge_os;
-import bridge.os;
+import bridge.core;
 import dialogs;
 
 final class FileFinder : IFileFinder
