@@ -50,10 +50,12 @@ struct Select
 	{
 		if(hover != -1 && hover < context.world.items.length)
 		{
+			auto item = context.world.items[hover];
 
 			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
 			auto frame = (*atlas)["pixel"];
-			auto transform = context.world.items[hover].peek!(Transform);
+			auto transform = item.peek!(Transform);
+			
 			float2 trans = context.camera.worldToScreen(transform.position); 
 			float2 min = trans - transform.scale * context.camera.scale / 2;
 			float2 max = trans + transform.scale * context.camera.scale / 2;

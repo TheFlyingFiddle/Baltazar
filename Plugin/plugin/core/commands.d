@@ -191,7 +191,6 @@ struct RemoveComponent
 	}
 }
 
-
 import reflection.generation;
 enum Filter(T) = true;
 mixin GenerateMetaData!(Filter, plugin.core.commands);

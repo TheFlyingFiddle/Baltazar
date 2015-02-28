@@ -510,7 +510,9 @@ struct WorldPanel
 		ftools = ftools.drop(selected);
 		if(!ftools.empty)
 		{
-			auto tool = ftools.front;
+			auto idx  = tools.countUntil!(x => x.name == ftools.front.name);
+			auto tool = &tools[idx];
+
 			if(tool.use) tool.use(&tcontext);
 			if(tool.render) tool.render(&rcontext);
 		}
