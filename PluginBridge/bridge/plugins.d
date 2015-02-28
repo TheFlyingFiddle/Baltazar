@@ -87,6 +87,8 @@ struct Plugins
 
 	void reloadLibrary(string path)
 	{
+		import log;
+		logInfo("Reloading library: ", path);
 		auto libi = paths.countUntil!(x => x == path);
 		if(libi == -1) return;
 

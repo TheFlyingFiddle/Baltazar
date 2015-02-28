@@ -1,62 +1,72 @@
 module plugin.editor.tools;
 
 import math;
+import bridge.core;
 import window.mouse;
 import window.keyboard;
-import bridge.attributes;
-import bridge.state;
 import common.components;
+import plugin.attributes;
+import graphics.textureatlas;
+import rendering.shapes;
 
-/*
 
-@EditorTool
+@WorldTool("Selection")
 struct Select
 {
-	bool isMoving = false;
-	void use(ToolContext* context)
+	int hover;
+	void use(WorldToolContext* context)
 	{
-
-		auto state = context.state;
-		auto m	   = context.mouse;
-
-		if(!m.isDown(MouseButton.left))
-			isMoving = false;
-
-		if(m.wasPressed(MouseButton.left))
+		hover = -1;
+		foreach(i, ref item; context.world.items)
 		{
-			float2 loc = state.camera.screenToWorld(m.location);
-			foreach(i, ref item; state.items)
+			auto trans = item.peek!(Transform);
+			if(trans)
 			{
-				auto transform = item.peek!(Transform);
-				if(transform)
+				auto loc = context.camera.screenToWorld(context.mouse.location);
+				Rect r   = Rect(trans.position.x - trans.scale.x / 2,
+								trans.position.y - trans.scale.y / 2,
+								trans.scale.x, trans.scale.y);
+				if(r.contains(loc))
 				{
-					float2 min  = float2(transform.position - transform.scale / 2);
-					float2 size = transform.scale; 
-					Rect r = Rect(min.x, min.y, size.x, size.y);
-					if(r.contains(loc))
+					hover = i;
+
+					if(context.mouse.wasPressed(MouseButton.left))
 					{
-						isMoving = true;
-						state.selected = i;
-						break;
+						import log;
+						logInfo("I selected a new item!");
+						context.world.selectedItem = i;
+						context.world.select(i, 0);			
 					}
+
+					return;
 				}
 			}
 		}
+	}
 
-		if(isMoving)
+	void render(RenderContext* context)
+	{
+		if(hover != -1)
 		{
-			auto item = state.item(state.selected);
-			if(item)
-			{
-				float2 delta      = m.moveDelta;
-				float2 worldDelta = delta / state.camera.scale;
-				auto transform = item.get!Transform;
-				transform.position += worldDelta;
-			}
+			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
+			auto frame = (*atlas)["pixel"];
+
+			auto transform = context.world.items[hover].peek!(Transform);
+			float2 trans = context.camera.worldToScreen(transform.position); 
+			float2 min = trans - transform.scale * context.camera.scale / 2;
+			float2 max = trans + transform.scale * context.camera.scale / 2;
+
+			context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, Color(0x88888888));
 		}
 	}
 }
 
+
+import reflection.generation;
+enum Filter(T) = true;
+mixin GenerateMetaData!(Filter, plugin.editor.tools);
+
+/*
 @EditorTool
 struct Grab
 {

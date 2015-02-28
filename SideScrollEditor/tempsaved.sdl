@@ -6,7 +6,7 @@ data=[
 		{
 			selected=
 			{
-				index=0
+				index=2
 				type=0
 			}
 			items=
@@ -67,7 +67,7 @@ data=[
 									x=1
 									y=1
 								}
-								rotation=0
+								rotation=0.25
 							}
 						},
 						{
@@ -100,7 +100,7 @@ data=[
 			archetypes=
 			[
 			]
-			selectedItem=0
+			selectedItem=2
 			selectedArchetype=0
 		}
 	},
@@ -475,6 +475,3096 @@ data=[
 									atlas=|Atlas|
 									image=||
 								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=56
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=4
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=6
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=7
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=8
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=9
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=10
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=11
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=12
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=13
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=14
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=15
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=16
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=15
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=14
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=13
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=12
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=11
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=10
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=9
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=8
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=7
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=6
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=4
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=4
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=6
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=7
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=6
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=5
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=4
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=-1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=-2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=-1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=4
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=3
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=-1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=-1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=1
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=2
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=5
+									y=7
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0.2
 							}
 						}
 					}

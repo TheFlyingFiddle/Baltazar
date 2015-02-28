@@ -59,7 +59,7 @@ bool listbox(T)(ref Gui gui,
 	bool result = false;
 	if(gui.wasClicked(rect))
 	{
-		selected = cast(int)(length - 1 - ((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize));
+		selected = length - 1 - cast(int)((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize);
 		selected = clamp(selected, -1, cast(int)(length - 1));
 		result   = true;
 	}
