@@ -510,8 +510,9 @@ struct WorldPanel
 		ftools = ftools.drop(selected);
 		if(!ftools.empty)
 		{
-			if(ftools.front.use) ftools.front.use(&tcontext);
-			if(ftools.front.render) ftools.front.render(&rcontext);
+			auto tool = ftools.front;
+			if(tool.use) tool.use(&tcontext);
+			if(tool.render) tool.render(&rcontext);
 		}
 	}
 }

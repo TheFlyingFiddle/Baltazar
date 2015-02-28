@@ -48,11 +48,11 @@ struct Select
 
 	void render(RenderContext* context)
 	{
-		if(hover != -1)
+		if(hover != -1 && hover < context.world.items.length)
 		{
+
 			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
 			auto frame = (*atlas)["pixel"];
-
 			auto transform = context.world.items[hover].peek!(Transform);
 			float2 trans = context.camera.worldToScreen(transform.position); 
 			float2 min = trans - transform.scale * context.camera.scale / 2;

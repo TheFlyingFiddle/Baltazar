@@ -197,8 +197,6 @@ struct ReflectionContext
 		{
 			try 
 			{
-				import log;
-				logInfo("Reading field: ", field.name, " of type ", field.typeInfo.name);
 				iter.goToNext(field.name); 
 				readMetaInfo(iter, field.typeInfo, store + field.offset);
 			}
@@ -399,10 +397,6 @@ struct ReflectionContext
 		}
 
 		foreach(field; s.instanceFields) {
-			import log;
-			logInfo("Writing field: ", s.typeInfo.name, ".", field.name, " of type ", field.typeInfo.name);
-		
-
 			sink.put('\n');
 			sink.put('\t'.repeat(level));
 			sink.put(field.name);
