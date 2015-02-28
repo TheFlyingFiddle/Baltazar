@@ -45,8 +45,9 @@ void renderCamera(RenderContext* context)
 	auto font	 = Editor.assets.locate!(FontAtlas)("Fonts");
 	auto consola = (*font)["consola"];
 	auto text = text1024("Camera: ", context.camera.position);
+	float2 size = consola.measure(text) * consola.size;
 
-	float2 pos = context.camera.viewport.xy + float2(3, 6);
+	float2 pos = context.camera.viewport.xw - float2(0, size.y);
 	context.renderer.drawText(text, pos, float2(consola.size), consola, Color.black, float2(0.25, 0.75));
 }
 

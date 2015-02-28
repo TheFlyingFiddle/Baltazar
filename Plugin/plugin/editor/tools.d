@@ -13,6 +13,8 @@ import rendering.shapes;
 @WorldTool("Selection")
 struct Select
 {
+	bool usable(WorldToolContext* context) { return true; }
+
 	int hover;
 	void use(WorldToolContext* context)
 	{
@@ -64,12 +66,18 @@ struct Select
 @WorldTool("Grab")
 struct Grab
 {
+	bool usable(WorldToolContext* context) { return true; }
+
 	void use(WorldToolContext* context)
 	{
-		if(context.mouse.isDown(MouseButton.left))
+		Rect area = Rect(context.camera.viewport);
+		if(area.contains(context.mouse.location))
 		{
-			float2 offset = context.mouse.moveDelta / context.camera.scale;
-			context.camera.position -= offset;
+			if(context.mouse.isDown(MouseButton.left))
+			{
+				float2 offset = context.mouse.moveDelta / context.camera.scale;
+				context.camera.position -= offset;
+			}
 		}
 	}
 }

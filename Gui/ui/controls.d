@@ -256,17 +256,24 @@ import std.range;
 bool toolbar(Items)(ref Gui gui, Rect rect, 
 					ref int selected, Items items,
 					HashID styleID = HashID("toolbar"))
-if(isRandomAccessRange!Items)
+if(isForwardRange!Items)
 {
+	import std.algorithm, std.range;
+
 	auto style	 = gui.fetchStyle!(GuiToolbar.Style)(styleID);
 	int selectedIndex = selected;
-	float width = (rect.w - style.padding *  (items.length - 1)) / items.length;
-	foreach(i; 0 .. items.length)
+	uint length = count(items);
+	float width = (rect.w - style.padding *  (length - 1)) / length;
+	
+	uint i = 0;
+	foreach(ref item; items)
 	{
 		bool sel = i == selected;
 		Rect buttonRect = Rect(rect.x + (width + style.padding) * i, rect.y, width, rect.h);
-		if(gui.toggle(buttonRect, sel, items[i], style.toggleID))
+		if(gui.toggle(buttonRect, sel, item, style.toggleID))
 			selectedIndex = i;
+
+		i++;
 	}
 
 	if(selectedIndex != selected) 

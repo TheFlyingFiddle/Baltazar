@@ -459,6 +459,7 @@ struct WorldPanel
 		VariantN!32 data;
 		Binding!(void delegate(WorldToolContext*)) use;
 		Binding!(void delegate(RenderContext*))    render;
+		Binding!(bool delegate(WorldToolContext*)) usable;
 
 		this(const(MetaType)* type, string name)
 		{	
@@ -466,6 +467,7 @@ struct WorldPanel
 			this.data   = type.initial!32;
 			this.use    = type.tryBind!(void delegate(WorldToolContext*))(data, "use");
 			this.render = type.tryBind!(void delegate(RenderContext*))(data, "render");
+			this.usable = type.tryBind!(bool delegate(WorldToolContext*))(data,  "usable");
 		}
 	}
 
@@ -497,16 +499,19 @@ struct WorldPanel
 			func.invoke(&rcontext);
 		}
 
-
 		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, &camera);
-		Rect lowerLeft = Rect(context.area.x + 400, context.area.y + 3, context.area.w - 403, 20);
-		toolbar(*context.gui, lowerLeft, selected, tools.map!(x => x.name));
+		Rect lowerLeft = Rect(context.area.x + 3, context.area.y + 3, context.area.w - 6, 20);
 		
-		if(selected < tools.length)
+		auto ftools = tools.filter!(x => x.usable.isNotNull ? x.usable(&tcontext) : true);
+		toolbar(*context.gui, lowerLeft, selected, ftools.map!(x => x.name));
+	
+		import std.range;
+
+		ftools = ftools.drop(selected);
+		if(!ftools.empty)
 		{
-			auto tool = &tools[selected];
-			if(tool.use) tool.use(&tcontext);
-			if(tool.render) tool.render(&rcontext);
+			if(ftools.front.use) ftools.front.use(&tcontext);
+			if(ftools.front.render) ftools.front.render(&rcontext);
 		}
 	}
 }

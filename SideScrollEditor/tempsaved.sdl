@@ -6,7 +6,7 @@ data=[
 		{
 			selected=
 			{
-				index=0
+				index=1
 				type=0
 			}
 			items=
@@ -100,7 +100,7 @@ data=[
 			archetypes=
 			[
 			]
-			selectedItem=0
+			selectedItem=1
 			selectedArchetype=0
 		}
 	},
