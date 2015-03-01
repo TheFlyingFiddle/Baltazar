@@ -18,6 +18,13 @@ struct SoundLoader
 
 		auto c_path = path.toCString();
 		auto sound = Mix_LoadWAV(c_path);
+		if(!sound)
+		{
+			import log, std.c.string;
+			const(char)* err = Mix_GetError();
+			logErr("Mix_LoadWav: ", err[0 .. strlen(err)]);
+		}
+
 		assert(sound, text("Failed to load sound! ", c_path));
 		return sound;
 	}

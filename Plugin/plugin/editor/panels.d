@@ -9,6 +9,7 @@ import reflection;
 import std.typetuple;
 import std.algorithm;
 
+import common.components;
 import common.attributes;
 import common.identifiers;
 import bridge;
@@ -44,6 +45,13 @@ struct ComponentsPanelImpl
 		this.active = List!bool(all, 20);
 		this.active.length = 20;
 		this.active[] = false;
+
+
+		auto plugin = Editor.services.locate!(Plugins);
+		auto comps  = plugin.attributeTypes!EntityComponent;
+		components.clear();
+		foreach(ref comp; comps)
+			components ~= comp;
 	}
 
 	void show(PanelContext* context)
@@ -63,15 +71,7 @@ struct ComponentsPanelImpl
 		if(item)
 		{
 			auto plugin  = Editor.services.locate!(Plugins);
-			auto doUndo	 = Editor.data.locate!(DoUndo);
-			
-
-			auto comps = plugin.attributeTypes!EntityComponent;
-			components.clear();
-			foreach(ref comp; comps)
-			{
-				components ~= comp;
-			}
+			auto doUndo	 = Editor.data.locate!(DoUndo);			
 
 			Rect nameBox = Rect(defSpacing, area.y - defFieldSize - defSpacing, gui.area.w - defSpacing * 2, defFieldSize);
 	
@@ -97,7 +97,16 @@ struct ComponentsPanelImpl
 				auto type = &components[selectedComponent];
 				if(!item.hasComponent(type.typeInfo))
 				{
-					doUndo.apply(AddComponent(type.initial!48));
+					//HACK But i think it's ok.
+					if(type.typeInfo.name == "Transform")
+					{
+						auto cam = Editor.data.locate!(Camera);
+						doUndo.apply(AddComponent(StateComponent(Transform(cam.position, float2.one, 0))));
+					}
+					else 
+					{
+						doUndo.apply(AddComponent(type.initial!48));
+					}
 				}
 			}
 			offset -= 15;

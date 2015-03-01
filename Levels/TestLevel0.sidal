@@ -1,0 +1,50 @@
+
+data=[
+	{
+		type = |plugin.core.data.WorldData|
+		value = 
+		{
+			selected=
+			{
+				index=0
+				type=0
+			}
+			items=
+			[
+			]
+			archetypes=
+			[
+			]
+			selectedItem=0
+			selectedArchetype=0
+		}
+	},
+	{
+		type = |plugin.core.data.DoUndo|
+		value = 
+		{
+			redoCount=0
+			commands=
+			[
+			]
+		}
+	},
+	{
+		type = |plugin.core.data.Camera|
+		value = 
+		{
+			viewport=
+			{
+				x=300
+				y=3
+				z=767
+				w=560
+			}
+			position=
+			{
+				x=0
+				y=0
+			}
+			scale=32
+		}
+	}]
