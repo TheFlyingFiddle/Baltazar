@@ -24,7 +24,6 @@ enum defFieldSize = 20;
 enum defSpacing   = 3;
 
 
-
 final class MainScreen : Screen, IEditor
 {
 	//These will be here!
@@ -40,6 +39,15 @@ final class MainScreen : Screen, IEditor
 	Panels   centerPanels;
 	Panels	 leftPanels;
 	Panels	 rightPanels;
+
+	//Could be better;
+	bool movingLeft  = false;
+	float left  =  300;
+	bool movingRight = false;
+	float right =  300;
+
+	import derelict.glfw3.glfw3;
+	GLFWcursor* test;
 
 	Screen other;
 	this(Screen other) 
@@ -85,6 +93,8 @@ final class MainScreen : Screen, IEditor
 
 		centerPanels = Panels(all, 10, PanelPos.center);
 		centerPanels.addPanels(Mallocator.cit, plugin);
+
+		test = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
 
 		/*
 		tools = ToolBox(all, 10);
@@ -217,6 +227,19 @@ final class MainScreen : Screen, IEditor
 		return editorData;
 	}
 
+	override void runGame() nothrow
+	{	
+		try
+		{
+			owner.push(other);
+		}
+		catch(Exception e)
+		{
+			import log;
+			logInfo("Failed to run game!");
+		}
+	}
+
 	//Need to save the state of the application here
 	void prePluginReload(Plugin p)
 	{
@@ -264,11 +287,46 @@ final class MainScreen : Screen, IEditor
 		gui.area = Rect(0,0, w.size.x, w.size.y);
 		gui.begin();
 
-		auto wr =  Rect(300, defSpacing, w.size.x - 600, w.size.y - 23);
-		auto leftSide  = Rect(defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
+		auto mouse = gui.mouse;
+		auto mloc = mouse.location.x;
+		auto inLeft  = mloc  - 3  < left && mloc + 3 > left;
+		auto inRight = mloc  - 3  < w.size.x - right && mloc + 3 > w.size.x - right;
+
+		if(mouse.wasPressed(MouseButton.left))
+		{
+			if(inLeft)
+				movingLeft = true;
+			if(inRight)
+				movingRight = true;
+		}
+
+		if(mouse.wasReleased(MouseButton.left))
+		{
+			movingLeft  = false;
+			movingRight = false;
+		}
+
+		if(movingRight)
+			right = clamp(right - mouse.moveDelta.x, 200, 400);
+		if(movingLeft)
+			left  = clamp(left + mouse.moveDelta.x, 200, 400);
+
+		if(inLeft || inRight)
+		{
+			glfwSetCursor(w._windowHandle, test);
+		}
+		else 
+		{
+			glfwSetCursor(w._windowHandle, null);
+		}
+
+
+
+		auto wr =  Rect(left, defSpacing, w.size.x - left - right, w.size.y - 23);
+		auto leftSide  = Rect(defSpacing, wr.y, left - defSpacing * 2, wr.h);
 		leftPanels.show(gui, leftSide);
 
-		auto rightSide = Rect(wr.right + defSpacing, wr.y, 300 - defSpacing * 2, wr.h);
+		auto rightSide = Rect(wr.right + defSpacing, wr.y, right - defSpacing * 2, wr.h);
 		rightPanels.show(gui, rightSide);
 
 		auto center = wr;

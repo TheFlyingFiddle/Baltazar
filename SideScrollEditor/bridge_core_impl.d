@@ -133,13 +133,6 @@ class Assets : IAssets
 
 			typed[idx].assets ~= a;
 		}
-
-		import log;
-		foreach(loaded; typed)
-		{
-			logInfo("Assets of type: ", loaded.type);
-			logInfo(loaded.assets);
-		}
 	}
 
 	override List!Asset loadedAssets(string type) nothrow

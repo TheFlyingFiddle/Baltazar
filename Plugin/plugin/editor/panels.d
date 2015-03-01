@@ -9,6 +9,7 @@ import reflection;
 import std.typetuple;
 import std.algorithm;
 
+import common.components;
 import common.attributes;
 import common.identifiers;
 import bridge;
@@ -44,6 +45,13 @@ struct ComponentsPanelImpl
 		this.active = List!bool(all, 20);
 		this.active.length = 20;
 		this.active[] = false;
+
+
+		auto plugin = Editor.services.locate!(Plugins);
+		auto comps  = plugin.attributeTypes!EntityComponent;
+		components.clear();
+		foreach(ref comp; comps)
+			components ~= comp;
 	}
 
 	void show(PanelContext* context)
@@ -63,15 +71,7 @@ struct ComponentsPanelImpl
 		if(item)
 		{
 			auto plugin  = Editor.services.locate!(Plugins);
-			auto doUndo	 = Editor.data.locate!(DoUndo);
-			
-
-			auto comps = plugin.attributeTypes!EntityComponent;
-			components.clear();
-			foreach(ref comp; comps)
-			{
-				components ~= comp;
-			}
+			auto doUndo	 = Editor.data.locate!(DoUndo);			
 
 			Rect nameBox = Rect(defSpacing, area.y - defFieldSize - defSpacing, gui.area.w - defSpacing * 2, defFieldSize);
 	
@@ -97,7 +97,16 @@ struct ComponentsPanelImpl
 				auto type = &components[selectedComponent];
 				if(!item.hasComponent(type.typeInfo))
 				{
-					doUndo.apply(AddComponent(type.initial!48));
+					//HACK But i think it's ok.
+					if(type.typeInfo.name == "Transform")
+					{
+						auto cam = Editor.data.locate!(Camera);
+						doUndo.apply(AddComponent(StateComponent(Transform(cam.position, float2.one, 0))));
+					}
+					else 
+					{
+						doUndo.apply(AddComponent(type.initial!48));
+					}
 				}
 			}
 			offset -= 15;
@@ -449,7 +458,6 @@ struct ArchetypesPanel
 struct WorldPanel
 {
 	import plugin.attributes;
-	Camera camera;
 	int   selected;
 	List!ToolItem tools;
 
@@ -474,7 +482,6 @@ struct WorldPanel
 	this(IAllocator all)
 	{
 		this.selected = 0;
-		camera = Camera(float4.zero, float2.zero, 64);
 		tools  = List!ToolItem(all, 20);
 
 		auto plugin   = Editor.services.locate!(Plugins);
@@ -488,10 +495,16 @@ struct WorldPanel
 	void show(PanelContext* context) 
 	{
 		auto data     = Editor.data.locate!(WorldData);
+		auto camera   = Editor.data.locate!(Camera);
 		auto renderer = context.gui.renderer;
 		auto plugin   = Editor.services.locate!(Plugins);
 
-		auto rcontext = RenderContext(data, &camera, renderer);
+
+		if(context.area.contains(context.gui.mouse.location))
+			camera.scale = clamp(context.gui.mouse.scrollDelta.y + camera.scale, 5, 128);
+
+
+		auto rcontext = RenderContext(data, camera, renderer);
 
 		camera.viewport = context.area.toFloat4;
 		foreach(ref func; plugin.attributeFunctions!WorldRenderer)
@@ -499,14 +512,14 @@ struct WorldPanel
 			func.invoke(&rcontext);
 		}
 
-		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, &camera);
+		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, camera);
 		Rect lowerLeft = Rect(context.area.x + 3, context.area.y + 3, context.area.w - 6, 20);
 		
 		auto ftools = tools.filter!(x => x.usable.isNotNull ? x.usable(&tcontext) : true);
 		toolbar(*context.gui, lowerLeft, selected, ftools.map!(x => x.name));
 	
+		
 		import std.range;
-
 		ftools = ftools.drop(selected);
 		if(!ftools.empty)
 		{

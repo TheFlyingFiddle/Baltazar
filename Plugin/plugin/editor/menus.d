@@ -72,6 +72,13 @@ void redo()
 	doUndo.redo();
 }
 
+@MenuItem("Game.run", KeyCommand(KeyModifiers.control, Key.g))
+void runGame()
+{
+	save();
+	Editor.runGame();
+}
+
 
 
 import reflection.generation;

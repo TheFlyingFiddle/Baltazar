@@ -62,7 +62,6 @@ import common.attributes;
 
 @EntityComponent struct Door
 {
-	int moreOpen;
 	bool open;
 	TextureID openImage;
 	TextureID closedImage;

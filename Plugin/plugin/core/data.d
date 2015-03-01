@@ -244,24 +244,30 @@ struct DoUndo
 	}
 }
 
-
+@Data
 struct Camera
 {
-	float4 viewport = float4.zero;
-	float2 position = float2.zero;
-	float  scale    = 0;
+	float4 viewport;
+	float2 position;
+	float  scale;
 
+	this(IAllocator a) 
+	{
+		viewport = float4.zero;
+		position = float2.zero;
+		scale    = 32;
+	}
 
 	float2 screenToWorld(float2 screenPos)
 	{
-		screenPos = (screenPos + position * scale) - viewport.xy;
+		screenPos = (screenPos + position * scale) - viewport.xy - (viewport.zw - viewport.xy) / 2;
 		return screenPos / scale;
 	}
 
 	float2 worldToScreen(float2 world)
 	{
 		world = (world - position) * scale;
-		return world + viewport.xy;
+		return world + viewport.xy + (viewport.zw - viewport.xy) / 2;
 	}
 }
 

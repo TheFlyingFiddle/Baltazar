@@ -75,8 +75,8 @@ void shutdown_dlls()
 
 bool missingSymFunc(string libName, string symName)
 {
-	//auto logChnl = LogChannel("MISSING SYMBOLS");
-	//logChnl.warn(libName,"   ", symName);
+	auto logChnl = LogChannel("MISSING SYMBOLS");
+	logChnl.warn(libName,"   ", symName);
 	return true;
 }
 

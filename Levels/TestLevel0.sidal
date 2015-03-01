@@ -11,13 +11,6 @@ data=[
 			}
 			items=
 			[
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=3599388702
-				}
 			]
 			archetypes=
 			[
@@ -33,14 +26,6 @@ data=[
 			redoCount=0
 			commands=
 			[
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=0
-					}
-				}
 			]
 		}
 	},
