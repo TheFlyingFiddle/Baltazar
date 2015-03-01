@@ -17,7 +17,7 @@ void renderGrid(RenderContext* context)
 	auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
 	auto frame = (*atlas)["pixel"];
 
-	float xOff  = (-cam.position.x * cam.scale)  % cam.scale;
+	float xOff  = (-cam.position.x * cam.scale + (cam.viewport.z - cam.viewport.x) / 2)  % cam.scale;
 	float width = cam.viewport.z - cam.viewport.x;
 	foreach(i; 0 .. cast(int)(width / cam.scale) + 2)
 	{
@@ -27,7 +27,7 @@ void renderGrid(RenderContext* context)
 		context.renderer.drawLine(s0, e0, 1, frame, Color(0xAAAAAAAA));
 	}
 
-	float yOff  = (-cam.position.y * cam.scale)  % cam.scale;
+	float yOff  = (-cam.position.y * cam.scale + (cam.viewport.w - cam.viewport.y) / 2)  % cam.scale;
 	float height = cam.viewport.w - cam.viewport.y;
 	foreach(i; 0 .. cast(int)(height / cam.scale) + 2)
 	{

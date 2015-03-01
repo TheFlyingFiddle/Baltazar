@@ -77,8 +77,12 @@ struct Grab
 		{
 			if(context.mouse.isDown(MouseButton.left))
 			{
-				float2 offset = context.mouse.moveDelta / context.camera.scale;
-				context.camera.position -= offset;
+				auto downLoc = context.mouse.state(MouseButton.left).lastDown;
+				if(area.contains(downLoc))
+				{
+					float2 offset = context.mouse.moveDelta / context.camera.scale;
+					context.camera.position -= offset;
+				}
 			}
 		}
 	}

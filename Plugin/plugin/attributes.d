@@ -23,6 +23,7 @@ struct WorldToolContext
 	Camera*    camera;
 }
 
+
 struct WorldTool
 {
 	string name;

@@ -449,7 +449,6 @@ struct ArchetypesPanel
 struct WorldPanel
 {
 	import plugin.attributes;
-	Camera camera;
 	int   selected;
 	List!ToolItem tools;
 
@@ -474,7 +473,6 @@ struct WorldPanel
 	this(IAllocator all)
 	{
 		this.selected = 0;
-		camera = Camera(float4.zero, float2.zero, 64);
 		tools  = List!ToolItem(all, 20);
 
 		auto plugin   = Editor.services.locate!(Plugins);
@@ -488,6 +486,7 @@ struct WorldPanel
 	void show(PanelContext* context) 
 	{
 		auto data     = Editor.data.locate!(WorldData);
+		auto camera   = Editor.data.locate!(Camera);
 		auto renderer = context.gui.renderer;
 		auto plugin   = Editor.services.locate!(Plugins);
 
@@ -496,7 +495,7 @@ struct WorldPanel
 			camera.scale = clamp(context.gui.mouse.scrollDelta.y + camera.scale, 5, 128);
 
 
-		auto rcontext = RenderContext(data, &camera, renderer);
+		auto rcontext = RenderContext(data, camera, renderer);
 
 		camera.viewport = context.area.toFloat4;
 		foreach(ref func; plugin.attributeFunctions!WorldRenderer)
@@ -504,7 +503,7 @@ struct WorldPanel
 			func.invoke(&rcontext);
 		}
 
-		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, &camera);
+		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, camera);
 		Rect lowerLeft = Rect(context.area.x + 3, context.area.y + 3, context.area.w - 6, 20);
 		
 		auto ftools = tools.filter!(x => x.usable.isNotNull ? x.usable(&tcontext) : true);

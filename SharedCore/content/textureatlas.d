@@ -13,7 +13,7 @@ struct TextureAtlasLoader
 	{
 		import std.stdio, util.strings;
 
-		auto file = File(path, "rb");
+		auto file = File(path, "rwb");
 		auto data = allocator.allocateRaw(cast(uint)file.size + TextureAtlas.sizeof, 8);
 		file.rawRead(data[TextureAtlas.sizeof .. $]);
 

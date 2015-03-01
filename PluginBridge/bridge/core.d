@@ -75,6 +75,7 @@ interface IEditor
 	nothrow void create();
 	nothrow void open(string path);
 	nothrow void save(string path);
+	nothrow void runGame();
 	nothrow void close();
 
 	nothrow IServiceLocator	services();
@@ -110,6 +111,11 @@ struct Editor
 	static void save(string path)
 	{
 		editor.save(path);
+	}
+
+	static void runGame()
+	{
+		editor.runGame();
 	}
 
 	static void close()
