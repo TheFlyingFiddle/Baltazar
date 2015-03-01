@@ -12,7 +12,7 @@ renderConfig =
 {
 	maxBatchSize = 8192
 	batchCount   = 15
-	clearColor   = 0xFFE7E4E3
+	clearColor   = 0xFF302D2D
 }
 
 windowConfig = 

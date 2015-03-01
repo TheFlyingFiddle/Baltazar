@@ -4,7 +4,7 @@ import bridge.attributes;
 import bridge.core;
 import plugin.core.data : DoUndo;
 
-@MenuItem("File.New.Project")
+@MenuItem("FILE.New.Project")
 void new_()
 {
 	auto files   = Editor.services.locate!(IFileFinder);
@@ -18,7 +18,7 @@ void new_()
 
 }
 
-@MenuItem("File.Open")
+@MenuItem("FILE.Open")
 void open()
 {
 	auto files   = Editor.services.locate!(IFileFinder);
@@ -30,7 +30,7 @@ void open()
 }
 
 
-@MenuItem("File.Save", KeyCommand(KeyModifiers.control, Key.s))
+@MenuItem("FILE.Save", KeyCommand(KeyModifiers.control, Key.s))
 void save()
 {
 	auto files = Editor.services.locate!(IFileFinder);
@@ -41,7 +41,7 @@ void save()
 	}
 }
 
-@MenuItem("File.Save As", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.s))
+@MenuItem("FILE.Save As", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.s))
 void saveAs()
 {
 	auto files = Editor.services.locate!(IFileFinder);
@@ -52,20 +52,20 @@ void saveAs()
 	}
 }
 
-@MenuItem("File.Exit")
+@MenuItem("FILE.Exit")
 void exit()
 {
 	Editor.close();
 }
 
-@MenuItem("Edit.undo", KeyCommand(KeyModifiers.control, Key.z))
+@MenuItem("EDIT.undo", KeyCommand(KeyModifiers.control, Key.z))
 void undo()
 {
 	auto doUndo = Editor.data.locate!(DoUndo);
 	doUndo.undo();
 }
 
-@MenuItem("Edit.redo", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.z))
+@MenuItem("EDIT.redo", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.z))
 void redo()
 {
 	auto doUndo = Editor.data.locate!(DoUndo);

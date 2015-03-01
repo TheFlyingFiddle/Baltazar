@@ -1,6 +1,6 @@
 images  = |GuiAtlas|
 fonts   = |Fonts|
-tooltip	= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+tooltip	= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 	
 palette = 
 [
@@ -9,15 +9,19 @@ palette =
 	{ id = |darkGray|   value = 0xFF494740 },
 	{ id = |gray|		  value = 0xFFB3B0A9 },
 	{ id = |white|      value = 0xFFFFFFFF },
-	{ id = |black|      value = 0xFF000000 }
+	{ id = |black|      value = 0xFF000000 },
+	{ id = |bg_color|      value = 0xFF302D2D },
+	{ id = |panel_color|   value =  0xFF1E1E1E },
+	{ id = |button_color|   value = 0xFF373333 },
+	{ id = |field_color|     value = 0xFF423E3E }
 ]
 
 textfields =
 [
 	{
 		name    = textfield
-		frame	= { id = |pixel| color = |gray| } 
-		font    =  { id = segoeuil color = black size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		frame	= { id = |pixel| color = |field_color| } 
+		font    =  { id = segoeuil color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		padding = { x = 4 y = 4 }
 		cursorColor = 0xFF000000
 		selectionColor = 0x6600aa00
@@ -51,31 +55,31 @@ buttons =
 [ 
 	{	
 		name		= button
-		up			= { id = |pixel| color = |blue| }
-		down		= { id = |pixel| color = |gray| }
-		hl			= { id = |pixel| color = |darkGray| }
-		downHl		= { id = |pixel| color = |gray| }
-		font		= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |pixel| color = |button_color| }
+		down		= { id = |pixel| color = |button_color| }
+		hl			= { id = |pixel| color = |button_color| }
+		downHl		= { id = |pixel| color = |button_color| }
+		font		= { id = segoeuil color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9  } }
 		vertical	= center
 		horizontal	= center
 	}
 	{	
 		name		= activeToggle
-		up			= { id = |pixel| color = |gray| }
-		down		= { id = |pixel| color = |gray| }
-		hl			= { id = |pixel| color = |gray| }
-		downHl		= { id = |pixel| color = |gray| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |pixel| color = |button_color| }
+		down		= { id = |pixel| color = |button_color| }
+		hl			= { id = |pixel| color = |button_color| }
+		downHl		= { id = |pixel| color = |button_color| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
 	{	
 		name		= unactiveToggle
-		up			= { id = |pixel| color = |blue| }
-		down		= { id = |pixel| color = |darkGray| }
-		hl			= { id = |pixel| color = |darkGray| }
-		downHl		= { id = |pixel| color = |darkGray| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |pixel| color = |panel_color| }
+		down		= { id = |pixel| color = |panel_color| }
+		hl			= { id = |pixel| color = |panel_color| }
+		downHl		= { id = |pixel| color = |panel_color| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
@@ -85,17 +89,17 @@ buttons =
 		down		= { id = |arrowbtn_down| color = |gray| }
 		hl			= { id = |arrowbtn_down| color = |gray| }
 		downHl		= { id = |arrowbtn_down| color = |gray| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
 	{	
 		name		= unactiveArrowToggle
-		up			= { id = |arrowbtn_right| color = |blue| }
-		down		= { id = |arrowbtn_right| color = |blue| }
-		hl			= { id = |arrowbtn_right| color = |blue| }
-		downHl		= { id = |arrowbtn_right| color = |blue| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |arrowbtn_right| color = |white| }
+		down		= { id = |arrowbtn_right| color = |white| }
+		hl			= { id = |arrowbtn_right| color = |white| }
+		downHl		= { id = |arrowbtn_right| color = |white| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
@@ -105,27 +109,27 @@ buttons =
 		down		= { id = |minusbtn| color = |white| }
 		hl			= { id = |minusbtn| color = |white| }
 		downHl		= { id = |minusbtn| color = |white| }
-		font		= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		font		= { id = segoeuil color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
 	{	
 		name		= checkBoxOn
-		up			= { id = |checkbtn_on| color = |gray| }
-		down		= { id = |checkbtn_on| color = |gray| }
-		hl			= { id = |checkbtn_on| color = |gray| }
-		downHl		= { id = |checkbtn_on| color = |gray| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |checkbtn_on| color = |white| }
+		down		= { id = |checkbtn_on| color = |white| }
+		hl			= { id = |checkbtn_on| color = |white| }
+		downHl		= { id = |checkbtn_on| color = |white| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	},
 	{	
 		name		= checkBoxOff
-		up			= { id = |checkbtn_off| color = |blue| }
-		down		= { id = |checkbtn_off| color = |blue| }
-		hl			= { id = |checkbtn_off| color = |blue| }
-		downHl		= { id = |checkbtn_off| color = |blue| }
-		font		= { id = segoeui color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		up			= { id = |checkbtn_off| color = |white| }
+		down		= { id = |checkbtn_off| color = |white| }
+		hl			= { id = |checkbtn_off| color = |white| }
+		downHl		= { id = |checkbtn_off| color = |white| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		vertical	= center
 		horizontal	= center
 	}
@@ -174,21 +178,21 @@ listboxes =
 	{
 		name	 = listbox
 		itemSize = 20
-		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		selected = { id = |pixel| color = |gray| }
 		stripe0	 = { id = |pixel| color = |darkBlue| }
 		stripe1  = { id = |pixel| color = |darkGray| }
-		bg		 = { id = |pixel| color = |white| }
+		bg		 = { id = |pixel| color = |panel_color| }
 		scrollID = scrollbar
 	},
 	{
 		name	 = editListBox
 		itemSize = 20
-		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.55 } }
+		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		selected = { id = |pixel| color = |gray| }
 		stripe0	 = { id = |pixel| color = |darkBlue| }
 		stripe1  = { id = |pixel| color = |darkGray| }
-		bg		 = { id = |pixel| color = |white| }
+		bg		 = { id = |pixel| color = |panel_color| }
 		scrollID = scrollbar
 	}
 ]
@@ -197,7 +201,7 @@ labels =
 [
 	{
 		name = label
-		font		= { id = segoeui color = |black| size = { x = 12 y = 12 } thresh = { x = 0.12 y = 0.55 } }
+		font		= { id = segoeui color = |white| size = { x = 12 y = 12 } thresh = { x = 0 y = 0.9 } }
 	}
 ]
 
@@ -205,7 +209,7 @@ scrollareas =
 [
 	{ 
 		name		= scrollarea
-		bg			= { id = |pixel| color = |white| } 
+		bg			= { id = |pixel| color = |panel_color| } 
 		scrollID	= |scrollbar|
 		scrollWidth = 15
 	}
@@ -215,9 +219,9 @@ enums =
 [
 	{	
 		name		= enumfield
-		bg			= { id = pixel color = |gray| }
+		bg			= { id = pixel color = |field_color| }
 		hl			= { id = pixel color = |darkGray| }
-		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.7 } }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
 		padding	    = { x = 0 y = 0}
 		spacing     = 0
 	}
@@ -233,10 +237,10 @@ menus =
 		padding = { x = 4 y = 0 z = 4 w = 4 }
 		windowID = |menuwindow|
 		submenuIcon = |arrowbtn_right|
-		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.7 } }
-		focus		= { id = pixel color = |darkGray| }
-		highlight	= { id = pixel color = |blue| }
-		idle		= { id = pixel color = |gray| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		focus		= { id = pixel color = |bg_color| }
+		highlight	= { id = pixel color = |bg_color| }
+		idle		= { id = pixel color = |bg_color| }
 	}
 ]
 
@@ -244,12 +248,12 @@ windows =
 [
 	{
 		name = menuwindow
-		focusColor	  = 0xFF000000
-		nonFocusColor = 0xFF000000
-		bg			  = { id = |pixel| color = darkGray }
+		focusColor	  = 0xFF302D2D
+		nonFocusColor = 0xFF302D2D
+		bg			  = { id = |pixel| color = panel_color }
 		closeButton   = |button|
 		padding       = { x = 4 y = 4 z = 4 w = 4 }
 		titleHeight   = 0
-		font		  = { id = |segoeuil| color = white size = { x = 13 y = 13 } thresh = { x = 0.12 y = 0.7 } } 
+		font		  = { id = |segoeuil| color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } } 
 	}
 ]
