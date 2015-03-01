@@ -42,8 +42,6 @@ Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "Game", "Game\Game.visualdpr
 EndProject
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "SharedGame", "SharedGame\SharedGame.visualdproj", "{1B602B7E-E767-4240-980D-13BE80738585}"
 EndProject
-Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "Failed to load DLLSharedCore", "DLLSharedCore\DLLSharedCore.visualdproj", "{F831E912-40EB-4B59-9645-22C80F805BE3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
