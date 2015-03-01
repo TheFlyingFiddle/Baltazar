@@ -14,41 +14,9 @@ data=[
 				{
 					components=
 					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=|banana|
-								}
-							}
-						}
 					]
 					name=|Item|
-					id=937591415
+					id=3599388702
 				}
 			]
 			archetypes=
@@ -72,118 +40,6 @@ data=[
 						archetype=0
 						index=0
 					}
-				},
-				{
-					type = |plugin.core.commands.AddComponent|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						}
-					}
-				},
-				{
-					type = |plugin.core.commands.AddComponent|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
-					}
-				},
-				{
-					type = |plugin.core.commands.ComponentChanged|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
-					}
-				},
-				{
-					type = |plugin.core.commands.ComponentChanged|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=||
-								}
-							}
-						}
-					}
 				}
 			]
 		}
@@ -194,16 +50,16 @@ data=[
 		{
 			viewport=
 			{
-				x=300
+				x=200
 				y=3
-				z=1620
+				z=1720
 				w=977
 			}
 			position=
 			{
-				x=-1.00251
-				y=1.38032
+				x=0
+				y=0
 			}
-			scale=42
+			scale=32
 		}
 	}]
