@@ -18,7 +18,7 @@ struct Select
 	int hover;
 	void use(WorldToolContext* context)
 	{
-		hover = -1;
+		this.hover = -1;
 		foreach(i, ref item; context.world.items)
 		{
 			auto trans = item.peek!(Transform);
@@ -39,7 +39,6 @@ struct Select
 						context.world.selectedItem = i;
 						context.world.select(i, 0);			
 					}
-
 					return;
 				}
 			}

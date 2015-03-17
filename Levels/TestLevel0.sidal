@@ -11,6 +11,84 @@ data=[
 			}
 			items=
 			[
+				{
+					components=
+					[
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						},
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=|banana|
+								}
+							}
+						}
+					]
+					name=|Item|
+					id=1488293027
+				},
+				{
+					components=
+					[
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=2
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						},
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=|banana|
+								}
+							}
+						}
+					]
+					name=|Item|
+					id=4216581028
+				}
 			]
 			archetypes=
 			[
@@ -26,6 +104,306 @@ data=[
 			redoCount=0
 			commands=
 			[
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=1
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=1
+							type=0
+						}
+						index=0
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=1
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|Atlas|
+									image=||
+								}
+							}
+						}
+					}
+				}
 			]
 		}
 	},
@@ -35,9 +413,9 @@ data=[
 		{
 			viewport=
 			{
-				x=200
+				x=300
 				y=3
-				z=1720
+				z=1620
 				w=977
 			}
 			position=
@@ -45,6 +423,6 @@ data=[
 				x=0
 				y=0
 			}
-			scale=32
+			scale=65
 		}
 	}]

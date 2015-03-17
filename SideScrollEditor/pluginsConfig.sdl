@@ -5,5 +5,5 @@ pluginDlls =
 
 gameDlls =
 [
-	|..\Game\Debug\Game.dll|
+	//|..\Game\Debug\Game.dll|
 ]

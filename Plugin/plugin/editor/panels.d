@@ -465,17 +465,32 @@ struct WorldPanel
 	{
 		string name;
 		VariantN!32 data;
-		Binding!(void delegate(WorldToolContext*)) use;
-		Binding!(void delegate(RenderContext*))    render;
-		Binding!(bool delegate(WorldToolContext*)) usable;
+		MetaType* type;
+
+		void use(WorldToolContext* context)
+		{
+			type.invoke("use", this.data, context);
+		}
+
+		void render(RenderContext* context)
+		{
+			auto p = type.tryBind!(void delegate(RenderContext*))(this.data, "render");
+			if(p) p(context);
+		}
+
+		bool usable(WorldToolContext* context)
+		{
+			auto p = type.tryBind!(bool delegate(WorldToolContext*))(this.data, "usable");
+			if(p) return p(context);
+		
+			return true;
+		}
 
 		this(const(MetaType)* type, string name)
 		{	
 			this.name   = name;
 			this.data   = type.initial!32;
-			this.use    = type.tryBind!(void delegate(WorldToolContext*))(data, "use");
-			this.render = type.tryBind!(void delegate(RenderContext*))(data, "render");
-			this.usable = type.tryBind!(bool delegate(WorldToolContext*))(data,  "usable");
+			this.type   = cast(MetaType*)type;
 		}
 	}
 
@@ -515,7 +530,7 @@ struct WorldPanel
 		auto tcontext = WorldToolContext(data, context.gui.keyboard, context.gui.mouse, camera);
 		Rect lowerLeft = Rect(context.area.x + 3, context.area.y + 3, context.area.w - 6, 20);
 		
-		auto ftools = tools.filter!(x => x.usable.isNotNull ? x.usable(&tcontext) : true);
+		auto ftools = tools.filter!(x => x.usable(&tcontext));
 		toolbar(*context.gui, lowerLeft, selected, ftools.map!(x => x.name));
 	
 		
@@ -526,8 +541,8 @@ struct WorldPanel
 			auto idx  = tools.countUntil!(x => x.name == ftools.front.name);
 			auto tool = &tools[idx];
 
-			if(tool.use) tool.use(&tcontext);
-			if(tool.render) tool.render(&rcontext);
+			tool.use(&tcontext);
+			tool.render(&rcontext);
 		}
 	}
 }
