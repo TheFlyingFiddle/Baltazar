@@ -1,0 +1,209 @@
+
+data=[
+	{
+		type = |plugin.core.data.WorldData|
+		value = 
+		{
+			selected=
+			{
+				index=0
+				type=0
+			}
+			items=
+			[
+				{
+					components=
+					[
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						},
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|GuiAtlas|
+									image=|arrowbtn_up|
+								}
+							}
+						}
+					]
+					name=|Item|
+					id=3420421527
+				}
+			]
+			archetypes=
+			[
+			]
+			selectedItem=0
+			selectedArchetype=0
+		}
+	},
+	{
+		type = |plugin.core.data.DoUndo|
+		value = 
+		{
+			redoCount=0
+			commands=
+			[
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=0
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Transform|
+							value = 
+							{
+								position=
+								{
+									x=0
+									y=0
+								}
+								scale=
+								{
+									x=1
+									y=1
+								}
+								rotation=0
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.AddComponent|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=||
+									image=||
+								}
+							}
+						}
+					}
+				},
+				{
+					type = |plugin.core.commands.ComponentChanged|
+					value = 
+					{
+						item=
+						{
+							index=0
+							type=0
+						}
+						index=1
+						component=
+						{
+							type = |common.components.Sprite|
+							value = 
+							{
+								tint=
+								{
+									packedValue=4294967295
+								}
+								texture=
+								{
+									atlas=|GuiAtlas|
+									image=||
+								}
+							}
+						}
+					}
+				}
+			]
+		}
+	},
+	{
+		type = |plugin.core.data.Camera|
+		value = 
+		{
+			viewport=
+			{
+				x=300
+				y=3
+				z=767
+				w=560
+			}
+			position=
+			{
+				x=0
+				y=0
+			}
+			scale=32
+		}
+	}]
