@@ -87,6 +87,41 @@ struct Grab
 	}
 }
 
+// Moves the selected object
+@WorldTool("Move")
+struct Move
+{
+	bool usable(WorldToolContext* context) {
+		auto selected = context.world.items[context.world.selectedItem];
+		auto trans = selected.peek!Transform;
+		return trans != null;
+	}
+
+	int hover;
+	float2 lastLocation;
+	bool moving = false;
+	void use(WorldToolContext* context)
+	{
+		if(moving) {
+			if(context.mouse.wasReleased(MouseButton.left)) {
+				moving = false;
+				return;
+			} else {
+				auto selected = context.world.items[context.world.selectedItem];
+				auto trans = selected.peek!Transform;
+				auto newLocation = context.camera.screenToWorld(context.mouse.location);
+				trans.position += newLocation - lastLocation;
+				lastLocation = newLocation;
+			}
+		} else {
+			if(context.mouse.wasPressed(MouseButton.left)) {
+				moving = true;
+				lastLocation = context.camera.screenToWorld(context.mouse.location);
+			}
+		}
+	}
+}
+
 import reflection.generation;
 enum Filter(T) = true;
 mixin GenerateMetaData!(Filter, plugin.editor.tools);
