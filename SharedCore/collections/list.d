@@ -261,7 +261,8 @@ struct List(T)
 
 struct GrowingList(T)
 {
-	import std.range : isInputRange, isForwardRange, isBidirectionalRange, isRandomAccessRange;
+	import std.range : isInputRange, isForwardRange, isBidirectionalRange, isRandomAccessRange,
+					   hasSlicing;
 	static assert(isInputRange!(GrowingList!T));
 	static assert(isForwardRange!(GrowingList!T));
 	static assert(isBidirectionalRange!(GrowingList!T));
@@ -357,6 +358,8 @@ struct GrowingList(T)
 	{
 		return base_.opSlice(x, y);
 	}	
+
+
 
 	int opApply(int delegate(ref T) dg)
 	{

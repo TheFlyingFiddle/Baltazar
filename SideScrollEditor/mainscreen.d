@@ -171,7 +171,7 @@ final class MainScreen : Screen, IEditor
 			foreach(ref type; plugin.attributeTypes!(Data))
 			{
 				bool res = false;
-				VariantN!(64) variant;
+				VariantN!(128) variant;
 				foreach(ref v; data.data)
 				{
 					if(type.isTypeOf(v))

@@ -392,12 +392,7 @@ struct EntityPanel
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		(*gui).listbox(itemBox, data.selectedItem, data.items.array.map!(x => x.name));
-		if(data.selectedItem < data.items.length)
-		{	
-			data.select(data.selectedItem, 0);
-		}
-
+		(*gui).listbox(itemBox, data.selectedItems, data.items.array.map!(x => x.name));
 		if((*gui).button(newItemBox, "New"))
 		{
 			doundo.apply(AddItem(0));
@@ -405,13 +400,15 @@ struct EntityPanel
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
-			if(data.selectedItem < data.items.length)
+			import std.algorithm;
+			data.selectedItems.base_.sort!((a, b) => b < a);
+			foreach(s; data.selectedItems)
 			{
-				data.select(data.selectedItem, 0);
-				doundo.apply(RemoveItem(0));		
-
-				data.selectedItem = max(0, min(data.selectedItem, data.items.length));
+				data.select(s, 0);
+				doundo.apply(RemoveItem(0));
 			}
+
+			data.selectedItems.clear();
 		}
 	}
 }
@@ -431,12 +428,7 @@ struct ArchetypesPanel
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		(*gui).listbox(itemBox, data.selectedArchetype, data.archetypes.array.map!(x => x.name));
-		if(data.selectedArchetype < data.archetypes.length)
-		{	
-			data.select(data.selectedArchetype, 1);
-		}
-
+		(*gui).listbox(itemBox, data.selectedArchetypes, data.archetypes.array.map!(x => x.name));
 		if((*gui).button(newItemBox, "New"))
 		{
 			doundo.apply(AddArchetype(0));
@@ -444,13 +436,17 @@ struct ArchetypesPanel
 
 		if((*gui).button(deleteItemBox, "Delete"))
 		{
-			if(data.selectedArchetype < data.archetypes.length)
+			import std.algorithm;
+			data.selectedArchetypes.base_.sort!((a, b) => b < a);
+			foreach(s; data.selectedArchetypes)
 			{
-				data.select(data.selectedArchetype, 1);
+				data.select(s, 1);
 				doundo.apply(RemoveItem(0));
-				data.selectedArchetype = max(0, min(data.selectedArchetype, data.items.length));
 			}
+
+			data.selectedArchetypes.clear();
 		}
+
 	}
 }
 

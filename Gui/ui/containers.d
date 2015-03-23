@@ -20,9 +20,9 @@ struct GuiListBox
 	}
 }
 
-bool listbox(T)(ref Gui gui, 
+bool listbox(T, Sels)(ref Gui gui, 
 				Rect rect, 
-				ref int selected, 
+				ref Sels selected, 
 				T items,
 				HashID s = "listbox")
 {
@@ -59,8 +59,26 @@ bool listbox(T)(ref Gui gui,
 	bool result = false;
 	if(gui.wasClicked(rect))
 	{
-		selected = length - 1 - cast(int)((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize);
-		selected = clamp(selected, -1, cast(int)(length - 1));
+		auto sel = length - 1 - cast(int)((gui.mouse.location.y - rect.y + state.scroll.y) / style.itemSize);
+		sel = clamp(sel, -1, cast(int)(length - 1));
+		if(gui.keyboard.isModifiersDown(KeyModifiers.control))
+		{
+			auto c = selected.countUntil!(x => x == sel);
+			if(c == -1)
+			{
+				selected ~= sel;
+			}
+			else 
+			{
+				selected.removeAt(c);
+			}
+		}
+		else 
+		{
+			selected.clear();
+			selected ~= sel;
+		}
+
 		result   = true;
 	}
 
@@ -68,12 +86,14 @@ bool listbox(T)(ref Gui gui,
 	{
 		if(gui.keyboard.wasPressed(Key.up)) 
 		{
-			selected = selected == 0 ? length - 1 : selected - 1;
+			if(selected.length)
+				selected[$ - 1] = selected[$ - 1] == 0 ? length - 1 : selected[$ - 1] - 1;
 			result = true;
 		}
 		else if(gui.keyboard.wasPressed(Key.down))
 		{
-			selected = (selected + 1) % length;
+			if(selected.length)
+				selected[$ - 1] = (selected[$ - 1] + 1) % length;
 			result = true;
 		}
 	}
@@ -82,13 +102,13 @@ bool listbox(T)(ref Gui gui,
 	Rect toDraw = Rect(rect.x, rect.y + rect.h - style.itemSize - (state.scroll.y - scrollMax),
 					   rect.w, style.itemSize);
 
-	selected = min(length - 1, max(selected, 0));
 
 	int i = 0;
 	foreach(item; items)
 	{
 		GuiFrame frame;
-		if(i == selected) {
+		auto c = selected.countUntil!(x => x == i);
+		if(c != -1) {
 			frame = style.selected;
 		}
 		else

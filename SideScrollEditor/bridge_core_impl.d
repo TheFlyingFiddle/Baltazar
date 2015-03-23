@@ -11,10 +11,10 @@ import util.servicelocator;
 
 struct SaveData
 {
-	VariantN!(64)[] data;
+	VariantN!(128)[] data;
 	this(EditorData data)
 	{
-		this.data = cast(VariantN!64[])data.data.array;
+		this.data = cast(VariantN!128[])data.data.array;
 	}
 }
 
@@ -22,12 +22,12 @@ class EditorData : IEditorData
 {
 	IAllocator allocator;
 	List!(const(MetaType)*) types;
-	List!(VariantN!64) data;
+	List!(VariantN!128) data;
 
 	this(IAllocator all, size_t num)
 	{
 		this.allocator = all;
-		this.data  = List!(VariantN!64)(all, num);
+		this.data  = List!(VariantN!128)(all, num);
 		this.types = List!(const(MetaType)*)(all, num);
 	}
 
@@ -40,10 +40,10 @@ class EditorData : IEditorData
 	void addData(const(MetaType)* dataType)
 	{
 		types ~= dataType;
-		data  ~= dataType.create!64(allocator);
+		data  ~= dataType.create!128(allocator);
 	}
 
-	void addData(const(MetaType)* dataType, ref VariantN!64 data)
+	void addData(const(MetaType)* dataType, ref VariantN!128 data)
 	{
 		this.types ~= dataType;
 		this.data  ~= data;

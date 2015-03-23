@@ -4,97 +4,123 @@ data=[
 		type = |plugin.core.data.WorldData|
 		value = 
 		{
-			selected=
-			{
-				index=0
-				type=0
-			}
 			items=
 			[
 				{
 					components=
 					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=|banana|
-								}
-							}
-						}
 					]
 					name=|Item|
-					id=1488293027
+					id=4140508248
 				},
 				{
 					components=
 					[
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=2
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						},
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=|banana|
-								}
-							}
-						}
 					]
 					name=|Item|
-					id=4216581028
+					id=1415731276
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=2575308316
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=4214406609
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=2727187231
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=1735581488
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=2294704219
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=3618828496
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=403872965
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=141613747
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=4288474390
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=4263263294
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=3234561688
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=1526666846
+				},
+				{
+					components=
+					[
+					]
+					name=|Item|
+					id=2945689873
 				}
 			]
 			archetypes=
 			[
 			]
-			selectedItem=0
-			selectedArchetype=0
+			selectedItems=
+			[
+			]
+			selectedArchetypes=
+			[
+			]
 		}
 	},
 	{
@@ -113,62 +139,6 @@ data=[
 					}
 				},
 				{
-					type = |plugin.core.commands.AddComponent|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						}
-					}
-				},
-				{
-					type = |plugin.core.commands.AddComponent|
-					value = 
-					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
-					}
-				},
-				{
 					type = |plugin.core.commands.AddItem|
 					value = 
 					{
@@ -177,231 +147,107 @@ data=[
 					}
 				},
 				{
-					type = |plugin.core.commands.AddComponent|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						}
+						archetype=0
+						index=2
 					}
 				},
 				{
-					type = |plugin.core.commands.AddComponent|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
+						archetype=0
+						index=3
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
+						archetype=0
+						index=4
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=||
-								}
-							}
-						}
+						archetype=0
+						index=5
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						index=0
-						component=
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=0
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						}
+						archetype=0
+						index=6
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=1
-							type=0
-						}
-						index=0
-						component=
-						{
-							type = |common.components.Transform|
-							value = 
-							{
-								position=
-								{
-									x=1
-									y=0
-								}
-								scale=
-								{
-									x=1
-									y=1
-								}
-								rotation=0
-							}
-						}
+						archetype=0
+						index=7
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=||
-									image=||
-								}
-							}
-						}
+						archetype=0
+						index=8
 					}
 				},
 				{
-					type = |plugin.core.commands.ComponentChanged|
+					type = |plugin.core.commands.AddItem|
 					value = 
 					{
-						item=
-						{
-							index=0
-							type=0
-						}
-						index=1
-						component=
-						{
-							type = |common.components.Sprite|
-							value = 
-							{
-								tint=
-								{
-									packedValue=4294967295
-								}
-								texture=
-								{
-									atlas=|Atlas|
-									image=||
-								}
-							}
-						}
+						archetype=0
+						index=9
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=10
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=11
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=12
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=13
+					}
+				},
+				{
+					type = |plugin.core.commands.AddItem|
+					value = 
+					{
+						archetype=0
+						index=14
 					}
 				}
 			]
@@ -423,6 +269,6 @@ data=[
 				x=0
 				y=0
 			}
-			scale=65
+			scale=32
 		}
 	}]

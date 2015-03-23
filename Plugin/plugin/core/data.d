@@ -10,41 +10,65 @@ import reflection;
 @Data
 struct WorldData
 {
-	WorldItemID selected;
 	GrowingList!WorldItem items;
 	GrowingList!WorldItem archetypes;
 
-	int selectedItem;
-	int selectedArchetype;
+	GrowingList!uint selectedItems;
+	GrowingList!uint selectedArchetypes;
 
-
-	@property WorldItem* item()
-	{
-		return selectedItem < items.length ? &items[selectedItem] : null;
-	}
-
-	@property WorldItem* archetype()
+	WorldItem* archetype()
 	{
 		return selectedArchetype < archetypes.length ? &archetypes[selectedArchetype] : null;
 	}
 
-
-	void select(uint index, ubyte type)
+	int selectedArchetype()
 	{
-		selected.index = cast(ushort)index;
-		selected.type  = type;
+		return selectedArchetypes.length > 0 ? selectedArchetypes[0] : 0;
+	}
+
+	WorldItem* item()
+	{
+		return selectedItem < items.length ? &items[selectedItem] : null;
+	}
+
+	int selectedItem()
+	{
+		return selectedItems.length > 0 ? selectedItems[0] : 0;
+	}
+
+	void select(uint index, int type)
+	{
+		selectedItems.clear();
+		selectedArchetypes.clear();
+
+		if(type == 0) 
+			selectedItems ~= index;
+		else if(type == 1)
+			selectedArchetypes ~= index;
+	}
+
+	WorldItemID selected()
+	{
+		if(selectedItems.length == 1)	   return WorldItemID(cast(ushort)selectedItems[0], 0);
+		if(selectedArchetypes.length == 1) return WorldItemID(cast(ushort)selectedArchetypes[0], 1);
+
+		return WorldItemID(0, 2);
 	}
 
 	this(IAllocator allocator)
 	{
-		items	   = GrowingList!WorldItem(allocator, 100);
-		archetypes = GrowingList!WorldItem(allocator, 5);
+		items			  = GrowingList!WorldItem(allocator, 100);
+		archetypes		  = GrowingList!WorldItem(allocator, 5);
+		selectedItems	  = GrowingList!uint(allocator, 100);
+		selectedArchetypes = GrowingList!uint(allocator, 5);
 	}
 
 	void deallocate(IAllocator allocator)
 	{
 		items.deallocate();
 		archetypes.deallocate();
+		selectedItems.deallocate();
+		selectedArchetypes.deallocate();
 	}
 }
 
@@ -137,8 +161,10 @@ struct WorldItemID
 		auto wdata = Editor.data.locate!(WorldData);
 		if(type == 0)
 			return &wdata.items;
-		else 
+		else if(type == 1)
 			return &wdata.archetypes;
+		else 
+			return null;
 	}
 
 	WorldItem* proxy()
@@ -147,8 +173,10 @@ struct WorldItemID
 		auto wdata = Editor.data.locate!(WorldData);
 		if(type == 0)
 			return index < wdata.items.length ? &wdata.items[index] : null;
-		else 
+		else if(type == 1)
 			return index < wdata.archetypes.length ? &wdata.archetypes[index] : null;
+		else 
+			return null;
 	}
 }
 

@@ -36,7 +36,6 @@ struct Select
 					{
 						import log;
 						logInfo("I selected a new item!");
-						context.world.selectedItem = i;
 						context.world.select(i, 0);			
 					}
 					return;
@@ -91,10 +90,16 @@ struct Grab
 @WorldTool("Move")
 struct Move
 {
-	bool usable(WorldToolContext* context) {
-		auto selected = context.world.items[context.world.selectedItem];
-		auto trans = selected.peek!Transform;
-		return trans != null;
+	bool usable(WorldToolContext* context) 
+	{
+		auto selected = context.world.item;
+		if(selected)
+		{
+			auto trans = selected.peek!Transform;
+			return trans != null;
+		}
+
+		return false;
 	}
 
 	int hover;
