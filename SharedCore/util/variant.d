@@ -36,7 +36,7 @@ struct VariantN(size_t size)
 		*cast(T*)(this.data.ptr) = t; 
 	}
 
-	void opAssign(size_t N)(Variant!N other) if(N <= size - TypeHash.sizeof)
+	void opAssign(size_t N)(VariantN!N other) if(N <= size - TypeHash.sizeof)
 	{
 		this.data[0 .. N] = other.data[];
 		this.id			  = other.id;

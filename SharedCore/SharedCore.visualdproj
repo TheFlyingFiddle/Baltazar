@@ -13,7 +13,7 @@
   <verbose>0</verbose>
   <vtls>1</vtls>
   <symdebug>0</symdebug>
-  <optimize>1</optimize>
+  <optimize>0</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -394,6 +394,7 @@
    <File path="collections\grid.d" />
    <File path="collections\heap.d" />
    <File path="collections\list.d" />
+   <File path="collections\map.d" />
    <File path="collections\package.d" />
    <File path="collections\table.d" />
   </Folder>

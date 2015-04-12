@@ -1,6 +1,7 @@
 module allocation.native;
 
 public import allocation.common;
+import core.memory;
 
 version(X86)
 {
@@ -19,6 +20,8 @@ version(X86)
 			size_t aligner = alignment > 8 ? alignment : 8;
 
 			void* allocated = malloc(bytes + aligner);
+			GC.addRange(allocated, bytes);
+
 			void* mp = allocated;
 			size_t addr = cast(size_t)allocated;
 
@@ -27,6 +30,8 @@ version(X86)
 			//Store ptr at begining of allocation block.
 			size_t* ptr = cast(size_t*)allocated;
 			*(--ptr) = addr;
+
+
 
 			//import log;
 			//logInfo(bytes + aligner," bytes allocated by Mallocator at " , cast(void*)addr);
@@ -42,6 +47,8 @@ version(X86)
 			size_t addr  = *(--ptr);
 			void* toFree = cast(void*)addr;
 			free(toFree);
+
+			GC.removeRange(toFree);
 
 			//import log;
 			//logInfo(cast(size_t)memory.ptr - addr + memory.length, " bytes deallocated by Mallocator at ", cast(void*)addr);
