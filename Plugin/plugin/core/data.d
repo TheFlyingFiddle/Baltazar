@@ -48,7 +48,7 @@ struct Entity
 		auto proxy = state.proxy!(Entity)(obj);
 		proxy.name = name;
 
-		return state.proxy!Entity(obj);
+		return obj;
 	}
 
 	static void destroy(IEditorState state, Guid guid, string set)

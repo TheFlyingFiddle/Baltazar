@@ -10,6 +10,16 @@ struct Rect
 		this.w = w; this.h = h;
 	}
 
+	this(float2 start, float2 end)
+	{
+		import std.math : abs;
+		import std.algorithm : min, max;
+		this.x = min(start.x, end.x);
+		this.y = min(start.y, end.y);
+		this.w = abs(start.x - end.x);
+		this.h = abs(start.y - end.y);
+	}
+
 	this(float4 f)
 	{
 		this(f.x, f.y, f.z - f.x, f.w - f.y);
@@ -26,6 +36,15 @@ struct Rect
 	{
 		return x < point.x &&  x + w > point.x &&
 			y < point.y &&  y + h > point.y;
+	}
+
+	bool intersects(Rect other)
+	{
+		return !(other.left > this.right || 
+				 other.right < this.left ||
+				 other.top < this.bottom ||
+				 other.bottom > this.top);
+
 	}
 
 	void displace(float2 offset)

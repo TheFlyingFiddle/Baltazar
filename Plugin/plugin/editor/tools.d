@@ -27,53 +27,89 @@ class Select : ITool
 	string name() { return "Select"; }
 	bool usable(ToolContext* contex) { return true; }
 	
-	Guid hover;
+	float2 start, end;
 	void use(ToolContext* context)
 	{
+		if(context.mouse.wasPressed(MouseButton.left))
+		{
+			start = context.camera.screenToWorld(context.mouse.location);
+			end   = start;
+		}
+		else if(context.mouse.isDown(MouseButton.left))
+		{
+			end   = context.camera.screenToWorld(context.mouse.location);
+		}
+		else if(context.mouse.wasReleased(MouseButton.left))
+		{
+			end	  = context.camera.screenToWorld(context.mouse.location);
+			selectEntities(context);
+		}
+		else 
+		{
+			start = end = float2.zero;
+		}
+	}
+
+	void selectEntities(ToolContext* context)
+	{
+		SharedData.selected.clear();
+		Rect bounds = Rect(start, end);
+
 		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
 		if(!entities) return;
 
 		foreach(ref guid; *entities)
 		{
-			auto entity = context.state.proxy!(Entity)(guid);
-			if(Entity.hasComponents!(Transform)(entity.components))
-			{
-				auto trans = context.state.proxy!(Transform)(guid);
-				auto loc = context.camera.screenToWorld(context.mouse.location);
-				Rect r   = Rect(trans.position.x - trans.scale.x / 2,
-								trans.position.y - trans.scale.y / 2,
-								trans.scale.x, trans.scale.y);
-				if(r.contains(loc))
-				{
-					hover = guid;
-					if(context.mouse.wasPressed(MouseButton.left))
-					{
-						if(!context.keyboard.isModifiersDown(KeyModifiers.control))
-							SharedData.selected.clear();
-
-						SharedData.selected ~= guid;
-					}
-					
-					return;
-				}
-			}
+		    auto entity = context.state.proxy!(Entity)(guid);
+		    if(Entity.hasComponents!(Transform)(entity.components))
+		    {
+		        auto trans = context.state.proxy!(Transform)(guid);
+		        Rect r   = Rect(trans.position.x - trans.scale.x / 2,
+		                        trans.position.y - trans.scale.y / 2,
+		                        trans.scale.x, trans.scale.y);
+		        if(r.intersects(bounds))
+		        {
+			        SharedData.selected ~= guid;
+		        }
+		    }
 		}
-
-		hover = Guid.init;
 	}
 
 	void render(RenderContext* context)
 	{
-		if(hover == Guid.init) return;
-		auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-		auto frame = (*atlas)["pixel"];
-	
-		auto transform = context.state.proxy!(Transform)(hover).get();
+		if(start == end) return;
 
-		float2 trans = context.camera.worldToScreen(transform.position); 
-		float2 min = trans - transform.scale * context.camera.scale / 2;
-		float2 max = trans + transform.scale * context.camera.scale / 2;
-		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, Color(0x88888888));
+		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
+		if(!entities) return;
+
+		auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
+		auto pixel = (*atlas)["pixel"];
+
+		Rect bounds = Rect(start, end);
+		foreach(ref guid; *entities)
+		{
+			auto entity = context.state.proxy!(Entity)(guid);
+		    if(Entity.hasComponents!(Transform)(entity.components))
+		    {
+		        auto trans = context.state.proxy!(Transform)(guid);
+				Rect r   = Rect(trans.position.x - trans.scale.x / 2,
+		                        trans.position.y - trans.scale.y / 2,
+		                        trans.scale.x, trans.scale.y);
+		        if(r.intersects(bounds))
+		        {
+					float2 pos = context.camera.worldToScreen(trans.position); 
+					float2 min = pos - trans.scale * context.camera.scale / 2;
+					float2 max = pos + trans.scale * context.camera.scale / 2;
+					context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), trans.rotation, pixel, Color(0x88888888));
+		        }
+		    }
+		}
+
+		Rect screenBounds = Rect(context.camera.worldToScreen(float2(bounds.xy)),
+								 context.camera.worldToScreen(float2(bounds.zw)));
+
+		context.renderer.drawQuad(screenBounds.toFloat4, 0, pixel, Color(0x44444444));
+		context.renderer.drawQuadOutline(screenBounds.toFloat4, 1.0f, pixel, Color(0xff000000));
 	}
 }
 

@@ -23,7 +23,6 @@ import bridge.plugins;
 enum defFieldSize = 20;
 enum defSpacing   = 3;
 
-
 final class MainScreen : Screen, IEditor
 {
 	//These will be here!

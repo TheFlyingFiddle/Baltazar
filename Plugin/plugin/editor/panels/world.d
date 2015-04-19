@@ -48,8 +48,12 @@ struct WorldPanel
 			auto idx  = tools.countUntil!(x => x.name == ftools.front.name);
 			auto tool = tools[idx];
 
-			tool.use(&tcontext);
-			tool.render(&rcontext);
+			if(context.area.contains(context.gui.mouse.location))
+			{
+				tool.use(&tcontext);
+				tool.render(&rcontext);
+			}
+
 		}
 	}
 }
