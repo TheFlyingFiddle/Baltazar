@@ -1,6 +1,5 @@
 # Log files
 *.log
-
 # Windows
 Thumbs.db
 
@@ -14,3 +13,6 @@ temp/
 
 #Binary Visual Studio file
 *.suo
+
+#Other 
+*.sidal
