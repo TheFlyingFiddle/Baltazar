@@ -8,67 +8,81 @@ import common.components;
 import plugin.attributes;
 import graphics.textureatlas;
 import rendering.shapes;
+import util.traits;
+import plugin.core.data;
 
 
-@WorldTool("Selection")
-struct Select
+alias Tools = Classes!(plugin.editor.tools);
+
+interface ITool
 {
-	bool usable(WorldToolContext* context) { return true; }
+	string name();
+	bool usable(ToolContext* contex);
+	void use(ToolContext* context);
+	void render(RenderContext* context);
+}
 
-	int hover;
-	void use(WorldToolContext* context)
+class Select : ITool
+{
+	string name() { return "Select"; }
+	bool usable(ToolContext* contex) { return true; }
+	
+	Guid hover;
+	void use(ToolContext* context)
 	{
-		this.hover = -1;
-		foreach(i, ref item; context.world.items)
+		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
+		if(!entities) return;
+
+		foreach(ref guid; *entities)
 		{
-			auto trans = item.peek!(Transform);
-			if(trans)
+			auto entity = context.state.proxy!(Entity)(guid);
+			if(Entity.hasComponents!(Transform)(entity.components))
 			{
+				auto trans = context.state.proxy!(Transform)(guid);
 				auto loc = context.camera.screenToWorld(context.mouse.location);
 				Rect r   = Rect(trans.position.x - trans.scale.x / 2,
 								trans.position.y - trans.scale.y / 2,
 								trans.scale.x, trans.scale.y);
 				if(r.contains(loc))
 				{
-					hover = i;
-
+					hover = guid;
 					if(context.mouse.wasPressed(MouseButton.left))
 					{
-						import log;
-						logInfo("I selected a new item!");
-						context.world.select(i, 0);			
+						if(!context.keyboard.isModifiersDown(KeyModifiers.control))
+							SharedData.selected.clear();
+
+						SharedData.selected ~= guid;
 					}
+					
 					return;
 				}
 			}
 		}
+
+		hover = Guid.init;
 	}
 
 	void render(RenderContext* context)
 	{
-		if(hover != -1 && hover < context.world.items.length)
-		{
-			auto item = context.world.items[hover];
+		if(hover == Guid.init) return;
+		auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
+		auto frame = (*atlas)["pixel"];
+	
+		auto transform = context.state.proxy!(Transform)(hover).get();
 
-			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-			auto frame = (*atlas)["pixel"];
-			auto transform = item.peek!(Transform);
-			
-			float2 trans = context.camera.worldToScreen(transform.position); 
-			float2 min = trans - transform.scale * context.camera.scale / 2;
-			float2 max = trans + transform.scale * context.camera.scale / 2;
-
-			context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, Color(0x88888888));
-		}
+		float2 trans = context.camera.worldToScreen(transform.position); 
+		float2 min = trans - transform.scale * context.camera.scale / 2;
+		float2 max = trans + transform.scale * context.camera.scale / 2;
+		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, Color(0x88888888));
 	}
 }
 
-@WorldTool("Grab")
-struct Grab
+class Grab  : ITool
 {
-	bool usable(WorldToolContext* context) { return true; }
+	string name() { return "Grab"; }
+	bool usable(ToolContext* contex) { return true; }
 
-	void use(WorldToolContext* context)
+	void use(ToolContext* context)
 	{
 		Rect area = Rect(context.camera.viewport);
 		if(area.contains(context.mouse.location))
@@ -84,49 +98,58 @@ struct Grab
 			}
 		}
 	}
+
+	void render(RenderContext* context)
+	{
+	}
 }
 
-// Moves the selected object
-@WorldTool("Move")
-struct Move
+class Move  : ITool
 {
-	bool usable(WorldToolContext* context) 
-	{
-		auto selected = context.world.item;
-		if(selected)
-		{
-			auto trans = selected.peek!Transform;
-			return trans != null;
-		}
+	string name() { return "Move"; }
 
-		return false;
+	bool usable(ToolContext* context) 
+	{
+		return true;
 	}
 
-	int hover;
 	float2 lastLocation;
 	bool moving = false;
-	void use(WorldToolContext* context)
+	void use(ToolContext* context)
 	{
-		if(moving) {
-			if(context.mouse.wasReleased(MouseButton.left)) {
+		if(moving) 
+		{
+			if(context.mouse.wasReleased(MouseButton.left)) 
+			{
 				moving = false;
 				return;
-			} else {
-				auto selected = context.world.items[context.world.selectedItem];
-				auto trans = selected.peek!Transform;
-				auto newLocation = context.camera.screenToWorld(context.mouse.location);
-				trans.position += newLocation - lastLocation;
-				lastLocation = newLocation;
 			}
-		} else {
-			if(context.mouse.wasPressed(MouseButton.left)) {
+			else
+			{
+				auto newLocation = context.camera.screenToWorld(context.mouse.location);
+				auto delta		 = newLocation - lastLocation;
+				lastLocation	 = newLocation;
+
+				foreach(ref guid; SharedData.selected)
+				{
+					auto entity = context.state.proxy!(Entity)(guid);
+					if(Entity.hasComponents!(Transform)(entity.components))
+					{
+						auto trans = context.state.proxy!(Transform)(guid);
+						trans.position = trans.position + delta;
+					}
+				}
+			}
+		} 
+		else
+		{
+			if(context.mouse.wasPressed(MouseButton.left)) 
+			{
 				moving = true;
 				lastLocation = context.camera.screenToWorld(context.mouse.location);
 			}
 		}
 	}
-}
 
-import reflection.generation;
-enum Filter(T) = true;
-mixin GenerateMetaData!(Filter, plugin.editor.tools);
+	void render(RenderContext* context) { }
+}

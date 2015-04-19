@@ -82,6 +82,7 @@ struct RTTI
 	//This is special
 	bool isGeneric = false;
 	ushort innerOffset;
+	ushort innerOffset2;
 
 	void initial(void[] store) const
 	{
@@ -98,6 +99,14 @@ struct RTTI
 		enforce(type == Type.array || type == Type.pointer || isGeneric);
 		return &assembly.rttis[innerOffset];
 	}
+
+	@property const(RTTI)* inner2() const
+	{
+		enforce(isGeneric);
+		return &assembly.rttis[innerOffset2];
+	}
+
+
 
 	@property const(MetaType)* metaType() const
 	{
@@ -271,10 +280,14 @@ auto ref invoke(R = void, Variant, Params...)(const(MetaType)* type, string name
 	}
 }
 
-auto ref invoke(R = void, Variant, Params...)(const(MetaMethod)* method, ref Variant obj, auto ref Params params)
+auto ref invoke(R = void, Variant, Params...)(const(MetaMethod)* method, ref Variant obj, auto ref Params params) if(is(Variant v == Variant!N, N))
 {
 	enforce(obj.id == method.ownerInfo.hash);
+	return invoke!(R, Params)(method, cast(void[])obj.mem[], params); 
+}
 
+auto ref invoke(R = void, Params...)(const(MetaMethod)* method, void[] mem,  auto ref Params params)
+{
 	alias R delegate(Params) del_t;
 	enforce(typeHash!(del_t) == method.hash);
 
@@ -284,12 +297,14 @@ auto ref invoke(R = void, Variant, Params...)(const(MetaMethod)* method, ref Var
 	{
 		import dll.error;
 		static if(is(R == void))
-			fun(obj.data.ptr, params);
+			fun(mem.ptr, params);
 		else 
-			auto res = fun(obj.data.ptr, params);
+			auto res = fun(mem.ptr, params);
 
 		if(wasError())
-			throwError();
+		{
+				throwError();
+		}
 
 		static if(!is(R == void))
 			return res;
@@ -299,7 +314,6 @@ auto ref invoke(R = void, Variant, Params...)(const(MetaMethod)* method, ref Var
 		return fun(obj.data.ptr, params);
 	}
 }
-
 
 version(Windows)
 {
@@ -424,14 +438,6 @@ struct MetaFunction
 	mixin Interval!(MetaParameter, "parameters");
 }
 
-R invoke(R = void, Params...)(ref const(MetaFunction) func, Params params) 
-{
-	static if(is(R == void))
-		invoke!(R, Params)(&func, params);
-	else
-		return invoke!(R, Params)(&func, params);
-}
-
 R invoke(R = void, Params...)(const(MetaFunction)* func, Params params) 
 {
 	alias R function(Params) fun_t;
@@ -439,10 +445,39 @@ R invoke(R = void, Params...)(const(MetaFunction)* func, Params params)
 	enforce(hash == func.hash);
 
 	auto fun = cast(fun_t)func.funcptr;
-	static if(is(R == void))
-		fun(params);
-	else
-		return fun(params);
+	version(Windows)
+	{
+		import dll.error;
+		static if(is(R == void))
+			fun(params);
+		else 
+			auto res = fun(mem.ptr, params);
+
+		if(wasError())
+		{
+			//Basically if we are calling the function from the same library/dll/exe
+			//We let the exception propagate normally.
+			static immutable Exception e = new Exception("");
+			if(func.assembly is &assembly)
+			{
+				//e.msg = text1024("Failed to excecute function : ", func.name);
+				throw e;
+			}
+			else
+				throwError();
+		}
+
+		static if(!is(R == void))
+			return res;
+	}
+	else 
+	{
+		static if(is(R == void))
+			fun(params);
+		else
+			return fun(params);
+	}
+
 }
 
 @DontReflect
@@ -494,6 +529,28 @@ void destroy(size_t N = 32)(const(MetaType)* type, ref VariantN!N obj)
 	}
 }
 
+void[] createNew(A, Params...)(const(MetaType)* type, ref A allocator, ref auto Params params)
+{
+	import allocation;
+
+	auto info = type.typeInfo;
+	enum hash = typeHash!(void function(Params));
+	foreach(ctor; type.constructors) {
+		if(hash == ctor.hash) 
+		{
+			void[] data = allocator.allocateRaw(info.size, info.alignment);
+			createAt(ctor, data, params);
+			return  data;
+		}
+	}
+
+	enforce(0, "Type " ~ type.typeInfo.name ~ 
+			"does not contain a constructor taking parameters " ~ 
+			Params.stringof ~ ".");
+	assert(0);
+}
+
+
 void createAt(Params...)(in MetaConstructor ctor, void[] buffer, ref auto Params params)
 {
 	enum hash = typeHash!(void function(Params));
@@ -504,6 +561,7 @@ void createAt(Params...)(in MetaConstructor ctor, void[] buffer, ref auto Params
 
 	init(buffer, params);
 }
+
 
 alias MetaAttribute = VariantN!(32);
 

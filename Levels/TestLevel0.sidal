@@ -1,274 +1,83 @@
 
 data=[
 	{
-		type = |plugin.core.data.WorldData|
-		value = 
+		key=0
+		value=
 		{
-			items=
-			[
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=4140508248
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=1415731276
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=2575308316
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=4214406609
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=2727187231
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=1735581488
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=2294704219
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=3618828496
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=403872965
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=141613747
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=4288474390
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=4263263294
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=3234561688
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=1526666846
-				},
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=2945689873
-				}
-			]
-			archetypes=
-			[
-			]
-			selectedItems=
-			[
-			]
-			selectedArchetypes=
-			[
-			]
+			entities = 
+			{
+				type = |ulong[]|
+				value = 
+				[14979504788416010284,15010254547833673896
+				]
+			}
 		}
 	},
 	{
-		type = |plugin.core.data.DoUndo|
-		value = 
+		key=14979504788416010284
+		value=
 		{
-			redoCount=0
-			commands=
-			[
+			name = 
+			{
+				type = |char[]|
+				value = |Item|
+			}
+			components = 
+			{
+				type = |ulong|
+				value = 3
+			}
+			Spritetint = 
+			{
+				type = |graphics.color.Color|
+				value = 
 				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=0
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=1
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=2
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=3
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=4
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=5
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=6
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=7
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=8
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=9
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=10
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=11
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=12
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=13
-					}
-				},
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=14
-					}
+					packedValue=4294902531
 				}
-			]
+			}
+			Spritetexture_atlas = 
+			{
+				type = |char[]|
+				value = |GuiAtlas|
+			}
+			Spritetexture_image = 
+			{
+				type = |char[]|
+				value = |baws|
+			}
+			Transformposition = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=0
+					y=0
+				}
+			}
+			Transformscale = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=100
+					y=100
+				}
+			}
+			Transformrotation = 
+			{
+				type = |float|
+				value = 0
+			}
 		}
 	},
 	{
-		type = |plugin.core.data.Camera|
-		value = 
+		key=15010254547833673896
+		value=
 		{
-			viewport=
+			name = 
 			{
-				x=300
-				y=3
-				z=1620
-				w=977
+				type = |char[]|
+				value = |Item|
 			}
-			position=
-			{
-				x=0
-				y=0
-			}
-			scale=32
 		}
 	}]

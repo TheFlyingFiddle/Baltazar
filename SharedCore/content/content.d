@@ -352,8 +352,8 @@ struct AsyncContentLoader
 
 void asyncLoadFile(string path, HashID hash, FileLoader loader, void delegate(HashID, TypeHash, void*) adder) 
 {
-	import std.stdio;
-	writeln("Loading file: ", path);
+	import log;
+	logInfo("Loading file: ", path);
 
 	import concurency.task;
 	auto item = loader.load(Mallocator.cit, path, true);

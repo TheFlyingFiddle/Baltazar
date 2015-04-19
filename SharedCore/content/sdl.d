@@ -9,6 +9,7 @@ import std.c.string :memcpy;
 import std.string;
 import std.range : repeat;
 import collections.list;
+import collections.map;
 import allocation;
 import math.traits, math.vector;
 import graphics.color;
@@ -334,6 +335,7 @@ struct SDLIterator(C)
         return cast(T)s;
 	}
 
+
     T as_impl(T)() if(isArray!T && !isSomeString!T)
     {
         static if(is(T t == A[], A)) {
@@ -373,6 +375,13 @@ struct SDLIterator(C)
 		}
 	}
 
+	//TODO: Code duplication (see above) iteration might be refactored into an opApply?
+	T as_impl(T)() if(is(T == IAllocator))
+	{
+		return Mallocator.cit;
+	}
+
+
 	T as_impl(T)() if (is(T == enum))
 	{
 		enforce(over.root[currentIndex].type == TypeID._string,
@@ -383,7 +392,6 @@ struct SDLIterator(C)
 		string name = range.readIdentifier;
 		
 		foreach(member; EnumMembers!T) {
-			//TODO: Allocates :(
 			if(member.to!string == name)
 				return member;
 		}
@@ -395,6 +403,67 @@ struct SDLIterator(C)
 	T as_impl(T)() if(is(T == Color))
 	{
 		return Color(as_impl!(uint)());
+	}
+
+	
+	T as_impl(T)() if(is(T t == HashMap!(K, V), K, V) && !is(T t1 == HashMap!(string, U), U))
+	{
+		static if(is(T t == HashMap!(K, V), K, V))
+		{
+			struct Pair
+			{
+				K key;
+				V value;
+			}
+
+            Pair[] items = as!(Pair[]);
+			auto m     = HashMap!(K, V)(Mallocator.cit, items.length);
+			foreach(ref item; items)
+			{
+				m.tryAdd(item.key, item.value);
+			}
+
+			allocator.deallocate(items);
+			return m;
+		}
+		else 
+			static assert(0, T.stringof ~ " is not a HashMap type!");
+	}
+
+	T as_impl(T)() if(is(T t == HashMap!(string, V), V))
+	{
+		static if(is(T t == HashMap!(string, V), V))
+		{
+			auto length = walkLength;
+			auto m     = HashMap!(string, V)(Mallocator.cit, length);
+			if(length == 0) return m;
+
+
+			goToChild();
+			auto idx = currentIndex;
+			m.tryAdd(copyName, as!V);
+
+			foreach(i; 1 .. length)
+			{
+
+				currentIndex = idx;
+		        goToNext();
+				idx = currentIndex;
+				m.tryAdd(copyName, as!V);
+			}
+
+			return m;
+		}
+		else 
+			static assert(0, T.stringof ~ " is not a HashMap type!");
+	}
+
+	private string copyName()
+	{
+		auto name = readName;
+		auto mem  = cast(char[])allocateRaw(allocator, name.length, 0);
+		mem[] = name;
+		return cast(string)mem;
 	}
 
 	private template memberName(string fullName)
@@ -661,7 +730,7 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is
 		sink.put("false");
 }
 
-void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is(T == struct) && !isList!(T) && !is(T == Color))
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is(T == struct) && !isList!(T) && !is(T == Color) && !is(T t == HashMap!(K, V), K , V))
 {
 	if(level != 0) {
 		sink.put('\n');
@@ -728,6 +797,57 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) i
 	}
 	sink.put(arrayCloser);
 }
+
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if(is(T t == HashMap!(K, V), K, V) && !is(T t0 == HashMap!(string, U), U))
+{
+	static if(is(T t == HashMap!(K, V), K, V))
+	{
+		struct Pair
+		{
+			K key;
+			V value;
+		}
+
+		sink.put(arrayOpener);
+		int i = 0;
+		foreach(ref k, v; value)
+		{
+
+			toSDL(Pair(k, v), sink, context, level + 1);
+			if(i != value.length - 1)
+				sink.put(',');
+			i++;
+		}
+
+		sink.put(arrayCloser);
+	} else static assert(0);
+}
+
+
+void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level = 0) if(is(T t == HashMap!(string, V), V))
+{
+	if(level != 0) {
+		sink.put('\n');
+		sink.put('\t'.repeat(level - 1));
+		sink.put(objectOpener);
+	}
+
+	foreach(ref k, ref v; value)
+	{
+		sink.put('\n');
+		sink.put('\t'.repeat(level));
+		sink.put(k);
+		sink.put(" = ");
+		toSDL(v, sink, context, level + 1);
+	}
+
+	if(level != 0){
+		sink.put('\n');
+		sink.put('\t'.repeat(level - 1));
+		sink.put(objectCloser);
+	}
+}
+
 
 struct ForwardRange
 {
@@ -1124,7 +1244,12 @@ T number(T)(ForwardRange a, ForwardRange b) if(isNumeric!T)
 		
 		a.popFront();
 	}
-	return no_[0 .. counter].to!T;
+
+	static if(isFloatingPoint!T)
+		double l = no_[0 .. counter].to!double;
+	else
+		ulong l = no_[0 .. counter].to!ulong;
+	return cast(T)l;
 }
 
 long parseHex(ForwardRange saved, ForwardRange range)

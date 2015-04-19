@@ -1,5 +1,6 @@
 module plugin.editor.renderers;
 
+import util.traits;
 import bridge.core;
 import plugin.attributes;
 import plugin.core.data;
@@ -9,6 +10,9 @@ import math.vector;
 import graphics.textureatlas;
 import rendering.combined;
 import rendering.shapes;
+
+
+alias RenderFunctions = Functions!(plugin.editor.renderers);
 
 @WorldRenderer("Grid")
 void renderGrid(RenderContext* context)
@@ -53,19 +57,23 @@ void renderCamera(RenderContext* context)
 	context.renderer.drawText(text, pos, float2(consola.size), consola, Color.black, float2(0.25, 0.75));
 }
 
+
 @WorldRenderer("Basic")
 void renderBasic(RenderContext* context)
 {
-	foreach(ref item; context.world.items)
-	{	
-		auto transform = item.peek!(Transform);
-		auto sprite    = item.peek!(Sprite);
-		auto text      = item.peek!(Text);
-		auto door      = item.peek!(Door);
-		auto fan	   = item.peek!(Fan);
+	auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
+	if(!entities) return;
 
-		if(transform && sprite)
+	foreach(ref guid; *entities)
+	{	
+		auto entity = context.state.proxy!Entity(guid);
+		auto comps	= entity.components;
+
+		if(Entity.hasComponents!(Transform, Sprite)(comps))
 		{
+			auto transform = context.state.proxy!(Transform)(guid);
+			auto sprite	   = context.state.proxy!(Sprite)(guid);
+
 			auto atlas = Editor.assets.locate!(TextureAtlas)(sprite.texture.atlas);
 			if(atlas && atlas.contains(sprite.texture.image))
 			{
@@ -78,45 +86,20 @@ void renderBasic(RenderContext* context)
 			}
 		}
 
-		if(transform && text)
+		if(Entity.hasComponents!(Transform, Text)(comps))
 		{
+			auto transform = context.state.proxy!(Transform)(guid);
+			auto text	   = context.state.proxy!(Text)(guid);
+
 			auto atlas	 = Editor.assets.locate!(FontAtlas)(text.font.atlas);
 			if(atlas && atlas.contains(text.font.font))
 			{
-				auto font	 = (*atlas)[text.font.font];
-
-				float2 trans = context.camera.worldToScreen(transform.position); 
-				float2 size  = transform.scale * font.size;
-
-				context.renderer.drawText(text.text, trans, size, font, text.color, text.thresh);
-			}
-		}
-
-		if(transform && fan)
-		{
-			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-			auto frame = (*atlas)["pixel"];
-
-			float2 trans = context.camera.worldToScreen(transform.position); 
-			float2 min = trans + float2(-transform.scale.x, transform.scale.y) * context.camera.scale / 2;
-			float2 max = min + float2(transform.scale.x, fan.effect) * context.camera.scale;
-			Color crl = fan.active ? Color(0x88008800) : Color(0x88000088);
-			context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, crl);
-		}
-	
-		if(transform && door)
-		{
-			auto used    = door.open ? door.openImage : door.closedImage;
-			auto atlas = Editor.assets.locate!(TextureAtlas)(used.atlas);
-			if(atlas && atlas.contains(used.image))
-			{
-				auto frame = (*atlas)[used.image];
-
-				float2 trans = context.camera.worldToScreen(transform.position); 
-				float2 min = trans - transform.scale * context.camera.scale / 2;
-				float2 max = trans + transform.scale * context.camera.scale / 2;
-
-				context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), transform.rotation, frame, Color(0xFFFFFFFF));
+			    auto font	 = (*atlas)[text.font.font];
+			
+			    float2 trans = context.camera.worldToScreen(transform.position); 
+			    float2 size  = transform.scale * font.size;
+			
+			    context.renderer.drawText(text.text, trans, size, font, text.color, text.thresh);
 			}
 		}
 	}
@@ -125,29 +108,21 @@ void renderBasic(RenderContext* context)
 @WorldRenderer("Selected")
 void renderSelected(RenderContext* context)
 {
-	auto item = context.world.item;
-	if(item)
+	auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
+	auto frame = (*atlas)["pixel"];
+
+	foreach(guid; SharedData.selected)
 	{
-		auto transform = item.peek!Transform;
-		if(transform)
+		auto entity = context.state.proxy!Entity(guid);
+		auto comps	= entity.components;
+		if(Entity.hasComponents!(Transform)(comps))
 		{
-			auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-			if(atlas)
-			{
-				auto frame = (*atlas)["pixel"];
+			auto transform	= context.state.proxy!(Transform)(guid).get();
+			float2 trans = context.camera.worldToScreen(transform.position); 
+			float2 min = trans - transform.scale * context.camera.scale / 2;
+			float2 max = trans + transform.scale * context.camera.scale / 2;
 
-				float2 trans = context.camera.worldToScreen(transform.position); 
-				float2 min = trans - transform.scale * context.camera.scale / 2;
-				float2 max = trans + transform.scale * context.camera.scale / 2;
-
-				context.renderer.drawQuadOutline(float4(min.x, min.y, max.x, max.y), 1.0f,  frame, Color.black, transform.rotation);
-			}
+			context.renderer.drawQuadOutline(float4(min.x, min.y, max.x, max.y), 1.0f,  frame, Color.black, transform.rotation);
 		}
 	}
 }
-
-
-import reflection;
-
-enum Filter(T) = true;
-mixin GenerateMetaData!(Filter, plugin.editor.renderers);

@@ -1,4 +1,6 @@
 module plugin.attributes;
+
+import bridge.core;
 import plugin.core.data;
 import reflection;
 import window.keyboard;
@@ -9,20 +11,19 @@ struct RenderContext
 {
 	import rendering.combined;
 
-	WorldData*  world;
+	IEditorState state;
 	Camera*     camera;
 	Renderer2D* renderer;
 }
 
 @DontReflect
-struct WorldToolContext
+struct ToolContext
 {
-	WorldData* world;
+	IEditorState state;
 	Keyboard*  keyboard;
 	Mouse*     mouse;
 	Camera*    camera;
 }
-
 
 struct WorldTool
 {

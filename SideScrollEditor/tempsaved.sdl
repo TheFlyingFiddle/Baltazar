@@ -1,65 +1,186 @@
 
 data=[
 	{
-		type = |plugin.core.data.WorldData|
-		value = 
+		key=0
+		value=
 		{
-			selected=
+			entities = 
 			{
-				index=0
-				type=0
+				type = |ulong[]|
+				value = 
+				[3251586496400712535,10572758116365788026,849895385416114213
+				]
 			}
-			items=
-			[
-				{
-					components=
-					[
-					]
-					name=|Item|
-					id=3599388702
-				}
-			]
-			archetypes=
-			[
-			]
-			selectedItem=0
-			selectedArchetype=0
+			archetypes = 
+			{
+				type = |ulong[]|
+				value = 
+				[18097728482428515390
+				]
+			}
 		}
 	},
 	{
-		type = |plugin.core.data.DoUndo|
-		value = 
+		key=18097728482428515390
+		value=
 		{
-			redoCount=0
-			commands=
-			[
-				{
-					type = |plugin.core.commands.AddItem|
-					value = 
-					{
-						archetype=0
-						index=0
-					}
-				}
-			]
+			Entity_name = 
+			{
+				type = |char[]|
+				value = |Transformable|
+			}
+			Entity_components = 
+			{
+				type = |ulong|
+				value = 1
+			}
 		}
 	},
 	{
-		type = |plugin.core.data.Camera|
-		value = 
+		key=3251586496400712535
+		value=
 		{
-			viewport=
+			Entity_name = 
 			{
-				x=200
-				y=3
-				z=1720
-				w=977
+				type = |char[]|
+				value = |Transformable|
 			}
-			position=
+			Entity_components = 
 			{
-				x=0
-				y=0
+				type = |ulong|
+				value = 3
 			}
-			scale=32
+			Transform_position = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=4
+					y=5
+				}
+			}
+			Transform_scale = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=4
+					y=4
+				}
+			}
+			Transform_rotation = 
+			{
+				type = |float|
+				value = 0
+			}
+			Sprite_tint = 
+			{
+				type = |graphics.color.Color|
+				value = 
+				{
+					packedValue=4294967295
+				}
+			}
+			Sprite_texture_atlas = 
+			{
+				type = |char[]|
+				value = |Atlas|
+			}
+			Sprite_texture_image = 
+			{
+				type = |char[]|
+				value = |orange|
+			}
+		}
+	},
+	{
+		key=10572758116365788026
+		value=
+		{
+			Entity_name = 
+			{
+				type = |char[]|
+				value = |Transformable|
+			}
+			Entity_components = 
+			{
+				type = |ulong|
+				value = 3
+			}
+			Transform_position = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=-3
+					y=0
+				}
+			}
+			Transform_scale = 
+			{
+				type = |math.vector.Vector!(2u, float)|
+				value = 
+				{
+					x=4
+					y=3
+				}
+			}
+			Transform_rotation = 
+			{
+				type = |float|
+				value = 0
+			}
+			Sprite_tint = 
+			{
+				type = |graphics.color.Color|
+				value = 
+				{
+					packedValue=4294967295
+				}
+			}
+			Sprite_texture_atlas = 
+			{
+				type = |char[]|
+				value = |Atlas|
+			}
+			Sprite_texture_image = 
+			{
+				type = |char[]|
+				value = |clock_base|
+			}
+		}
+	},
+	{
+		key=849895385416114213
+		value=
+		{
+			Entity_name = 
+			{
+				type = |char[]|
+				value = |Transformable|
+			}
+			Entity_components = 
+			{
+				type = |ulong|
+				value = 3
+			}
+			Sprite_tint = 
+			{
+				type = |graphics.color.Color|
+				value = 
+				{
+					packedValue=4294967295
+				}
+			}
+			Sprite_texture_atlas = 
+			{
+				type = |char[]|
+				value = |Atlas|
+			}
+			Sprite_texture_image = 
+			{
+				type = |char[]|
+				value = |banana|
+			}
 		}
 	}]

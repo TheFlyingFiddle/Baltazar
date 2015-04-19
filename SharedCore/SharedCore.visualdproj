@@ -68,7 +68,7 @@
   <versionlevel>0</versionlevel>
   <versionids>RELOADING</versionids>
   <dump_source>0</dump_source>
-  <mapverbosity>0</mapverbosity>
+  <mapverbosity>4</mapverbosity>
   <createImplib>0</createImplib>
   <defaultlibname />
   <debuglibname />
@@ -391,6 +391,7 @@
   </Folder>
   <Folder name="collections">
    <File path="collections\blob.d" />
+   <File path="collections\deque.d" />
    <File path="collections\grid.d" />
    <File path="collections\heap.d" />
    <File path="collections\list.d" />

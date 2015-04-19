@@ -191,7 +191,9 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
  <Folder name="Staging">
-  <File path="data_storage.d" />
+  <File path="db.d" />
+  <File path="dbresource.d" />
   <File path="main.d" />
+  <File path="types.d" />
  </Folder>
 </DProject>

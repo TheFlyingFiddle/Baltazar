@@ -1,8 +1,16 @@
 module framework.screen;
 
-
 public import framework.core;
 import collections.list;
+
+//Note to self use this enum.
+enum ScreenLogic
+{
+	noBlock = 0,
+	blockUpdate = 1,
+	blockRender = 2,
+	blockRenderAndUpdate = blockRender | blockRender
+}
 
 abstract class Screen
 {

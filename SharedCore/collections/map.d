@@ -4,13 +4,13 @@ import allocation;
 import std.algorithm;
 import std.conv;
 
-size_t defaultHash(K)(ref K k) @nogc
+size_t defaultHash(K)(ref K k) @nogc nothrow
 {
 	import core.internal.hash;
 	import std.traits;
 
 	auto ptr = &bytesHash;
-	auto r   = cast(size_t function(const void*,size_t,size_t) @nogc)ptr;
+	auto r   = cast(size_t function(const void*,size_t,size_t) @nogc nothrow)ptr;
 
 	static if(isArray!K)
 		return r(k.ptr, k.length, 0);
@@ -38,42 +38,65 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		uint prev;
 	}
 
-	IAllocator allocator;
+	struct Rep
+	{
+		uint length;
+		uint capacity;
+		IAllocator allocator;
+		uint* indices;
+		Element* elements;
+	}
 
-	uint* indices;
-	Element* elements;
-	uint length;
-	uint capacity;
+	Rep* rep;
+	@property ref uint length()
+	{
+		return rep.length;
+	}
 
+	@property ref uint capacity()
+	{
+		return rep.capacity;
+	}
 
+	@property ref IAllocator allocator()
+	{
+		return rep.allocator;
+	}
+	
+	@property ref uint* indices()
+	{
+		return rep.indices;
+	}
+
+	@property ref Element* elements()
+	{
+		return rep.elements;
+	}		
 
 	this(IAllocator allocator, int initialSize = 4)
 	{
-		this.allocator = allocator;
-		this.length	  = 0;
-		this.capacity = initialSize;
-
-		allocate(initialSize, this.indices, this.elements);	
+		if(initialSize < 4) initialSize = 4;
+		allocate(allocator, initialSize, rep);	
 	}
 
 
-	V* opBinaryRight(string op : "in")(K key)
+	V* opBinaryRight(string op : "in")(K key) nothrow
 	{
 		auto res = find(key);
 		return res.index == uint.max ? null : &elements[res.index].value;
 	}
 
-	void opIndexAssign(V value, K key)
+	void opIndexAssign(V value, K key) 
 	{
 		set(key, value);
 	}
 
-	ref V opIndex(K key)
+	ref V opIndex(K key) 
 	{
 		return get(key);
 	}
 
-	V* add(K k, V v)
+	V* add(K k, V v) 
 	{
 		if(length == capacity)
 			resize();
@@ -83,7 +106,7 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		return &elements[length - 1].value;
 	}
 
-	V* tryAdd(K k, V v)
+	V* tryAdd(K k, V v)  nothrow
 	{
 		if(length == capacity)
 			resize();
@@ -92,19 +115,19 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		return res ? &elements[length - 1].value : null;
 	}
 
-	void set(K k, V v)
+	void set(K k, V v) 
 	{
 		auto element  = findOrFail(k);
 		element.value = v;
 	}
 
-	ref V get(K k)
+	ref V get(K k) 
 	{
 		auto element  = findOrFail(k);
 		return element.value;
 	}
 
-	bool remove(K k)
+	bool remove(K k) nothrow
 	{
 		auto res = find(k);
 		if(res.index == uint.max)
@@ -114,13 +137,13 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		return true;
 	}
 
-	bool has(K k)
+	bool has(K k) nothrow
 	{
 		auto res = find(k);
 		return res.index != uint.max;
 	}
 
-	private void removeImpl(FindResult res)
+	private void removeImpl(FindResult res)  nothrow
 	{
 		if(res.prev == uint.max)
 			indices[res.hashIdx] = elements[res.index].next;
@@ -141,7 +164,7 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		length--;
 	}
 
-	private bool addImpl(ref K k, ref V v)
+	private bool addImpl(ref K k, ref V v)  nothrow
 	{
 		auto result = find(k);
 		if(result.index == uint.max)
@@ -165,13 +188,13 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		}
 	}
 
-	private uint startIndex(ref K k)
+	private uint startIndex(ref K k)  nothrow
 	{
 		auto hash	= hashFun(k);
 		return hash % (capacity * 2);
 	}
 
-	private FindResult find(ref K key)
+	private FindResult find(ref K key)  nothrow
 	{
 		auto idx  = startIndex(key);
 		if(indices[idx] == uint.max) 
@@ -193,7 +216,7 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 		return result;
 	}
 
-	private Element* findOrFail(ref K key)
+	private Element* findOrFail(ref K key) 
 	{
 		auto result = find(key);
 		assert(result.index != uint.max);
@@ -203,47 +226,60 @@ struct HashMap(K, V, alias hashFun = defaultHash!K)
 
 	void deallocate()
 	{
-		int allocSize = (uint.sizeof * 2 + Element.sizeof) * capacity;
-		allocator.deallocate((cast(void*)this.indices)[0 .. allocSize]);
-
-		this.allocator	= null;
-		this.indices	= null;
-		this.elements	= null;
-		this.length		= 0;
-		this.capacity	= 0;
+		allocator.deallocate((cast(void*)this.rep)[0 .. allocationSize(capacity)]);
+		this.rep = null;
 	}
 
-	private void allocate(uint sz,
-						  out uint* indices,
-						  out Element* elements)
+
+	private static uint allocationSize(uint capacity)
 	{
-		int allocSize = (uint.sizeof * 2 + Element.sizeof) * sz;
-		auto base	  = allocator.allocateRaw(allocSize, Element.alignof).ptr;
+		return Rep.sizeof + (uint.sizeof * 2 + Element.sizeof) * capacity;
+	}	
 
-		indices		  = cast(uint*)base;
-		elements	  = cast(Element*)(base + sz * uint.sizeof * 2);
-
-		indices[0 .. sz * 2] = uint.max;
-	}
-
-	private void resize()
+	private void allocate(IAllocator allocator,
+						  uint sz,
+						  ref Rep* rep) nothrow
 	{
-		auto tmpIndices = this.indices;
-		auto tmpElement = this.elements;
-		auto capacity	= this.capacity;
-
-		allocate(this.capacity * 2 + 10, this.indices, this.elements);
-		this.length	  = 0;
-		this.capacity = capacity * 2 + 10;
-
-		foreach(i; 0 .. capacity)
+		try
 		{
-			auto res = addImpl(tmpElement[i].key, tmpElement[i].value);
-			assert(res, text("Key already present in table!", tmpElement[i].key));
-		}
+			auto base	  = allocator.allocateRaw(allocationSize(sz), Element.alignof).ptr;
 
-		int allocSize = (uint.sizeof * 2 + Element.sizeof) * capacity;
-		allocator.deallocate((cast(void*)tmpIndices)[0 .. allocSize]);
+			rep				  = cast(Rep*)base;
+			rep.indices		  = cast(uint*)(base + Rep.sizeof);
+			rep.elements	  = cast(Element*)(base + Rep.sizeof + sz * uint.sizeof * 2);
+			rep.length		  = 0;
+			rep.capacity	  = sz;
+			rep.allocator	  = allocator;
+
+			rep.indices[0 .. sz * 2] = uint.max;
+		}
+		catch(Throwable t)
+		{
+			throw new Error(t.msg, t);
+		}
+	}
+
+	private void resize() nothrow
+	{
+		auto oldRep = rep;
+
+		allocate(oldRep.allocator, oldRep.capacity * 2 + 10, rep);
+
+		
+		try
+		{
+			foreach(i; 0 .. oldRep.capacity)
+			{
+				auto res = addImpl(oldRep.elements[i].key, oldRep.elements[i].value);
+				assert(res, text("Key already present in table!", oldRep.elements[i].key));
+			}
+
+			allocator.deallocate((cast(void*)oldRep)[0 .. allocationSize(oldRep.capacity)]);
+		}
+		catch(Throwable t)
+		{
+			throw new Error(t.msg, t);
+		}
 	}
 
 	int opApply(int delegate(ref K, ref V) dg)

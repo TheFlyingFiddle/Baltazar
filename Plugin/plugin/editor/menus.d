@@ -2,7 +2,6 @@ module plugin.editor.menus;
 
 import bridge.attributes;
 import bridge.core;
-import plugin.core.data : DoUndo;
 
 @MenuItem("FILE.New.Project")
 void new_()
@@ -61,15 +60,15 @@ void exit()
 @MenuItem("EDIT.undo", KeyCommand(KeyModifiers.control, Key.z))
 void undo()
 {
-	auto doUndo = Editor.data.locate!(DoUndo);
-	doUndo.undo();
+	auto state = Editor.state();
+	state.undo();
 }
 
 @MenuItem("EDIT.redo", KeyCommand(KeyModifiers.control | KeyModifiers.shift, Key.z))
 void redo()
 {
-	auto doUndo = Editor.data.locate!(DoUndo);
-	doUndo.redo();
+	auto state = Editor.state();
+	state.redo();
 }
 
 @MenuItem("Game.run", KeyCommand(KeyModifiers.control, Key.g))

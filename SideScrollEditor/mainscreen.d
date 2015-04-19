@@ -31,7 +31,7 @@ final class MainScreen : Screen, IEditor
 	Gui gui;
 	Plugins* plugin;
 		
-	EditorData			 editorData;	
+	EditorState			 editorState;	
 	EditorServiceLocator locator;
 	Assets				 assets_;
 
@@ -70,7 +70,7 @@ final class MainScreen : Screen, IEditor
 		plugin.preReload  = &prePluginReload;
 		plugin.postReload = &postPluginReload; 
 
-		editorData = all.allocate!EditorData(Mallocator.cit, 100);
+		editorState = all.allocate!EditorState(Mallocator.cit);
 		locator   = all.allocate!EditorServiceLocator(&app.services);
 		assets_	  = all.allocate!Assets(all, app.locate!AsyncContentLoader);
 	
@@ -80,10 +80,6 @@ final class MainScreen : Screen, IEditor
 		createMenu();
 		setupPlugins();
 
-		foreach(ref type; plugin.attributeTypes!(Data))
-		{
-			editorData.addData(&type);
-		}
 
 		leftPanels = Panels(all, 10, PanelPos.left);
 		leftPanels.addPanels(Mallocator.cit, plugin);
@@ -133,12 +129,6 @@ final class MainScreen : Screen, IEditor
 	override void create() nothrow
 	{
 		scope(failure) assert(0, "Failed to create project!");
-
-		editorData.clear();
-		foreach(ref type; plugin.attributeTypes!(Data))
-		{
-			editorData.addData(&type);
-		}
 	}
 
 	override void save(string path) nothrow
@@ -146,9 +136,8 @@ final class MainScreen : Screen, IEditor
 		try
 		{
 			import reflection.serialization;
-			SaveData data = SaveData(editorData);
 			auto context = ReflectionContext(plugin.assemblies.array);
-			toSDLFile(data, &context, path);
+			toSDLFile(editorState.store, &context, path);
 		}
 		catch(Exception e)
 		{
@@ -164,30 +153,9 @@ final class MainScreen : Screen, IEditor
 		{
 			import reflection.serialization;
 			auto context = ReflectionContext(plugin.assemblies.array);
-			auto data    = fromSDLFile!SaveData(Mallocator.it, path, context);
-			scope(exit) deallocate(Mallocator.it, cast(void[])data.data);
-
-			editorData.clear();
-			foreach(ref type; plugin.attributeTypes!(Data))
-			{
-				bool res = false;
-				VariantN!(128) variant;
-				foreach(ref v; data.data)
-				{
-					if(type.isTypeOf(v))
-					{
-						res = true;
-						variant = v;
-						break;
-					}
-				}
-
-				if(res)
-					editorData.addData(&type, variant);
-				else 
-					editorData.addData(&type);
-
-			}
+			auto data    = fromSDLFile!DataStore(Mallocator.it, path, context);
+			editorState.deallocate();
+			editorState.initialize(Mallocator.cit, data);
 
 		}
 		catch(Exception e)
@@ -222,9 +190,9 @@ final class MainScreen : Screen, IEditor
 		return assets_;
 	}
 
-	override IEditorData data() nothrow
+	override IEditorState state() nothrow
 	{
-		return editorData;
+		return editorState;
 	}
 
 	override void runGame() nothrow
@@ -248,7 +216,6 @@ final class MainScreen : Screen, IEditor
 		import content.sdl, reflection.serialization;
 
 		save("tempsaved.sdl");
-		editorData.clear();
 		leftPanels.clear();
 		rightPanels.clear();
 		centerPanels.clear();
@@ -257,7 +224,6 @@ final class MainScreen : Screen, IEditor
 		//tools.tools.clear();
 	}
 
-	//Need to load the state of the application here
 	void postPluginReload(Plugin plugin)
 	{
 		createMenu();
@@ -267,9 +233,6 @@ final class MainScreen : Screen, IEditor
 		rightPanels.addPanels(Mallocator.cit, this.plugin);
 		centerPanels.addPanels(Mallocator.cit, this.plugin);
 
-
-		//tools.addTools(this.plugin);
-		//createMenu();
 	}
 
 	override void update(Time time)
@@ -321,7 +284,6 @@ final class MainScreen : Screen, IEditor
 		}
 
 
-
 		auto wr =  Rect(left, defSpacing, w.size.x - left - right, w.size.y - 23);
 		auto leftSide  = Rect(defSpacing, wr.y, left - defSpacing * 2, wr.h);
 		leftPanels.show(gui, leftSide);
@@ -335,144 +297,14 @@ final class MainScreen : Screen, IEditor
 		gui.menu(m);
 		gui.end();
 	}
-
-	/*
-	void renderWorld(ref Gui gui)
-	{
-		import graphics;
-		import derelict.opengl3.gl3;
-
-		auto area = gui.area;
-		auto renderer = gui.renderer;
-		renderer.end();
-
-		gl.enable(GL_SCISSOR_TEST);
-		gl.scissor(cast(int)area.x, cast(int)area.y,  cast(int)area.w, cast(int)area.h);
-
-		renderer.begin();
-
-		import plugins, bridge.attributes, bridge.state;
-		auto plugin = app.locate!Plugins;
-
-		void*[3] args;				
-		auto rend = RenderContext(renderer, &state.camera, state.images, state.fonts);
-
-		foreach(func; plugin.worldRenderFuncs)
-		{
-			alias func_t = void function(RenderContext*);
-			(cast(func_t)func.funcptr)(&rend);
-		}
-
-		foreach(i, ref item; state.items)
-		{
-			foreach(func; plugin.itemRenderFuncs)
-			{
-				int count = 0;
-				auto params = func.parameters;
-				int length = params[1 .. $].length;
-				foreach(param; params[1 .. $])
-				{
-					auto outer = param.typeInfo;
-					auto info = param.typeInfo.inner;
-					auto comp = item.peekComponent(info);
-					if(comp)
-					{
-						args[count++] = comp.data.ptr;
-						if(count == length)
-						{
-							alias func_t = void function(RenderContext*,void*,void*);
-							(cast(func_t)func.funcptr)(&rend, args[0], args[1]);
-							break;
-						}
-					}
-					else 
-						break;
-				}
-			}
-		}
-
-		renderer.end();	
-		gl.disable(GL_SCISSOR_TEST);
-		renderer.begin();
-	}
-
-
-	void run()
-	{	
-		save();
-		owner.push(other);
-	}
-	*/
 }
-
-/*
-struct ToolBox
-{
-	struct Tool
-	{
-		MetaType     type;
-		VariantN!32 data;
-	}
-
-	List!Tool tools;
-	int selected;
-
-	this(A)(ref A a, size_t size)
-	{
-		tools = List!Tool(a, size);
-		selected = -1;
-	}
-
-	void clear()
-	{
-		tools.clear();
-		selected = -1;
-	}
-
-	void addTools(Plugins* plugin)
-	{
-		foreach(ref type; plugin.attributeTypes!(EditorTool))
-		{	
-			tools ~= Tool(type, type.initial!32);
-		}
-	}
-	
-	void use(EditorState* state, ref Gui gui)
-	{
-		if(selected == -1) return;
-
-		auto tool = &tools[selected];
-		auto func = tool.type.findMethod("use");
-
-		ToolContext context;
-		context.state	 = state;
-		context.mouse    = gui.mouse;
-		context.keyboard = gui.keyboard;
-
-		try
-		{
-			func.invoke(tool.data, &context);
-		}
-		catch(Exception e)
-		{
-			import log;
-			logInfo(e);
-		}
-	}
-
-	auto itemNames()
-	{
-		return tools.map!(x => x.type.typeInfo.name);
-	}	
-}
-*/
 
 struct Panels
 {
 	struct Panel
 	{
 		MetaType     type;
-		VariantN!64  data;
+		void[]      data; //Data for the object Variable size to allow for large and small things.
 	}
 
 	List!Panel panels;
@@ -493,7 +325,7 @@ struct Panels
 			auto attrib = type.getAttribute!EditorPanel;
 			if(attrib.side != this.side) continue;
 
-			panels ~= Panel(type, (&type).create!64(allocator));
+			panels ~= Panel(type, (&type).createNew(allocator, allocator));
 		}
 	}
 

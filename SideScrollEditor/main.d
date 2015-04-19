@@ -77,7 +77,8 @@ void run(DesktopAppConfig config)
 
 	try
 	{
-		app.run();
+		import std.datetime;
+		app.run(TimeStep.fixed, 33_333.usecs);
 	}
 	catch(Throwable t) 
 	{

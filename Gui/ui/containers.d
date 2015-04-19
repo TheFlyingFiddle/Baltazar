@@ -76,7 +76,8 @@ bool listbox(T, Sels)(ref Gui gui,
 		else 
 		{
 			selected.clear();
-			selected ~= sel;
+			if(length > 0)
+				selected ~= sel;
 		}
 
 		result   = true;

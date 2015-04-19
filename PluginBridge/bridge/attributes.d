@@ -25,5 +25,3 @@ struct MenuItem
 	string name;
 	KeyCommand command;
 }	
-
-struct Data { }

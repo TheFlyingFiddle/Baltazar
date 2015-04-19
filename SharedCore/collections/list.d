@@ -507,12 +507,6 @@ struct CircularList(T)
 		length++;
 	}	
 
-	void push(Range)(Range range) if(ElementType!Range == T)
-	{
-		foreach(ref elem; range)
-			push(elem);
-	}
-
 	bool full()
 	{
 		return ((end + 1) % capacity) == start;
@@ -536,7 +530,7 @@ struct CircularList(T)
 		length++;
 	}
 
-	T dequeue(ref T value)
+	T dequeue()
 	{
 		assert(length);
 		T t = buffer[start];

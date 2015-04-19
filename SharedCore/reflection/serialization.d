@@ -52,7 +52,7 @@ struct ReflectionContext
 					break;
 			}
 
-			assert(info, "Cannot find reflection info for type " ~ id);
+			assert(info, "Cannot find reflection info for type " ~ id ~ ".");
 			assert(info.size <= N - 4, "Cannot deserialize large object " ~ info.name);
 
 			VariantN!(N) object = info.initial!(N)();
@@ -68,6 +68,7 @@ struct ReflectionContext
 		alias primitives = TypeTuple!(ubyte,  byte, 
 									  ushort, short, 
 									  uint,   int,
+									  ulong,  long,
 									  float,  double, 
 									  real, bool);
 
@@ -98,7 +99,7 @@ struct ReflectionContext
 					*cast(void**)store						  = data.ptr;
 					*cast(size_t*)(store + size_t.sizeof)     = data.length / info.inner.size;
 					*cast(size_t*)(store + size_t.sizeof * 2) = data.length / info.inner.size;
-				} 
+				}
 				else if(info.name.startsWith("VariantN"))
 				{
 					iter.goToChild();
@@ -280,6 +281,7 @@ struct ReflectionContext
 		alias primitives = TypeTuple!(ubyte,  byte, 
 									  ushort, short, 
 									  uint,   int,
+									  ulong,  long,
 									  float,  double, 
 									  real, bool);
 
@@ -492,6 +494,7 @@ unittest
 		}
 		catch(Throwable t)
 		{
+			import log;
 			logInfo(t);
 		}
 

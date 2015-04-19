@@ -187,7 +187,7 @@ struct Application
 
 		auto sleeptime = max(0.msecs, target - frametime);
 		auto now_ = watch.peek;
-		while(sleeptime > 1.msecs)
+		while(sleeptime > 100.hnsecs)
 		{
 			import core.thread;
 			Thread.sleep(1.msecs);

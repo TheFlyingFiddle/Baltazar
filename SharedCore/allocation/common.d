@@ -2,7 +2,6 @@ module allocation.common;
 
 import log;
 import std.traits;
-import std.conv;
 
 __gshared auto logChnl = LogChannel("ALLOCATION");
 __gshared auto destChnl = LogChannel("DESTRUCTOR ERROR");
@@ -101,12 +100,14 @@ T allocate(T, A)(ref A allocator, size_t size, size_t alignment = 8) if (isArray
 
 T* allocate(T, A, Args...)(ref A allocator, auto ref Args args) if(is(T == struct) || isNumeric!T)
 {
+	import std.conv;
 	void[] buffer = allocator.allocate_impl(T.sizeof, T.alignof);
 	return emplace!T(buffer, args);
 }
 
 T allocate(T, A, Args...)(ref A allocator, auto ref Args args) if(is(T == class))
 {
+	import std.conv;
 	void[] buffer = allocator.allocate_impl(__traits(classInstanceSize, T), T.alignof);
 	return emplace!T(buffer, args);
 }

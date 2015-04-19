@@ -114,8 +114,6 @@ template ModuleMetaData(alias typeFilter, alias module_name)
 
 	auto makeField(string s)()
 	{
-		pragma(msg, T.stringof ~ "." ~ s);
-
 		alias field = TypeTuple!(__traits(getMember, module_name, s));
 
 		StaticMetaField f;
@@ -199,6 +197,7 @@ template MetaTypeData(alias typeFilter, U : U[])
 		rtti.size		 = size_t.sizeof;
 		rtti.type        = RTTI.Type.array;
 		rtti.hash		 = typeHash!(T[]);		
+		rtti.innerOffset = rttiOffset!(T);
 		addRTTI!T(rtti);
 	}
 
@@ -328,6 +327,11 @@ template MetaTypeData(alias typeFilter, U) if(is(U == struct) || is(U == class))
 				static if(__traits(compiles, () => rttiOffset!(TemplateArgsOf!(T)[0])))
 				{
 					rtti.innerOffset   = rttiOffset!(TemplateArgsOf!(T)[0]);
+				}
+
+				static if(__traits(compiles, () => rttiOffset!(TemplateArgsOf!(T)[1])))
+				{
+					rtti.innerOffset2   = rttiOffset!(TemplateArgsOf!(T)[1]);
 				}
 			}
 	

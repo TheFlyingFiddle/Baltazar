@@ -31,7 +31,7 @@ BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
 }
 
 
-import reflection;
+import reflection.data;
 export extern(C) void* GetAssembly(void* errorFunction)
 {
 	import dll.error;

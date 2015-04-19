@@ -44,8 +44,10 @@ struct VariantN(size_t size)
 
 	ref inout(T) get(T)() inout
 	{
+		alias U = FullyUnqual!T;
+
 		import std.conv;
-		assert(typeHash!T == id, text("Wrong typeid id! Expected: ", typeHash!T, "Actual: ", id));
+		assert(typeHash!U == id, text("Wrong typeid id! Expected: ", typeHash!T, "Actual: ", id));
 
 		auto ptr = peek!T;
 		assert(ptr);
@@ -54,7 +56,9 @@ struct VariantN(size_t size)
 
 	inout(T)* peek(T)() inout
 	{
-		if(typeHash!T == id) return cast(T*)(data.ptr);
+		alias U = FullyUnqual!T;
+
+		if(typeHash!U == id) return cast(T*)(data.ptr);
 		else return null;
 	}
 }

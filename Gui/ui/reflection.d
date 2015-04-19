@@ -183,11 +183,11 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 		float offset;
 		if(style.topDown)
 		{
-			offset = rect.h - gui.typefieldHeight(t.tupleof[0], style);
+			offset = rect.h;
 		}
 		else 
 		{
-			offset = 0;
+			offset = -gui.typefieldHeight(t.tupleof[0], style);
 		}
 
 		bool changed = false;
@@ -196,9 +196,15 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 		{
 			static if(!hasAttribute!(T.tupleof[i], DontShow))
 			{
+				float h =  gui.typefieldHeight(t.tupleof[i], style);
+				if(style.topDown)
+					offset -= h + style.itemSpacing;
+				else 
+					offset += h + style.itemSpacing;
+
 				Rect r = rect;
 				r.y		 = rect.y + offset;
-				r.h      = gui.typefieldHeight(t.tupleof[i], style);
+				r.h      = h;
 			
 				r.w = style.nameWidth;
 				gui.label(r, Identifier!(t.tupleof[i]));
@@ -207,11 +213,6 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 				r.w = rect.w - style.nameWidth - style.itemSpacing;
 
 				changed = gui.typefield(r, t.tupleof[i], context, styleID) || changed;
-
-				if(style.topDown)
-					offset -= style.itemSpacing + r.h;
-				else 
-					offset += style.itemSpacing + r.h;
 			}
 		}
 
