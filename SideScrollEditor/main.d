@@ -57,7 +57,7 @@ int main()
 
 void run(DesktopAppConfig config) 
 {
-	RegionAllocator region = RegionAllocator(Mallocator.it.allocateRaw(1024 * 1024, 64));
+	RegionAllocator region = RegionAllocator(Mallocator.it.allocateRaw(1024 * 1024 * 4, 64));
 	auto stack = ScopeStack(region);
 	auto app = createDesktopApp(stack, config);
 

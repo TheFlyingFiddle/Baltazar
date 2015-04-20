@@ -123,10 +123,11 @@ void paste()
 		auto renamed = HashMap!(Guid, Guid)(Mallocator.cit);
 		scope(exit) renamed.deallocate();
 
+		SharedData.selected.clear();
 		foreach(ref copy; copies)
 		{
 			auto name = Editor.state.createObject();
-			renamed.add(copy, name);
+			SharedData.selected ~= *renamed.add(copy, name);
 		}
 
 		//This could be made more generall!	
@@ -148,6 +149,9 @@ void paste()
 		{
 			Editor.state.addToSet(Guid.init, ArchetypeSet, renamed[arch]);
 		}
+
+		Editor.state.setRestorePoint();
+
 		//This could be made more generall!
 	}
 	catch(Throwable t)

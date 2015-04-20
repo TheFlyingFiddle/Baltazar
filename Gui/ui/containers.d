@@ -22,14 +22,19 @@ struct GuiListBox
 
 uint fastCount(Items)(Items items)
 {
-	uint i = 0;
-	while(!items.empty)
+	import std.range;
+	static if(isRandomAccessRange!Items)
+		return items.length;
+	else 
 	{
-		i++;
-		items.popFront();
+		uint i = 0;
+		while(!items.empty)
+		{
+			i++;
+			items.popFront();
+		}
+		return i;
 	}
-
-	return i;
 }
 
 bool listbox(T, Sels)(ref Gui gui, 
@@ -47,12 +52,7 @@ bool listbox(T, Sels)(ref Gui gui,
 
 	auto style = gui.fetchStyle!(Style)(s);
 
-	uint length;
-	{
-		import util.bench;
-		auto ben = StackProfile("Count bg");
-		length    = fastCount(items);
-	}
+	uint length    = fastCount(items);
 	auto scrollMax =  length * style.itemSize - rect.h;
 	
 	auto hash  = HashID(rect);
@@ -115,43 +115,33 @@ bool listbox(T, Sels)(ref Gui gui,
 		}
 	}
 
-	{
-		import util.bench;
-		auto ben = StackProfile("Draw bg");
-
-		gui.drawQuad(rect, style.bg);
-	}
-
+	
+	gui.drawQuad(rect, style.bg);
 	Rect toDraw = Rect(rect.x, rect.y + rect.h - style.itemSize - (state.scroll.y - scrollMax),
 					   rect.w, style.itemSize);
+	int i = 0;
+	while(!items.empty)
 	{
-		import util.bench;
-		auto ben = StackProfile("Item loop");
-	
-		int i = 0;
-		while(!items.empty)
+		if(toDraw.top > rect.bottom &&
+			toDraw.bottom < rect.top)
 		{
-			if(toDraw.top > rect.bottom &&
-			   toDraw.bottom < rect.top)
-			{
-				auto item = items.front;
-				GuiFrame frame;
-				auto c = selected.countUntil!(x => x == i);
-				if(c != -1) {
-					frame = style.selected;
-				}
-				else
-					frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
-
-				gui.drawQuad(toDraw, frame, rect);
-				gui.drawText(item, toDraw, style.font, rect);
-
+			auto item = items.front;
+			GuiFrame frame;
+			auto c = selected.countUntil!(x => x == i);
+			if(c != -1) {
+				frame = style.selected;
 			}
+			else
+				frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
 
-			toDraw.y -= style.itemSize;
-			i++;
-			items.popFront();
+			gui.drawQuad(toDraw, frame, rect);
+			gui.drawText(item, toDraw, style.font, rect);
+
 		}
+
+		toDraw.y -= style.itemSize;
+		i++;
+		items.popFront();
 	}
 
 	return result;
