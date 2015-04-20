@@ -1,5 +1,6 @@
 module bridge.core;
 
+import bridge.os;
 import bridge.attributes;
 import util.hash;
 import util.variant;
@@ -62,20 +63,6 @@ struct Asset
 }	
 
 @DontReflect
-interface IEditor
-{
-	nothrow void create();
-	nothrow void open(string path);
-	nothrow void save(string path);
-	nothrow void runGame();
-	nothrow void close();
-
-	nothrow IServiceLocator	services();
-	nothrow IAssets			assets();
-	nothrow IEditorState	state();
-}
-
-@DontReflect
 interface IFileFinder
 {
 	string findOpenProjectPath() nothrow;
@@ -87,6 +74,105 @@ interface IFileFinder
 
 alias Guid = ulong;
 alias Data = VariantN!12; //Big enough to fit any simple data. This includes GUIDs arrays etc.
+
+@DontReflect
+struct DataStore
+{
+	import collections.map, allocation, std.exception;
+	HashMap!(Guid, HashMap!(string, Data)) data;
+	this(IAllocator allocator)
+	{
+		data = HashMap!(Guid, HashMap!(string, Data))(allocator, 4);
+		data.add(Guid.init, HashMap!(string, Data)(allocator, 4));
+	}
+
+	void deallocate()
+	{
+		foreach(ref k, ref v; data)
+		{
+			v.deallocate();
+		}
+
+		data.deallocate();
+	}
+
+	bool create(Guid guid) nothrow
+	{
+		return data.tryAdd(guid, HashMap!(string, Data)(data.allocator, 4)) !is null;
+	}
+
+	bool destroy(Guid guid) nothrow
+	{
+		return data.remove(guid);
+	}
+
+	bool exists(Guid guid) nothrow
+	{
+		return data.has(guid);
+	}
+
+	bool hasProperty(Guid guid, string key) nothrow
+	{
+		auto m = guid in data;
+		if(m) return m.has(key);
+		return false;
+	}
+
+	Data* getProperty(Guid guid, string key) nothrow
+	{
+		auto map = guid in data;
+		if(!map) return null;
+
+		return key in (*map);
+	}
+
+	bool removeProperty(Guid guid, string key) nothrow
+	{
+		auto map = &data[guid];
+		return map.remove(key); 
+	}
+
+	void setProperty(T)(Guid guid, string key, T t) nothrow
+	{
+		auto map = &data[guid];
+		Data* p = key in *map;
+		if(!p)
+			p = map.add(key, Data());
+
+		*p = t;
+	}
+
+	//Need to be fixed so that they use List / GrowingList instead!
+	void addToSet(Guid guid, string key, Guid item) nothrow
+	{
+		auto m = &data[guid];
+		Data* p = key in *m;
+		if(!p)
+		{
+			Guid[] guids;
+			p = m.add(key, Data(guids));
+		}
+		//Uses the gc... 
+		auto guids = p.peek!(Guid[]);
+		*guids ~= item;
+	}
+
+	void removeFromSet(Guid guid, string key, Guid item) nothrow
+	{
+		auto map = &data[guid];
+		Data* p = key in *map;
+		if(!p)
+			return;
+
+		auto guids = p.peek!(Guid[]);
+
+		import std.algorithm;
+		auto idx = (*guids).countUntil!(x => x == item);
+		if(idx == -1) return;
+
+		*guids = assumeWontThrow((*guids).remove(idx));
+	}
+}
 
 @DontReflect
 interface IEditorState
@@ -106,7 +192,8 @@ interface IEditorState
 
 	void setProperty(T)(Guid guid, string key, T t)
 	{
-		setPropertyTyped(guid, key, Data(t));
+		Data d = t;
+		setPropertyTyped(guid, key, d);
 	}
 	T* getProperty(T)(Guid guid, string key)
 	{
@@ -258,6 +345,20 @@ struct EditorStateProxy(T, string s = "")
 }
 
 
+
+@DontReflect
+interface IEditor
+{
+	nothrow void create();
+	nothrow void runGame();
+	nothrow void close();
+
+	nothrow IServiceLocator	services();
+	nothrow IAssets			assets();
+	nothrow IEditorState	state();
+	nothrow IOS			    os();
+}
+
 @DontReflect
 struct Editor
 {
@@ -266,16 +367,6 @@ struct Editor
 	static void create()
 	{
 		editor.create();
-	}
-
-	static void open(string path)
-	{
-		editor.open(path);
-	}
-
-	static void save(string path)
-	{
-		editor.save(path);
 	}
 
 	static void runGame()
@@ -301,6 +392,11 @@ struct Editor
 	static IServiceLocator services() nothrow
 	{
 		return editor.services;
+	}
+
+	static IOS	os() nothrow
+	{
+		return editor.os;
 	}
 }
 

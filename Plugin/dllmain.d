@@ -9,6 +9,7 @@ import core.runtime;
 extern (Windows)
 BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
 {
+	import util.bench;
     final switch (ulReason)
     {
     case DLL_PROCESS_ATTACH:

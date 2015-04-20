@@ -1294,9 +1294,7 @@ T fromSDLSource(T, A, C)(ref A allocator, const(char)[] source, C context) if(is
 	auto iall = Mallocator.it.allocate!(CAllocator!A)(allocator);
 	scope(exit) Mallocator.it.deallocate(iall);
 
-	auto app = RegionAppender!SDLObject(scratch_alloc);
-	scope(exit) Mallocator.it.deallocate(source);
-
+	auto app = MallocAppender!SDLObject(1024);
     auto cont = fromSDL(app, source);
 	cont.allocator = iall;
     return cont.as!T(context);
@@ -1316,7 +1314,8 @@ T fromSDLFile(T, A, C)(ref A allocator, const(char)[] filePath, C context) if(is
 	scope(exit) Mallocator.it.deallocate(iall);
 
 	import log;
-	auto app = RegionAppender!SDLObject(scratch_alloc);
+	auto app = MallocAppender!SDLObject(1024);
+
     auto source = readText(Mallocator.it, filePath);
 	scope(exit) Mallocator.it.deallocate(source);
 

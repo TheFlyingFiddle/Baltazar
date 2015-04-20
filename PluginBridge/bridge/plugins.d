@@ -50,7 +50,7 @@ struct Plugins
 	void loadLibrary(string path)
 	{
 		import util.bench;
-		auto prof = StackProfile("Load Library " ~ path);
+		auto prof = StackProfile("Load plugin total: " ~ path);
 
 		auto time = timeLastModified(path);
 		//Copy the files
@@ -64,8 +64,12 @@ struct Plugins
 			auto prof2 = StackProfile("Copy Library " ~ path);
 			copy(path, dll);
 		}
-		auto lib = LoadLibraryA(dll.ptr);
-		enforce(lib, "Could not load library! " ~ path);
+		void* lib;
+		{
+			auto prof2 = StackProfile("Load LibraryA");
+			lib = LoadLibraryA(dll.ptr);
+			enforce(lib, "Could not load library! " ~ path);
+		}
 
 		auto funcAddr = GetProcAddress(lib, "GetAssembly");
 		enforce(funcAddr, "Could not load reflection data! " ~ path);

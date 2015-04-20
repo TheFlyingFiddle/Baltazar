@@ -20,6 +20,18 @@ struct GuiListBox
 	}
 }
 
+uint fastCount(Items)(Items items)
+{
+	uint i = 0;
+	while(!items.empty)
+	{
+		i++;
+		items.popFront();
+	}
+
+	return i;
+}
+
 bool listbox(T, Sels)(ref Gui gui, 
 				Rect rect, 
 				ref Sels selected, 
@@ -35,7 +47,12 @@ bool listbox(T, Sels)(ref Gui gui,
 
 	auto style = gui.fetchStyle!(Style)(s);
 
-	uint length    = cast(uint)count(items);
+	uint length;
+	{
+		import util.bench;
+		auto ben = StackProfile("Count bg");
+		length    = fastCount(items);
+	}
 	auto scrollMax =  length * style.itemSize - rect.h;
 	
 	auto hash  = HashID(rect);
@@ -48,7 +65,6 @@ bool listbox(T, Sels)(ref Gui gui,
 		gui.slider(Rect(rect.x + rect.w, rect.y, 10, rect.h), state.scroll.y, 0, scrollMax, style.scrollID);
 		if(gui.isHovering(rect) && gui.mouse.scrollDelta.y != 0)
 			updateSliderScroll(gui, state.scroll.y, 0, scrollMax);
-	
 	}
 	else 
 	{
@@ -99,27 +115,43 @@ bool listbox(T, Sels)(ref Gui gui,
 		}
 	}
 
-	gui.drawQuad(rect, style.bg);
+	{
+		import util.bench;
+		auto ben = StackProfile("Draw bg");
+
+		gui.drawQuad(rect, style.bg);
+	}
+
 	Rect toDraw = Rect(rect.x, rect.y + rect.h - style.itemSize - (state.scroll.y - scrollMax),
 					   rect.w, style.itemSize);
-
-
-	int i = 0;
-	foreach(item; items)
 	{
-		GuiFrame frame;
-		auto c = selected.countUntil!(x => x == i);
-		if(c != -1) {
-			frame = style.selected;
+		import util.bench;
+		auto ben = StackProfile("Item loop");
+	
+		int i = 0;
+		while(!items.empty)
+		{
+			if(toDraw.top > rect.bottom &&
+			   toDraw.bottom < rect.top)
+			{
+				auto item = items.front;
+				GuiFrame frame;
+				auto c = selected.countUntil!(x => x == i);
+				if(c != -1) {
+					frame = style.selected;
+				}
+				else
+					frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
+
+				gui.drawQuad(toDraw, frame, rect);
+				gui.drawText(item, toDraw, style.font, rect);
+
+			}
+
+			toDraw.y -= style.itemSize;
+			i++;
+			items.popFront();
 		}
-		else
-			frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
-
-		gui.drawQuad(toDraw, frame, rect);
-		gui.drawText(item, toDraw, style.font, rect);
-
-		toDraw.y -= style.itemSize;
-		i++;
 	}
 
 	return result;

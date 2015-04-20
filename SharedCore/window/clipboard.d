@@ -28,4 +28,9 @@ struct Clipboard
 		auto c_str = value.toCString();
 		glfwSetClipboardString(_handle._windowHandle, c_str);
 	}
+
+	@property void longText(const(char)[] value)
+	{
+		glfwSetClipboardString(_handle._windowHandle, value.ptr);
+	}
 }

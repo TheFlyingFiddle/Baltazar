@@ -24,7 +24,6 @@ import plugins;
 int main()
 {
 	import core.memory;
-	GC.disable();
 	initializeScratchSpace(1024 * 1024);
 
 	//import std.process;

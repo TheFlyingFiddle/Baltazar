@@ -38,7 +38,11 @@ struct EntityPanel
 			if(cnt != -1) this.selected ~= cast(uint)cnt;
 		}
 
-		changed = (*gui).listbox(itemBox, selected, entities.map!(x => state.proxy!Entity(x).name));
+		{
+			import util.bench;
+			auto p = StackProfile("Show LB ");
+			changed = (*gui).listbox(itemBox, selected, entities.map!(x => state.proxy!Entity(x).name));
+		}
 
 		if((*gui).button(newItemBox, "Add Entity"))
 		{

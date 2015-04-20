@@ -12,8 +12,9 @@ import window.clipboard;
 import window.gamepad;
 
 import log;
-class WindowComponent : IApplicationComponent
+final class WindowComponent : IApplicationComponent
 {
+
 	private Window _window;
 	private Keyboard _keyboard;
 	private Mouse _mouse;
@@ -64,6 +65,7 @@ class WindowComponent : IApplicationComponent
 		_keyboard.postUpdate();
 		_window.swapBuffer();
 	}
+
 }
 
 class TaskComponent : IApplicationComponent

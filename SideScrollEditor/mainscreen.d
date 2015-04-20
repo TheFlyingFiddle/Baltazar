@@ -23,7 +23,7 @@ import bridge.plugins;
 enum defFieldSize = 20;
 enum defSpacing   = 3;
 
-final class MainScreen : Screen, IEditor
+final class MainScreen : Screen, IEditor, IOS
 {
 	//These will be here!
 	Menu m;
@@ -123,11 +123,22 @@ final class MainScreen : Screen, IEditor
 		}
 	}
 
-
-	///IEDITOR INTERFACE
-	override void create() nothrow
+	//IOS interface
+	override const(char)[] clipboardText() nothrow
 	{
-		scope(failure) assert(0, "Failed to create project!");
+		scope(failure) return (char[]).init;
+		import window.clipboard;
+		auto cb = app.locate!(Clipboard);
+		return cb.text();
+	}
+
+	override void clipboardText(const(char)[] text) nothrow
+	{	
+		scope(failure) return;
+
+		import window.clipboard;
+		auto cb = app.locate!(Clipboard);
+		return cb.longText(text);
 	}
 
 	override void save(string path) nothrow
@@ -164,7 +175,13 @@ final class MainScreen : Screen, IEditor
 			logInfo("Failed to open! ", path);
 		}
 	}
- 
+
+ 	///IEDITOR INTERFACE
+	override void create() nothrow
+	{
+		scope(failure) assert(0, "Failed to create project!");
+	}
+
 	override void close() nothrow
 	{
 		scope(failure) return;
@@ -192,6 +209,11 @@ final class MainScreen : Screen, IEditor
 	override IEditorState state() nothrow
 	{
 		return editorState;
+	}
+
+	override IOS os() nothrow
+	{
+		return this;
 	}
 
 	override void runGame() nothrow
@@ -241,8 +263,9 @@ final class MainScreen : Screen, IEditor
 	override void render(Time time)
 	{
 		import window.window;
-
 		auto w = app.locate!Window;
+
+
 		gui.renderer.viewport(float2(w.size));
 		gl.viewport(0,0, cast(int)w.size.x, cast(int)w.size.y);
 

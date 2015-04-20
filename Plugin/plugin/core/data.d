@@ -9,11 +9,8 @@ import collections.list;
 import util.variant;
 import math.vector;
 
-
 enum EntitySet    = "entities";
 enum ArchetypeSet = "archetypes";
-enum SelectedItem = "selected";
-
 
 struct SharedDataCont
 {
@@ -24,7 +21,7 @@ struct SharedDataCont
 
 __gshared SharedDataCont SharedData;
 
-static this()
+__gshared static this()
 {
 	SharedData.archetype = Guid.init;
 	SharedData.selected  = GrowingList!(Guid)(Mallocator.cit, 10);

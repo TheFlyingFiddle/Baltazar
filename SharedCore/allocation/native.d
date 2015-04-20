@@ -136,8 +136,17 @@ struct MallocAppender(T)
 	{
         if (_offset == _capacity)
             grow();
+
         _buffer[_offset++] = value;
         return _offset - 1;
+	}
+
+	size_t put(Range)(auto ref Range range) 
+	{
+		foreach(ref r; range)
+			put(r);
+
+		return _offset - 1;
 	}
 
     ref T opIndex(size_t index)
