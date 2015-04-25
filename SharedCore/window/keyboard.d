@@ -111,12 +111,12 @@ struct Keyboard
 			modifier |= KeyModifiers.alt;
 		if(isDown(Key.leftShift) || isDown(Key.rightShift))
 			modifier |= KeyModifiers.shift;
-		if(isDown(Key.leftControl) || isDown(Key.leftControl))
+		if(isDown(Key.leftControl) || isDown(Key.rightControl))
 			modifier |= KeyModifiers.control;
 		if(isDown(Key.leftSuper) || isDown(Key.rightSuper))
 			modifier |= KeyModifiers.super_;
 
-		return modifiers == modifier;
+		return (modifiers & modifier) == modifiers;
 	}
 
 	bool isUp(Key key)

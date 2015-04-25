@@ -13,7 +13,7 @@ static this()
 	c_buffer = (cast(char*)malloc(1024))[0 .. 1024];
 }
 
-char* toCString(const char[] str) 
+char* toCString(const char[] str) // <- This is not that great... But dunno what to do about it.
 {
 	c_buffer[0 .. str.length] = str[];
 	c_buffer[str.length] = '\0';

@@ -11,7 +11,11 @@ enum SortStrategy
 	sorted
 }
 
-//Represents a map. From ID to T implemented in a space efficient manner.
+//KV map usefull for small maps.
+//Binary search for sorted and 
+//Linear search for unsorted. 
+//Uses insertion sort.
+//Items are always packed in memory. (No holes)
 struct Table(K, V, SortStrategy s = SortStrategy.sorted) 
 {
 	List!V values;

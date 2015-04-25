@@ -119,6 +119,8 @@ struct ServiceLocator
 		assert(0, "Failed to find service");
 	}
 
+
+	//Unsure if these have ever been used ^^
 	void remove(T)()
 	{
 		auto hash = hashOf!(T)("");

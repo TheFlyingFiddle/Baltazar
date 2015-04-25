@@ -55,7 +55,8 @@ template GetMember(alias T)
 	}
 }
 
-template FullyUnqual(T)
+template FullyUnqual(T) //Remove all typequalifiers!
+
 {
 	static if(is(T t == U[], U))
 	{

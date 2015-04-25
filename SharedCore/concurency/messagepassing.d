@@ -179,6 +179,8 @@ struct SPMCQueue(Serializer)
 
 struct SPSCQueue(Serializer)
 {
+	//Possible Bug -> Make first and last reads atomic 
+	//through atomic load/store.
 	private size_t first; 
 	private size_t last; 
 	private size_t length;

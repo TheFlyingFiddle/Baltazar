@@ -22,49 +22,6 @@ struct Time
 	}
 }
 
-struct Timer
-{
-	int		    id;
-	float  elapsed;
-	float  interval;
-
-	void delegate() onTick;
-}
-
-struct TimeKeeper
-{
-	private List!Timer timers;
-	private int count;
-
-	void step(Time time)
-	{
-		foreach_reverse(i; 0 .. timers.length)
-		{
-			auto timer = &timers[i];
-			timer.elapsed -= time.deltaSec;
-			if(timer.elapsed <= 0)
-			{
-				timer.elapsed += timer.interval;
-				timer.onTick();
-			}
-		}		
-	}
-
-	int startTimer(float interval, void delegate() tick)
-	{
-		timers ~= Timer(count, interval, interval, tick);
-		return count++;
-	}
-
-	void stopTimer(int id)
-	{
-		import std.algorithm;
-		auto idx = timers.countUntil!(x => x.id == id);
-		if(idx != -1)
-			timers.removeAt(idx);
-	}
-}
-
 
 class IApplicationComponent
 {
@@ -158,24 +115,11 @@ struct Application
 				component.postStep(Time(total, delta));
 	
 
-			//runGC(); 
-
 			if(timestep == TimeStep.fixed)
 			{
 				waitUntilNextFrame(watch, cast(Duration)(watch.peek - last), frameDur);
 			}
 		}
-	}
-
-	private void runGC()
-	{
-		import core.memory, log;
-		auto collectBegin = Clock.currSystemTick;
-		GC.collect();
-		auto collectEnd   = Clock.currSystemTick;
-
-		auto collectDelta = collectEnd - collectBegin;
-		logCondErr(collectDelta.msecs > max_gc_time_msecs, "GC overshot max limit in a collection!!!");
 	}
 
 	private void waitUntilNextFrame(ref StopWatch watch, 

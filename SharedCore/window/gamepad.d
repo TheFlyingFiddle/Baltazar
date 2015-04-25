@@ -262,9 +262,7 @@ struct XINPUT_VIBRATION
     WORD                                wRightMotorSpeed;
 }
 
-
-
-shared static this()
+shared static this() //I really hope that this is not called from DLL's
 {
 	import core.runtime, std.c.windows.windows;
 

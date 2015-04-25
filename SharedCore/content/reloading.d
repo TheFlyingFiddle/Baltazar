@@ -28,7 +28,7 @@ version(RELOADING)
 		import log;
 		logInfo("Listening on port ", port);
 		ubyte[1024 * 8] buffer;
-		while(false)
+		while(false) // <- Gotta fix this!
 		{
 			//uint received = cast(uint)socket.receive(buffer[0 .. 2]);
 			//

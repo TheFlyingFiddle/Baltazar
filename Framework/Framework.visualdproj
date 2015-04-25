@@ -384,7 +384,6 @@
   <Folder name="framework">
    <File path="framework\components.d" />
    <File path="framework\core.d" />
-   <File path="framework\entity.d" />
    <File path="framework\factories.d" />
    <File path="framework\package.d" />
    <File path="framework\phone.d" />

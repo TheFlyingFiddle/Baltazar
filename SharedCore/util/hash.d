@@ -41,7 +41,9 @@ struct HashID
 	}
 }
 
-struct TypeHash
+struct TypeHash //Considering if typehashes should contain more information.
+				//For i am considering taking 2 low bits to be used as what the type is.
+				//That is 0 -> numbers, bools and characters, 1 -> structs/objects, 2 -> arrays, 3 -> functions/delegates
 {
 	uint value;
 }

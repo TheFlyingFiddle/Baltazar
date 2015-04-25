@@ -10,7 +10,6 @@ __gshared IAllocator messageAllocator;
 __gshared TaskThread*[] threads;
 __gshared TaskThreadPool*   taskpool;
 
-
 //Thread local 
 private string g_id;
 void registerThread(string id)

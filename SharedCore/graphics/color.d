@@ -264,10 +264,7 @@ struct ColorHSV
 }
 
 
-
-
-
-enum Metro : Color
+enum Metro : Color //Hard to say if this is wise.
 {
 	lightGreen  = Color(0xFF33b499),
 	green       = Color(0xFF00a300),

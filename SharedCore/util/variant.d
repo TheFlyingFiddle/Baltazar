@@ -4,7 +4,9 @@ import util.hash;
 import util.traits;
 import collections.table;
 
-struct VariantN(size_t size)
+//I am unsure if this should be baked into the reflection system or not.
+//On one hand i want to do that. On another hand i dont.
+struct VariantN(size_t size) 
 {
 	void[size - TypeHash.sizeof] data;
 	TypeHash id;
@@ -68,7 +70,7 @@ VariantN!(size) variant(size_t size, T)(T t)
 	return VariantN!size(t);
 }
 
-struct VariantTable(size_t size)
+struct VariantTable(size_t size) //The representation looks strange. Prolly had something to do with serialization sigh...
 {
 	private Table!(HashID, string) _map;
 	private Table!(string, VariantN!size) _rep;

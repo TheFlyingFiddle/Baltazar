@@ -21,7 +21,8 @@ void main(string[] argv)
 		inDirectory = argv[1];
 		outDirectory = argv[2];
 	}
-	initializeScratchSpace(1024 * 1024);
+
+	initializeScratchSpace(1024 * 1024); //Dislike this somewhat.
 
 	auto watcher = FileWatcher(inDirectory);
 	spawnReloadingService();
@@ -60,6 +61,8 @@ static ~this()
 {
 	deinitCompilers();
 }
+
+
 struct ItemChanged
 {
 	string name;
@@ -86,34 +89,6 @@ void makeDir(const(char)[] dir)
 
 void build(string inDir, string outDir)
 {
-	//We swap focus and only consider 1 game at a time!
-	//DirEntry[] games;
-	//foreach(entry; dirEntries(inDir, SpanMode.shallow))
-	//{
-	//	if(entry.isDir) {
-	//		games ~= entry;
-	//		makeDir(entry.name.replace(inDir, outDir));				
-	//	}
-	//}
-	
-	//foreach(game; games)
-	//{
-	//	foreach(entry; dirEntries(game.name, SpanMode.shallow)) if(entry.isDir)
-	//	{
-	//		auto name = entry.name[entry.name.lastIndexOf(dirSeparator) + 1 .. $];
-	//		if(name == "phone")	{
-	//			auto phoneDir = entry.name.replace(inDir, outDir);
-	//			makeDir(phoneDir);
-	//			compileFolder(entry.name, phoneDir, Platform.phone);
-	//		}
-	//		if(name == "desktop") {
-	//			auto desktopDir = entry.name.replace(inDir, outDir);
-	//			makeDir(desktopDir);
-	//			compileFolder(entry.name, desktopDir, Platform.desktop);
-	//		}
-	//	}
-	//}
-
 	makeDir(outDir);
 	foreach(folder; dirEntries(inDir, SpanMode.shallow)) if(folder.isDir)
 	{
@@ -127,7 +102,6 @@ void build(string inDir, string outDir)
 			compileFolder(folder.name, nDir, Platform.desktop);
 		}
 	}
-
 }
 
 struct FileCompiler

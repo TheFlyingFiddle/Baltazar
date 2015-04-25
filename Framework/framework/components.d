@@ -63,9 +63,8 @@ final class WindowComponent : IApplicationComponent
 	{
 		_mouse.postUpdate();
 		_keyboard.postUpdate();
-		_window.swapBuffer();
+		_window.swapBuffer(); 
 	}
-
 }
 
 class TaskComponent : IApplicationComponent

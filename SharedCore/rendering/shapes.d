@@ -10,7 +10,7 @@ math,
 void drawText(R)(ref R renderer, const(char)[] text, float2 pos, float2 size, ref Font font, Color color, float2 thresholds, float4 bounds = float4(0,0,0,0))
 {
 	if(bounds == float4(0,0,0,0)) 
-		bounds = float4(-100000, -10000000, 1000000000000, 10000000000000);
+		bounds = float4(-100000, -10000000, 1000000000000, 10000000000000); //LOL
 
 	import std.algorithm;
 	auto lines = text.count("\n");
@@ -301,7 +301,6 @@ void drawNGon(size_t N, R)(ref R renderer, float2 origin,
 	}
 	renderer.addItems(verts, indecies, frame.texture);
 }
-
 
 ushort[N * 12] makeNGonOutlineIndices(ubyte N)()
 {

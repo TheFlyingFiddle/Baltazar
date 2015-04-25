@@ -271,6 +271,8 @@ class TilePaiter  : ITool
 	}
 
 	//Add support of controll click adding.
+	//Also vairble size and 
+	//
 	int counter = 0;
 	void use(ToolContext* context)	
 	{

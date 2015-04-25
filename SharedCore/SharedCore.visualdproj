@@ -393,7 +393,6 @@
   <Folder name="collections">
    <File path="collections\blob.d" />
    <File path="collections\deque.d" />
-   <File path="collections\grid.d" />
    <File path="collections\heap.d" />
    <File path="collections\list.d" />
    <File path="collections\map.d" />
@@ -485,10 +484,6 @@
   <Folder name="sound">
    <File path="sound\package.d" />
    <File path="sound\player.d" />
-  </Folder>
-  <Folder name="spatial">
-   <File path="spatial\shape.d" />
-   <File path="spatial\transform.d" />
   </Folder>
   <Folder name="util">
    <File path="util\bench.d" />

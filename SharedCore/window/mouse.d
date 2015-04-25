@@ -14,8 +14,8 @@ struct MouseButtonState
 enum MouseButton
 {	
 	left	  = GLFW_MOUSE_BUTTON_1,
-	rigth   = GLFW_MOUSE_BUTTON_2,
-	middle  = GLFW_MOUSE_BUTTON_3,
+	rigth     = GLFW_MOUSE_BUTTON_2,
+	middle    = GLFW_MOUSE_BUTTON_3,
 	x0		  = GLFW_MOUSE_BUTTON_4,
 	x1		  = GLFW_MOUSE_BUTTON_5,
 	x2		  = GLFW_MOUSE_BUTTON_6,
@@ -149,6 +149,15 @@ struct Mouse
 		return isDoubleClick;
 	}
 
+	float2 lastDown(MouseButton button)
+	{
+		return state(button).lastDown;
+	}
+
+	float2 lastUp(MouseButton button)
+	{
+		return state(button).lastUp;
+	}
 
 	@property float2 location()
 	{

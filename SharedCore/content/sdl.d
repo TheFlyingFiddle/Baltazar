@@ -1255,6 +1255,8 @@ T number(T)(ForwardRange a, ForwardRange b) if(isNumeric!T)
 		logInfo("Failed to parse number: ", no_[0 .. counter]);
 	}
 
+
+	//I don't know anymore...
 	static if(isFloatingPoint!T)
 	{
 		return cast(double)no_[0 .. counter].to!double;

@@ -75,7 +75,7 @@ struct NetworkServices
 	private void sendService(size_t index, Address to)
 	{
 		import util.bitmanip;
-		ubyte[serviceMessageMax] buffer = void; ubyte[] buf = buffer[];
+		ubyte[serviceMessageMax] buffer = void; 
 		auto service = services[index];
 
 		size_t offset = 0;

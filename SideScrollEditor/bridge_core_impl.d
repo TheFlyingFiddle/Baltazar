@@ -54,7 +54,7 @@ struct Command
 				struct 
 				{
 					align(1):
-					ushort arrayIndex; // <- PROBLEM!
+					ushort arrayIndex; // <- PROBLEM! Need to devide into 24 bit and 8 bit.
 					ushort itemSize;
 					ubyte[8] itemValue;
 				}

@@ -13,6 +13,10 @@ import window.mouse;
 
 private auto logChnl = LogChannel("WINDOW");
 
+//I think that I have used about 40% of the functionality
+//this module provides. This strengthens my thesis on that 
+//You should not wrap everything just the things you need.
+
 struct WindowManager
 {
 	private static bool inUse;
@@ -47,15 +51,7 @@ struct WindowManager
 		assert(glfwWindow, "Failed to create window");
 
 		glfwMakeContextCurrent(glfwWindow);
-		//TODO: On useless computers, the reload throws exceptions related to
-		// not finding features which aren't actually necessary.
-		// Ideally, a try catch shouldn't be needed, or should at least
-		// check for the relevant unnecessary features.
-		try {
-			DerelictGL3.reload();
-		} catch (Throwable t) {
-			logInfo(t);
-		}
+		DerelictGL3.reload();
 
 		glfwSetWindowPosCallback(glfwWindow, &positionChanged);
 		glfwSetWindowSizeCallback(glfwWindow, &sizeChanged);

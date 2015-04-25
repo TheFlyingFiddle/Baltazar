@@ -19,7 +19,7 @@ struct Blob
 		this.capacity = cast(uint)buffer.length;
 		this.length   = 0;
 	}
-	
+
 	this(void* buffer, size_t length, size_t capacity)
 	{
 		this.buffer   = buffer;

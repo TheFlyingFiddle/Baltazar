@@ -59,7 +59,6 @@ FileLoader makeLoader(Loader, string ext)()
 		Loader.unload(all, cast(T)item);
 	}
 
-
 	FileLoader loader;
 	loader.typeHash  = typeHash!BaseT;
 	loader.extension = ext;
@@ -69,13 +68,15 @@ FileLoader makeLoader(Loader, string ext)()
 }
 
 
+//This should not be done.
+//Will change when Editor resource system
+//Is more stable.
 //Used during debuging :)
 struct Dependencies
 {
 	string name;
 	string[] deps;
 }
-
 struct FileMap
 {
 	Dependencies[] dependencies;
@@ -89,7 +90,7 @@ struct ContentLoader
 	Handle[] items;
 
 	int resourceCount;
-	FileMap avalibleResources;
+	FileMap avalibleResources; //Temporary hack.
 
 	this(A)(ref A allocator, IAllocator itemAllocator, 
 			size_t maxResources, string resourceFolder)
@@ -104,12 +105,13 @@ struct ContentLoader
 		this.fileLoaders   = List!(FileLoader)(allocator, 100);
 		this.resourceCount = 0;
 
+		//Temporary hack! <- Don't do this!
 		import std.file;
 		import content.sdl, util.strings;
 		auto f = text1024(resourceFolder, "\\FileCache.sdl");
 		if(exists(f))
 		{
-			avalibleResources = fromSDLFile!(FileMap)(allocator, f);
+			avalibleResources = fromSDLFile!(FileMap)(allocator, f); 
 		}
 	}
 

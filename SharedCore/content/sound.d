@@ -15,7 +15,6 @@ struct SoundLoader
 	static Sound* load(IAllocator allocator, string path, bool async)
 	{
 		import std.conv;
-
 		auto c_path = path.toCString();
 		auto sound = Mix_LoadWAV(c_path);
 		if(!sound)

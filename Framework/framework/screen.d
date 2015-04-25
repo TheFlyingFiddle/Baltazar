@@ -23,7 +23,6 @@ abstract class Screen
 		return app.locate!ScreenComponent;
 	}
 
-
 	this(bool blockUpdate, bool blockRender)
 	{
 		this.blockUpdate = blockUpdate;

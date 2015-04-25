@@ -8,7 +8,7 @@ struct RegionAllocator
 
 	void*  _buffer;
 	void*  _offset;
-	size_t _capacity;
+	size_t _capacity; //Need to create a growing Region allocator. (Will be marginaly slower)
 
 	size_t bytesAllocated() @property 
 	{
