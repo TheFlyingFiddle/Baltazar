@@ -37,6 +37,8 @@ void main(string[] argv)
 	{
 		try
 		{
+			import core.thread;
+			Thread.sleep(100.msecs);
 			logInfo("Starting build");
 			build(inDirectory, outDirectory);
 			logInfo("Finished build");

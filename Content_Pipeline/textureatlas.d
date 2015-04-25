@@ -48,6 +48,8 @@ void copySubImage(ref Image to, ref Image from,
 
 Image loadImage(string path)
 {
+	if(!exists(path)) throw new Exception("Path does not exist!");
+
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.ptr);
 	if(format == FIF_UNKNOWN)
 	{

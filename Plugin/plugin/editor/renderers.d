@@ -67,7 +67,7 @@ void renderGrid(RenderContext* context)
 	auto atlas = Editor.assets.locate!(TextureAtlas)(Atlas);
 	auto frame = (*atlas)[Pixel];
 
-	context.renderer.drawQuad(cam.viewport, 0,frame,Color(0xFF707070));
+	//context.renderer.drawQuad(cam.viewport, 0,frame,Color(0xFF707070));
 
 	float xOff  = (-cam.position.x * cam.scale)  % cam.scale;
 	float width = cam.viewport.z - cam.viewport.x;

@@ -29,8 +29,11 @@ struct ReloadingInfo
 Tid reloadServiceTid;
 void reloadChanged(CompiledItem[] items, HashID hash)
 {
-	if(reloaderCount > 0)
+	auto count = atomicLoad(reloaderCount);
+	if(count > 0)
 	{
+		logInfo("sending reloading info");
+
 		ReloadItem[] copy = new ReloadItem[items.length];
 		foreach(i, ref item; copy) {
 			item.data	   = items[i].data.dup;
@@ -40,6 +43,11 @@ void reloadChanged(CompiledItem[] items, HashID hash)
 		ReloadingInfo info;
 		info.items = copy;
 		send(reloadServiceTid, cast(immutable ReloadingInfo)info);
+	}
+	else 
+	{
+		import log;
+		logInfo("No reloaders not sending reloaded notifications.");
 	}
 }
 
@@ -68,7 +76,7 @@ private void reloadingService()
 	services.add(fileService, data);
 
 
-	Tid[] reloaders;
+	__gshared Tid[] reloaders;
 	bool done = false;
 	while(!done)
 	{
@@ -86,7 +94,8 @@ private void reloadingService()
 			reloaders ~= spawn(&reloader, cast(immutable Socket)socket);
 		}
 
-		auto received = receiveTimeout(100.msecs, (immutable ReloadingInfo info) 
+		auto received = receiveTimeout(100.msecs, 
+		(immutable ReloadingInfo info) 
 		{
 			foreach(tid; reloaders)
 			{
@@ -106,6 +115,8 @@ private void reloadingService()
 
 bool sendItems(immutable ReloadingInfo info, Socket socket)
 {
+	logInfo("Attempting to send files: ", info.items.length);
+
 	import util.bitmanip;
 	ubyte[128] buffer;
 
@@ -114,7 +125,6 @@ bool sendItems(immutable ReloadingInfo info, Socket socket)
 	if(err == Socket.ERROR) return false; 
 
 
-	logInfo("Sending files: ", info.items.length);
 	foreach(item; info.items)
 	{	
 		size_t offset = 0;
@@ -132,18 +142,18 @@ bool sendItems(immutable ReloadingInfo info, Socket socket)
 
 void reloader(immutable Socket im_socket)
 {
-	auto socket = cast(Socket)im_socket; //GAY
-
-	atomicOp!"+="(reloaderCount, 1);
-	logInfo("Started reloading for connection: ", socket.remoteAddress);
-
+	auto socket = cast(Socket)im_socket; 
 	try
 	{
+		atomicOp!"+="(reloaderCount, 1);
+		logInfo("Started reloading for connection: ", socket.remoteAddress);
+
 		bool done = false;
 		while(!done)
 		{
 			receive((immutable ReloadingInfo info) 
 			{
+				logInfo("Reloader received info sending to client ", socket.remoteAddress);
 				done = !sendItems(info, socket);
 				if(done) 
 					logErr("Failed to send item to connection: ", socket.remoteAddress);
