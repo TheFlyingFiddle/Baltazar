@@ -16,6 +16,7 @@ version(RELOADING)
 		import std.stdio;
 		auto remote = new InternetAddress(ip, port);
 		socket.connect(remote);
+
 		socket.blocking = true;
 	}
 
@@ -27,10 +28,38 @@ version(RELOADING)
 
 		import log;
 		logInfo("Listening on port ", port);
-		ubyte[1024 * 8] buffer;
-		while(false) // <- Gotta fix this!
-		{
-			//uint received = cast(uint)socket.receive(buffer[0 .. 2]);
+		ubyte[1024 * 8] buffer; ubyte[] buf = buffer[];
+		while(true) // <- Gotta fix this!
+		{	
+			import util.bitmanip;
+
+			waitForData(2, socket, buffer[]);
+			auto numItems = buf.read!ushort; buf = buffer[];
+			import log : logInfo;
+			logInfo("Received: ", numItems, " items!");
+
+
+			foreach(i; 0 .. numItems)
+			{
+				waitForData(2, socket, buffer[]);
+				auto strLen = buf.read!ushort; buf = buffer[];
+				waitForData(strLen, socket, buffer[]);
+				auto name   = cast(string)buffer[0 .. strLen - 1];
+				performReload(name, loader);
+				
+				//Ignore the actual data.
+				waitForData(4, socket, buffer[]);
+				auto itemLen = buf.read!uint; buf = buffer[];
+				while(itemLen)
+				{
+					import std.algorithm;
+					auto d = min(itemLen, buffer[].length);
+					itemLen -= d;
+					waitForData(d, socket, buffer[]);
+				}
+			}
+			
+			
 			//
 			//import util.bitmanip;
 			//auto buf = buffer[0 .. received];
@@ -53,8 +82,27 @@ version(RELOADING)
 		}
 	}
 
+	void waitForData(size_t dataSize, Socket socket, ubyte[] buffer)
+	{
+		int read = 0;
+		while(read < dataSize)
+		{
+			auto r = socket.receive(buffer[read .. dataSize]);
+			if(r == Socket.ERROR)
+			{
+				enforce(wouldHaveBlocked(), "Failed to read from socket!");
+				continue;
+			}
+
+			read += r;
+		}
+	}
+
 	void performReload(string id, AsyncContentLoader* loader)
 	{
+		import log;
+		logInfo("Attempting to reload: ", id);
+
 		import std.path, std.conv, util.hash;
 		auto path = id[0 .. $ - id.extension.length];
 		loader.reload(HashID(path.to!uint));

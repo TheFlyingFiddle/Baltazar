@@ -158,7 +158,6 @@ struct Plugins
 		return assemblies.map!(x => x.functions).joiner;
 	}
 
-
 	auto attributeTypes(T)()
 	{
 		return assemblies.map!(x => x.types.filter!(x => x.hasAttribute!T)).joiner;

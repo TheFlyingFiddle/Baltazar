@@ -36,7 +36,11 @@ void main(string[] argv)
 	while(true)
 	{
 		try
+		{
+			logInfo("Starting build");
 			build(inDirectory, outDirectory);
+			logInfo("Finished build");
+		}
 		catch(Throwable t) {
 			logInfo("Crash!\n", t); 
 		}
@@ -174,15 +178,16 @@ void compileFolder(string inFolder, string outFolder, Platform platform)
 	bool hasChanged = false;
 
 	auto entries = dirEntries(inFolder, SpanMode.breadth).
-						 filter!(x => x.isFile && x.name.extension.order != -1).
+						 filter!(x => x.isFile).
 						 array.
-						 sort!((a, b) => a.name.extension.order < b.name.extension.order);
+						 sort!((a, b) => a.name.extension.order < b.name.extension.order); // <- This could also be the problem. It's this that is the problem really.
 	
 	foreach(entry; entries)
 	{
 		auto name     = entry.name[inFolder.length + 1 .. $ - entry.name.extension.length];
 		fileCache.itemChanged  ~= ItemChanged(name ~ entry.name.extension,  timeLastModified(entry.name).stdTime);
 
+		if(entry.name.extension.order == -1) continue;
 		if(context.usedNames.canFind(name)) continue;
 	
 		import std.datetime;
@@ -344,6 +349,9 @@ FileCache addUnchanged(ref Context context)
 
 		if(!deps.deps.all!(x => context.usedNames.canFind(stripExtension(x))))
 		{
+			logInfo("Item needs to be rebuilt since one of it's dependencies changed. ", 
+					deps.name);
+				
 			cache.dependencies = cache.dependencies.remove(i);
 			auto index = context.usedNames.countUntil!(x => x == stripExtension(deps.name));
 			if(index != -1)
