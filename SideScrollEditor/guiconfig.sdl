@@ -4,6 +4,7 @@ tooltip	= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0
 	
 palette = 
 [
+	{ id = |overlay|	value = 0x88220C03 },
 	{ id = |darkBlue|   value = 0xFF220C03 },
 	{ id = |blue|		  value = 0xFF3F2920 },
 	{ id = |darkGray|   value = 0xFF494740 },
@@ -179,9 +180,9 @@ listboxes =
 		name	 = listbox
 		itemSize = 20
 		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
-		selected = { id = |pixel| color = |gray| }
-		stripe0	 = { id = |pixel| color = |darkBlue| }
-		stripe1  = { id = |pixel| color = |darkGray| }
+		selected = { id = |pixel| color = |overlay| }
+		stripe0	 = { id = |pixel| color = |button_color| }
+		stripe1  = { id = |pixel| color = |field_color| }
 		bg		 = { id = |pixel| color = |panel_color| }
 		scrollID = scrollbar
 	},
@@ -189,9 +190,9 @@ listboxes =
 		name	 = editListBox
 		itemSize = 20
 		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
-		selected = { id = |pixel| color = |gray| }
-		stripe0	 = { id = |pixel| color = |darkBlue| }
-		stripe1  = { id = |pixel| color = |darkGray| }
+		selected = { id = |pixel| color = |overlay| }
+		stripe0	 = { id = |pixel| color = |button_color| }
+		stripe1  = { id = |pixel| color = |field_color| }
 		bg		 = { id = |pixel| color = |panel_color| }
 		scrollID = scrollbar
 	}

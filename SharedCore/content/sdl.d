@@ -694,6 +694,10 @@ struct SDLContainer
 	}
 }
 
+void toSDLFile(T)(auto ref T value, const(char)[] path)
+{
+	toSDLFile(value, &default_context, path);
+}
 
 void toSDLFile(T, C)(auto ref T value, C* context, const(char)[] path)
 {
@@ -1245,11 +1249,24 @@ T number(T)(ForwardRange a, ForwardRange b) if(isNumeric!T)
 		a.popFront();
 	}
 
+	scope(failure)
+	{
+		import log;
+		logInfo("Failed to parse number: ", no_[0 .. counter]);
+	}
+
 	static if(isFloatingPoint!T)
-		double l = no_[0 .. counter].to!double;
+	{
+		return cast(double)no_[0 .. counter].to!double;
+	}
+	else if(isSigned!T)
+	{
+		return cast(T)no_[0 .. counter].to!long;
+	}
 	else
-		ulong l = no_[0 .. counter].to!ulong;
-	return cast(T)l;
+	{
+		return cast(T)no_[0 .. counter].to!ulong;
+	}
 }
 
 long parseHex(ForwardRange saved, ForwardRange range)

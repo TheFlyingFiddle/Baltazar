@@ -23,7 +23,7 @@ struct Transform
 
 struct Sprite
 {
-	Color tint			= Color.white;
+	Color tint	= Color.white;
 	TextureID texture;
 }
 
@@ -33,4 +33,9 @@ struct Text
 	FontID font		= FontID("");
 	float2 thresh	= float2(0.25, 0.75);
 	string text		= "";
+}
+
+struct Bounds
+{
+	int something;
 }

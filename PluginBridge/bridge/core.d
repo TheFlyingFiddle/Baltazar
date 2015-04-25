@@ -4,6 +4,7 @@ import bridge.os;
 import bridge.attributes;
 import util.hash;
 import util.variant;
+import util.traits;
 import collections.list;
 import collections.map;
 
@@ -74,6 +75,8 @@ interface IFileFinder
 
 alias Guid = ulong;
 alias Data = VariantN!12; //Big enough to fit any simple data. This includes GUIDs arrays etc.
+enum  isBasic(T) = T.sizeof <= 8 && (!isArray!T || isSomeString!T);
+
 
 @DontReflect
 struct DataStore
@@ -115,6 +118,7 @@ struct DataStore
 	{
 		auto m = guid in data;
 		if(m) return m.has(key);
+
 		return false;
 	}
 
@@ -178,6 +182,8 @@ struct DataStore
 interface IEditorState
 {
 	void setPropertyTyped(Guid guid, string key, Data data) nothrow;
+	void setArrayTyped(Guid guid, string key, uint capacity, uint size, TypeHash array) nothrow;
+	void setArrayElement(Guid guid, string key, uint index, ubyte[] value, TypeHash array) nothrow;
 	Data* getPropertyTyped(Guid guid, string key) nothrow;
 
 	bool exists(Guid guid) nothrow;
@@ -190,11 +196,12 @@ interface IEditorState
 	void addToSet(Guid guid, string key, Guid item) nothrow;
 	void removeFromSet(Guid guid, string key, Guid item) nothrow;
 
-	void setProperty(T)(Guid guid, string key, T t)
+	void setProperty(T)(Guid guid, string key, T t) if(is(T == Data) || (T.sizeof <= 8 && (!isArray!T || is(T == string))))
 	{
 		Data d = t;
 		setPropertyTyped(guid, key, d);
 	}
+
 	T* getProperty(T)(Guid guid, string key)
 	{
 		auto dat = getPropertyTyped(guid, key);
@@ -202,8 +209,15 @@ interface IEditorState
 		return dat.peek!T;
 	}
 
-	
-	
+	void setArrayElement(T)(Guid guid, string key, uint index, T value) if(T.sizeof <= 8 && !isArray!T)
+	{
+		setArrayElement(guid, key, index, cast(ubyte[])((&value)[0 .. 1]), typeHash!(T[]));
+	}
+
+	void setArrayProperty(T)(Guid guid, string key, uint capacity) if(T.sizeof <= 8 && !isArray!T)
+	{	
+		setArrayTyped(guid, key, capacity, T.sizeof, typeHash!(T[]));
+	}
 
 	void undo();
 	void redo();
@@ -211,7 +225,6 @@ interface IEditorState
 
 	auto proxy(T)(Guid guid) 
 	{
-		import math.vector;
 		static if(is(T == float2))
 			enum s = "float2";
 		else 
@@ -221,8 +234,13 @@ interface IEditorState
 	}
 }
 
+
+import math.vector;
+import graphics.color;
+
+
 @DontReflect
-struct EditorStateProxy(T, string s = "")
+struct EditorStateProxy(T, string s = "") if(is(T == struct))
 {
 	private Guid __guid;
 	private IEditorState __state;
@@ -267,12 +285,16 @@ struct EditorStateProxy(T, string s = "")
 		}
 	}
 
-	void set(T t)
+	void set(T t) 
 	{
 		foreach(i, ref field; t.tupleof)
 		{
-			enum name = T.tupleof[i].stringof;
-			mixin("this." ~ name ~ " = field;");
+			alias FT = typeof(T.tupleof[i]);
+			static if(!isArray!FT || isSomeString!FT) // Not ideal.
+			{
+				enum name = T.tupleof[i].stringof;
+				mixin("this." ~ name ~ " = field;");
+			}
 		}
 	}
 
@@ -283,7 +305,7 @@ struct EditorStateProxy(T, string s = "")
 		{
 			alias FT = typeof(T.tupleof[i]);
 			enum name = T.tupleof[i].stringof;
-			static if(FT.sizeof <= 8)
+			static if(isBasic!(FT))
 				mixin("field = this." ~ T.tupleof[i].stringof ~ ";");
 			else 
 				mixin("field = this." ~ T.tupleof[i].stringof ~ ".get;");
@@ -304,7 +326,7 @@ struct EditorStateProxy(T, string s = "")
 			enum name = T.tupleof[i].stringof;
 			enum pname = s ~ name;
 			enum type = typeof(T.tupleof[i]).stringof;
-			static if(FT.sizeof <= 8)
+			static if(isBasic!FT)
 			{
 
 				str ~= 
@@ -316,22 +338,30 @@ struct EditorStateProxy(T, string s = "")
 
 					@property " ~ type ~ " " ~ name ~ "()
 					{
-					auto p = __state.getProperty!(" ~ type ~ ")(__guid, \"" ~ pname ~ "\");
-					if(p) return *p;				
-					return T.init.tupleof[" ~ i.to!string ~ "];
+						auto p = __state.getProperty!(" ~ type ~ ")(__guid, \"" ~ pname ~ "\");
+						if(p) return *p;				
+						return T.init.tupleof[" ~ i.to!string ~ "];
 					}
 					";
 			}
 			else 
 			{
 				enum ptype = "EditorStateProxy!(" ~ typeof(T.tupleof[i]).stringof ~ ", \"" ~ s ~ name ~ "_\")";
-				str ~= 
-					"
-					@property void " ~ name ~ "(" ~ type ~ " value)
-					{
-					" ~ ptype ~ "(__guid, __state, value);
-					}
+				
+				static if(!isArray!FT || isSomeString!T)
+				{
+					str ~=
+						"
+						@property void " ~ name ~ "(" ~ type ~ " value)
+						{
+						" ~ ptype ~ "(__guid, __state, value);
+						}
 
+						";
+				}
+
+
+				str ~= "
 					@property " ~ ptype ~ " " ~ name ~ "()
 					{
 					return " ~ ptype ~ "(__guid, __state);
@@ -344,6 +374,55 @@ struct EditorStateProxy(T, string s = "")
 	}
 }
 
+@DontReflect
+struct EditorStateProxy(T, string s) if(isArray!T)
+{
+	import std.range;
+	alias ET = ElementType!T;
+
+	private Guid __guid;
+	private IEditorState __state;
+
+	this(Guid __guid, IEditorState __state)
+	{
+		this.__guid  = __guid;
+		this.__state = __state;
+	}
+
+	void initialize(size_t capacity)
+	{
+		__state.setArrayProperty!(ET)(__guid, s, capacity);
+	}
+
+	void opIndexAssign(ref ET value, size_t index)
+	{
+		__state.setArrayElement(__guid, s, index, value);
+	}
+
+
+	void opIndexAssign(ET value, size_t index)
+	{
+		__state.setArrayElement(__guid, s, index, value);
+	}
+
+	T get()
+	{
+		auto res = __state.getProperty!T(__guid, s);
+		if(res) return *res;
+		return T.init;
+	}
+
+	ET opIndex(size_t index)
+	{
+		auto array = __state.getProperty!(T)(__guid, s);
+		if(array) 
+		{
+			return (*array)[index];
+		}
+
+		return ET.init;
+	}
+}
 
 
 @DontReflect
@@ -355,6 +434,8 @@ interface IEditor
 
 	nothrow IServiceLocator	services();
 	nothrow IAssets			assets();
+	nothrow IAssets			gameAssets();
+
 	nothrow IEditorState	state();
 	nothrow IOS			    os();
 }
@@ -387,6 +468,11 @@ struct Editor
 	static IAssets assets() nothrow
 	{
 		return editor.assets;
+	}
+
+	static IAssets gameAssets() nothrow
+	{
+		return editor.gameAssets;
 	}
 
 	static IServiceLocator services() nothrow

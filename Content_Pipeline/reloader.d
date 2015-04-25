@@ -15,8 +15,6 @@ shared int reloaderCount = 0;
 
 enum fileService = "FILE_RELOADING_SERVICE";
 
-
-
 struct ReloadItem
 {
 	string name;
@@ -53,12 +51,7 @@ void spawnReloadingService()
 
 private void reloadingService()
 {
-	NetworkServices services = NetworkServices(Mallocator.it, 22222, 1);
-
-	Socket broadcast = new UdpSocket();
-	broadcast.bind(new InternetAddress(InternetAddress.ADDR_ANY, 0));
-	auto broadcastAddr = lanBroadcastAddress(Mallocator.it, 21345);
-
+	NetworkServices services = NetworkServices(Mallocator.it, 23451, 1);
 	Socket listener = new TcpSocket();
 	listener.bind(new InternetAddress(localIPString, 0));
 	listener.listen(1);
@@ -69,6 +62,7 @@ private void reloadingService()
 		uint ip;
 		ushort port;
 	}
+
 	auto addr = cast(InternetAddress)listener.localAddress;
 	ReloadingData data = ReloadingData(addr.addr, addr.port);
 	services.add(fileService, data);
@@ -94,12 +88,6 @@ private void reloadingService()
 
 		auto received = receiveTimeout(100.msecs, (immutable ReloadingInfo info) 
 		{
-			//Depricated (?)
-			foreach(item; info.items)
-			{
-				broadcast.sendTo(item.name, broadcastAddr);	
-			}
-
 			foreach(tid; reloaders)
 			{
 				send(tid, info);
@@ -160,7 +148,7 @@ void reloader(immutable Socket im_socket)
 				if(done) 
 					logErr("Failed to send item to connection: ", socket.remoteAddress);
 				else 
-					logInfo("Sen files to connection: ", socket.remoteAddress);
+					logInfo("Sent files to connection: ", socket.remoteAddress);
 			},
 			(bool shutdown)
 			{

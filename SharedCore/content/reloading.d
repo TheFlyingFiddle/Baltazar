@@ -6,32 +6,50 @@ import allocation;
 
 version(RELOADING)
 {
-	void setupReloader(ushort port, AsyncContentLoader* loader)
+	void setupReloader(uint ip, ushort port, AsyncContentLoader* loader)
 	{
-		doPoolTask!reloading(port, loader);
+		doPoolTask!reloading(ip, port, loader);
 	}
 
-	void reloading(ushort port, AsyncContentLoader* loader)
+	private void connect(TcpSocket socket, uint ip, ushort port)
+	{
+		import std.stdio;
+		auto remote = new InternetAddress(ip, port);
+		socket.connect(remote);
+		socket.blocking = true;
+	}
+
+	void reloading(uint ip, ushort port, AsyncContentLoader* loader)
 	{
 		registerThread("reloader");
-		auto socket  = Mallocator.it.allocate!(UdpSocket)();
-		auto address = Mallocator.it.allocate!(InternetAddress)(InternetAddress.ADDR_ANY, cast(ushort)21345);
-		socket.bind(address);
-		socket.blocking = true;
-		ubyte[256] buffer;
-		while(true)
+		auto socket  = new TcpSocket();
+		connect(socket, ip, port);
+
+		import log;
+		logInfo("Listening on port ", port);
+		ubyte[1024 * 8] buffer;
+		while(false)
 		{
-			uint i = cast(uint)socket.receive(buffer);
-			if(i == Socket.ERROR)
-			{
-				if(wouldHaveBlocked())
-					continue;
-			}
+			//uint received = cast(uint)socket.receive(buffer[0 .. 2]);
+			//
+			//import util.bitmanip;
+			//auto buf = buffer[0 .. received];
+			//auto numItems = buf.read!ushort;
+			//received	= cast(uint)socket.receive(buffer[0 .. 2]); 
+			//
+			//logInfo("received ", numItems, " items");
+			//
+			//foreach(i; 0 .. numItems)
+			//{
+			//    received = cast(uint)socket.receive(buffer);
+			//    auto name   = buffer.read!string;
+			//    auto length = buffer.read!uint;
+			//}
+			//
 
-
-			auto array = Mallocator.it.allocate!(char[])(i);
-			array[0 .. i] = cast(char[])buffer[0 .. i];
-			doTaskOnMain!performReload(cast(string)array, loader);
+			//auto array = Mallocator.it.allocate!(char[])(i);
+			//array[0 .. i] = cast(char[])buffer[0 .. i];
+			//doTaskOnMain!performReload(cast(string)array, loader);
 		}
 	}
 

@@ -57,6 +57,7 @@ struct FontOutput
 	float size, lineHeight;
 	uint dataOffset, dataCount;
 	uint imageLayer;
+	HashID hashID;
 }
 
 void splitIntoRows(uint[] output, uint[] input, int bigWidth, int smallWidth, int offset)

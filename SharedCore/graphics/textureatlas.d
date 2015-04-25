@@ -61,6 +61,11 @@ struct TextureAtlas
 		return this[s];
 	}
 
+	HashID indexToID(size_t index)
+	{
+		return rects[index].hash;
+	}
+
 	int opApply(int delegate(size_t, Frame) dg)
 	{
 		int result;

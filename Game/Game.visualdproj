@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\SharedCore</imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\SharedGame; </imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>SharedCore.lib</libfiles>
-  <libpaths>..\SharedCore\Debug</libpaths>
+  <libfiles />
+  <libpaths />
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).dll</exefile>
@@ -383,5 +383,6 @@
  <Folder name="Game">
   <File path="dll.def" />
   <File path="dllmain.d" />
+  <File path="panel.d" />
  </Folder>
 </DProject>

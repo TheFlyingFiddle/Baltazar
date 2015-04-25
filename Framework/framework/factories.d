@@ -59,11 +59,6 @@ Application* createDesktopApp(A)(ref A al, DesktopAppConfig config)
 	app.addComponent(render);
 	app.addComponent(sound);
 
-	version(RELOADING)
-	{
-		app.addComponent(al.allocate!ReloadingComponent);
-	}
-
 	return app;
 }
 

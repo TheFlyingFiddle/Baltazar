@@ -33,7 +33,7 @@ final class MainScreen : Screen, IEditor, IOS
 	EditorState			 editorState;	
 	EditorServiceLocator locator;
 	Assets				 assets_;
-
+	Assets				 gameAssets_;
 
 	Panels   centerPanels;
 	Panels	 leftPanels;
@@ -72,6 +72,7 @@ final class MainScreen : Screen, IEditor, IOS
 		editorState = all.allocate!EditorState(Mallocator.cit);
 		locator   = all.allocate!EditorServiceLocator(&app.services);
 		assets_	  = all.allocate!Assets(all, app.locate!AsyncContentLoader);
+		gameAssets_ = all.allocate!Assets(all, app.locate!AsyncContentLoader("game"));
 	
 		IFileFinder finder = all.allocate!FileFinder();
 		locator.add(finder);
@@ -90,11 +91,6 @@ final class MainScreen : Screen, IEditor, IOS
 		centerPanels.addPanels(Mallocator.cit, plugin);
 
 		test = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
-
-		/*
-		tools = ToolBox(all, 10);
-		tools.addTools(plugin);
-		*/
 	}
 
 	void setupPlugins()
@@ -206,6 +202,12 @@ final class MainScreen : Screen, IEditor, IOS
 		return assets_;
 	}
 
+	override IAssets gameAssets() nothrow
+	{
+		return gameAssets_;
+	}
+
+
 	override IEditorState state() nothrow
 	{
 		return editorState;
@@ -264,7 +266,6 @@ final class MainScreen : Screen, IEditor, IOS
 	{
 		import window.window;
 		auto w = app.locate!Window;
-
 
 		gui.renderer.viewport(float2(w.size));
 		gl.viewport(0,0, cast(int)w.size.x, cast(int)w.size.y);

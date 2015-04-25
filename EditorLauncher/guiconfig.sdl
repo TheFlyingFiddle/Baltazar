@@ -1,0 +1,190 @@
+images  = |GuiAtlas|
+fonts   = |Fonts|
+tooltip	= { id = segoeui color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+	
+palette = 
+[
+	{ id = |overlay|	value = 0x88220C03 },
+	{ id = |darkBlue|   value = 0xFF220C03 },
+	{ id = |blue|		  value = 0xFF3F2920 },
+	{ id = |darkGray|   value = 0xFF494740 },
+	{ id = |gray|		  value = 0xFFB3B0A9 },
+	{ id = |white|      value = 0xFFFFFFFF },
+	{ id = |black|      value = 0xFF000000 },
+	{ id = |bg_color|      value = 0xFF302D2D },
+	{ id = |panel_color|   value =  0xFF1E1E1E },
+	{ id = |button_color|   value = 0xFF373333 },
+	{ id = |field_color|     value = 0xFF423E3E }
+]
+
+textfields =
+[
+	{
+		name    = textfield
+		frame	= { id = |pixel| color = |field_color| } 
+		font    =  { id = segoeuil color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		padding = { x = 4 y = 4 }
+		cursorColor = 0xFF000000
+		selectionColor = 0x6600aa00
+		errorColor     = 0xFF0000FF
+		flashSpeed     = 1.0
+	}
+]
+
+typefields =
+[
+	{
+		name = typefield
+		itemSpacing = 3
+		fieldSize   = 20
+		nameWidth   = 100
+		topDown		= true
+	}
+]
+
+tabs = 
+[
+	{
+		name    = tabs
+		pageBg  = { id = |pixel| color = |gray| }
+		toolbarStyle = toolbar
+		toolbarSize  = 20
+	}
+]
+
+buttons = 
+[ 
+	{	
+		name		= button
+		up			= { id = |pixel| color = |button_color| }
+		down		= { id = |pixel| color = |panel_color| }
+		hl			= { id = |pixel| color = |field_color| }
+		downHl		= { id = |pixel| color = |panel_color| }
+		font		= { id = segoeui color = white size = { x = 20 y = 20 } thresh = { x = 0.2 y = 0.7  } }
+		vertical	= center
+		horizontal	= center
+	}
+]
+
+toggles = 
+[
+	{
+		name = toggle
+		toggled		= |unactiveToggle|
+		untoggled	= |activeToggle|
+	},
+	{
+		name = arrowToggle
+		toggled		= |activeArrowToggle|
+		untoggled   = |unactiveArrowToggle|
+	},
+	{
+		name = checkBox
+		toggled = |checkBoxOn|
+		untoggled = |checkBoxOff|
+	}
+]
+
+toolbars = 
+[
+	{
+		name	= toolbar
+		id		= toggle
+		padding = 5
+	}
+]
+
+sliders =
+[
+	{
+		name	= scrollbar
+		bg		= { id = |pixel| color = |darkGray| }
+		fg		= { id = |pixel| color = |gray| }
+	}
+]
+
+
+listboxes =
+[
+	{
+		name	 = listbox
+		itemSize = 20
+		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		selected = { id = |pixel| color = |overlay| }
+		stripe0	 = { id = |pixel| color = |button_color| }
+		stripe1  = { id = |pixel| color = |field_color| }
+		bg		 = { id = |pixel| color = |panel_color| }
+		scrollID = scrollbar
+	},
+	{
+		name	 = editListBox
+		itemSize = 20
+		font     = { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		selected = { id = |pixel| color = |overlay| }
+		stripe0	 = { id = |pixel| color = |button_color| }
+		stripe1  = { id = |pixel| color = |field_color| }
+		bg		 = { id = |pixel| color = |panel_color| }
+		scrollID = scrollbar
+	}
+]
+
+labels = 
+[
+	{
+		name = label
+		font		= { id = segoeui color = |white| size = { x = 12 y = 12 } thresh = { x = 0 y = 0.9 } }
+	}
+]
+
+scrollareas = 
+[
+	{ 
+		name		= scrollarea
+		bg			= { id = |pixel| color = |panel_color| } 
+		scrollID	= |scrollbar|
+		scrollWidth = 15
+	}
+]
+
+enums =
+[
+	{	
+		name		= enumfield
+		bg			= { id = pixel color = |field_color| }
+		hl			= { id = pixel color = |darkGray| }
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		padding	    = { x = 0 y = 0}
+		spacing     = 0
+	}
+]
+
+menus = 
+[
+	{
+		name  = |menu|
+		size  = 20
+		width = 160
+		iconSpace = 20
+		padding = { x = 4 y = 0 z = 4 w = 4 }
+		windowID = |menuwindow|
+		submenuIcon = |arrowbtn_right|
+		font		= { id = segoeuil color = |white| size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } }
+		focus		= { id = pixel color = |bg_color| }
+		highlight	= { id = pixel color = |bg_color| }
+		idle		= { id = pixel color = |bg_color| }
+	}
+]
+
+windows =
+[
+	{
+		name = menuwindow
+		focusColor	  = 0xFF302D2D
+		nonFocusColor = 0xFF302D2D
+		bg			  = { id = |pixel| color = panel_color }
+		closeButton   = |button|
+		padding       = { x = 4 y = 4 z = 4 w = 4 }
+		titleHeight   = 0
+		font		  = { id = |segoeuil| color = white size = { x = 13 y = 13 } thresh = { x = 0 y = 0.9 } } 
+	}
+]

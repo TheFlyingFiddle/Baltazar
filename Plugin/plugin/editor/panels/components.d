@@ -154,7 +154,7 @@ struct ComponentsPanelImpl
 
 	bool handle(ref Gui gui, Rect r, ref TextureID t, HashID styleID)
 	{
-		auto atlases = Editor.assets.loadedAssets("atl");
+		auto atlases = Editor.gameAssets.loadedAssets("atl");
 		int aIdx    = cast(uint)atlases.countUntil!(x => x.name == t.atlas);
 		int iIdx  = -1;
 		if(aIdx != -1) 
@@ -184,7 +184,7 @@ struct ComponentsPanelImpl
 	
 	bool handle(ref Gui gui, Rect r, ref FontID t, HashID styleID)
 	{
-		auto atlases = Editor.assets.loadedAssets("fontatl");
+		auto atlases = Editor.gameAssets.loadedAssets("fontatl");
 		int aIdx = cast(int)atlases.countUntil!(x => x.name == t.atlas);
 		int fIdx = -1;
 		if(aIdx != -1) 
@@ -210,48 +210,6 @@ struct ComponentsPanelImpl
 
 		return result;
 	}
-
-	/+
-	bool handle(ref Gui gui, Rect r, ref ParticleID t, HashID styleID)
-	{
-		/*
-		auto idx = state.particleSystems.countUntil!(x => x == t.name);
-		if(gui.selectionfield(r, idx, state.particleSystems))
-		{
-			t.name = state.particleSystems[idx];
-			return true;
-		}
-		*/
-
-		return false;
-	}
-
-	bool handle(ref Gui gui, Rect r, ref EntityRef t, HashID styleID)
-	{
-		int idx  = cast(int)state.items.countUntil!(x => x.id == t.id);
-		if(gui.selectionfield(r, idx, state.items.array.map!(x => x.name)))
-		{
-			t.id = state.items[idx].id;
-			return true;
-		}
-
-		return false;
-	}
-
-	bool handle(ref Gui gui, Rect r, ref ArchetypeID t, HashID styleID) 
-	{
-		/*
-		auto idx = state.archetypes.countUntil!(x => x.name == t.name);
-		if(gui.selectionfield(r, idx, state.archetypes.array.map!(x => x.name)))
-		{
-			t.name = state.archetypes[idx].name;
-			return true;
-		}
-		*/
-
-		return false;
-	} +/
-
 }
 
 @EditorPanel("Components", PanelPos.right) 

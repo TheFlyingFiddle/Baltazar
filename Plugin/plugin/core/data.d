@@ -9,14 +9,27 @@ import collections.list;
 import util.variant;
 import math.vector;
 
+enum Fonts = "Fonts";
+enum Consola = "consola";
+enum Atlas = "GuiAtlas";
+enum Pixel = "pixel";
+
 enum EntitySet    = "entities";
 enum ArchetypeSet = "archetypes";
+
+enum Mode
+{
+	entity,
+	tile
+}
+
 
 struct SharedDataCont
 {
 	Guid			   archetype;
 	GrowingList!(Guid) selected;
 	Camera			   camera;
+	Mode			   mode;
 }
 
 __gshared SharedDataCont SharedData;
@@ -26,6 +39,7 @@ __gshared static this()
 	SharedData.archetype = Guid.init;
 	SharedData.selected  = GrowingList!(Guid)(Mallocator.cit, 10);
 	SharedData.camera	 = Camera.init;
+	SharedData.mode		 = Mode.entity;
 }
 
 struct Tmp

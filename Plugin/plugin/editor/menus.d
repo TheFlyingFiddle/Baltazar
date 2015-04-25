@@ -2,6 +2,7 @@ module plugin.editor.menus;
 
 import bridge.attributes;
 import bridge.core;
+import plugin.core.data;
 
 @MenuItem("FILE.New.Project")
 void new_()
@@ -176,11 +177,16 @@ void redo()
 	state.redo();
 }
 
-@MenuItem("Game.run", KeyCommand(KeyModifiers.control, Key.g))
-void runGame()
+@MenuItem("MODE.entity")
+void entityMode()
 {
-	save();
-	Editor.runGame();
+	SharedData.mode = Mode.entity;
+}
+
+@MenuItem("MODE.tile")
+void tileMode()
+{
+	SharedData.mode = Mode.tile;
 }
 
 

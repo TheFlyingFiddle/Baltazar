@@ -23,9 +23,12 @@ enum CmdTag : byte
 	create = 0,
 	destroy,
 	setProp,
-	removeProp,
+	removeProp, 
 	addSet,
-	removeSet
+	removeSet,
+
+	//Arrays!
+	setIndex,
 }
 
 struct Command
@@ -33,7 +36,6 @@ struct Command
 	nothrow: 
 	CmdTag tag;
 	Guid guid;
-
 	union
 	{
 		HashMap!(string, Data) values;
@@ -42,12 +44,23 @@ struct Command
 			string key;
 			union
 			{
+				//add/remove from set.
 				Guid   itemGuid;
+				
+				//SetProperty
 				Data   data;
+
+				//Array operations.
+				struct 
+				{
+					align(1):
+					ushort arrayIndex; // <- PROBLEM!
+					ushort itemSize;
+					ubyte[8] itemValue;
+				}
 			}
 		}	
 	}
-
 	this(CmdTag tag, Guid guid)
 	{
 		this.tag  = tag;
@@ -58,12 +71,12 @@ struct Command
 class EditorState : IEditorState
 {
 	DataStore store;
-
 	private GrowingList!(Command) undoCmds;
 	private GrowingList!(Command) redoCmds;
 	private GrowingList!(uint)	  restorepoints;
 	private uint restoreIdx;
 	private uint cmdSinceRestore;
+	private ulong objectCounter;
 
 	this(IAllocator allocator)
 	{
@@ -116,7 +129,7 @@ class EditorState : IEditorState
 		//Will be unique!
 		while(true)
 		{
-			auto guid = assumeWontThrow(uniform(0, ulong.max) + 1);
+			auto guid = ++objectCounter;
 			if(create(guid))
 				return guid;
 		}
@@ -191,8 +204,6 @@ class EditorState : IEditorState
 
 	void addToSet(Guid guid, string key, Guid item) nothrow 
 	{
-		import log; logInfo(guid, " ", key, " ", item, " add to set");
-
 		auto cmd = Command(CmdTag.removeSet, guid);
 		cmd.key  = key;
 		cmd.itemGuid = item;
@@ -210,6 +221,48 @@ class EditorState : IEditorState
 
 		store.removeFromSet(guid, key, item);
 	}
+
+	void setArrayTyped(Guid guid, string key, uint capacity, uint size, TypeHash array) nothrow
+	{
+		scope(failure) return;
+		//Removed data stays forever as it is now. (Works well enough :))
+		auto mem   = cast(ubyte[])Mallocator.it.allocateRaw(capacity * size, size);
+		mem[] = 0;
+		mem.length = capacity;
+		Data data;
+		data.id = array;
+		*(cast(void[]*)data.data.ptr) = mem;
+
+		setPropertyTyped(guid, key, data);
+	}
+
+	void setArrayElement(Guid guid, string key, uint index, ubyte[] item, TypeHash arrType) nothrow
+	{
+		auto array = store.getProperty(guid, key);
+		if(array)
+		{
+			assert(array.id == arrType);
+
+			int size = item.length;
+			auto d    = *cast(ubyte[]*)array.data;
+			auto data = d.ptr;
+			assert(d.length > index, "Range exception!");
+			
+			auto cmd	   = Command(CmdTag.setIndex, guid);
+			cmd.key		   = key;
+			cmd.arrayIndex = cast(ushort)index;
+			cmd.itemSize   = cast(ushort)size;
+
+			import log;
+			logInfo(size, " ", d.length, " ", guid, " ", key, " ", index, " " , item);
+			cmd.itemValue[0 .. size] = data[index * size .. index * size + size];
+			addCmd(cmd);
+			
+			data[index * size .. index * size + size] = item;
+			return;
+		}
+	}
+
 
 	void undo() nothrow 
 	{
@@ -324,13 +377,23 @@ class EditorState : IEditorState
 
 				store.removeProperty(command.guid, command.key);
 				break;
+			case CmdTag.setIndex:
+				inverse			   = Command(CmdTag.setIndex, command.guid);
+				inverse.key		   = command.key;
+				inverse.itemSize   = command.itemSize;
+				inverse.arrayIndex = command.arrayIndex;
+
+				auto array = store.getProperty(command.guid, command.key);
+				auto data = (*cast(ubyte[]*)array.data).ptr;
+				inverse.itemValue[0 .. command.itemSize] = data[command.arrayIndex * command.itemSize .. command.arrayIndex * command.itemSize + command.itemSize];
+				data[command.arrayIndex * command.itemSize .. command.arrayIndex * command.itemSize + command.itemSize] = command.itemValue[0 .. command.itemSize];
+				break;
 		}
 
 		assumeWontThrow(stack ~= inverse);
 	}
 
 }
-
 
 
 class EditorServiceLocator : IServiceLocator
@@ -402,7 +465,8 @@ class Assets : IAssets
 
 	override void* locateAsset(TypeHash type, string asset) nothrow
 	{
-		auto a = loader.getItem(asset);
+		scope(failure) return null;
+		auto a = loader.load(type, asset);
 		if(a.typeHash == type)
 			return a.item;
 		else 

@@ -66,11 +66,6 @@ bool typefield(T)(ref Gui gui, Rect rect, ref T t, HashID styleID = HashID("type
 {
 	struct Context 
 	{
-		alias Handler = string;
-		bool handle(U)(string _, Rect r, ref U u, HashID styleID1 = HashID("typefield"))
-		{
-			return false;
-		}
 	}
 
 	Context c;
@@ -208,10 +203,9 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 			
 				r.w = style.nameWidth;
 				gui.label(r, Identifier!(t.tupleof[i]));
-
-				r.x = r.w + style.itemSpacing;
+				
+				r.x = rect.x + r.w + style.itemSpacing;
 				r.w = rect.w - style.nameWidth - style.itemSpacing;
-
 				changed = gui.typefield(r, t.tupleof[i], context, styleID) || changed;
 			}
 		}

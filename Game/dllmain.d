@@ -11,13 +11,11 @@ BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
     {
 		case DLL_PROCESS_ATTACH:
 			g_hInst = hInstance;
-			import util.bench;
-			auto prof = StackProfile("RT initialize");
-			Runtime.initialize();
 			break;
 
 		case DLL_PROCESS_DETACH:
 			Runtime.terminate();
+			import std.c.stdio;
 			std.c.stdio._fcloseallp = null;
 			break;
 
@@ -31,11 +29,9 @@ BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
 }
 
 
-import reflection.data;
+//import reflection.data;
 export extern(C) void* GetAssembly(void* errorFunction)
 {
-	import dll.error;
-	dll.error.errorHandler = cast(errorHandler_t)(errorFunction);
-
-	return cast(void*)(&assembly);		
+	Runtime.initialize();
+	return null;		
 }

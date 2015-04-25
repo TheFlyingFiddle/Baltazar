@@ -2,9 +2,8 @@ module dllmain;
 
 import std.c.stdio;
 import std.c.windows.windows;
+import core.sys.windows.dll;
 __gshared HINSTANCE g_hInst;
-
-import core.runtime;
 
 extern (Windows)
 BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
@@ -15,13 +14,13 @@ BOOL DllMain(HINSTANCE hInstance, ULONG ulReason, LPVOID pvReserved)
     case DLL_PROCESS_ATTACH:
         g_hInst = hInstance;
 		printf("Attaching Process!\n");	
-		Runtime.initialize();
+		dll_process_attach(hInstance, false);
 		printf("Attached Process\n");	
         break;
 
     case DLL_PROCESS_DETACH:
 		printf("Detaching Process\n");
-		Runtime.terminate();
+		dll_process_detach(hInstance, false);
 		printf("Detached Process\n");
 		std.c.stdio._fcloseallp = null;
         break;

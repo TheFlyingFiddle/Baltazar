@@ -1,0 +1,21 @@
+items = 
+[
+	{ 
+		name = |pixel.png| 
+		padding = { left = 2 top = 2 right = 2 bottom = 2 }
+	},
+	{ name = arrowbtn_down.png },
+	{ name = arrowbtn_left.png },
+	{ name = arrowbtn_right.png },
+	{ name = arrowbtn_up.png },
+	{ name = radiobtn_off.png },
+	{ name = radiobtn_on.png },
+	{ name = plusbtn.png },
+	{ name = minusbtn.png },
+	{ name = checkbtn_off.png },
+	{ name = checkbtn_on.png }
+]
+
+width = 128
+height = 256
+spacing = 2

@@ -25,6 +25,7 @@ struct Image
 
 struct AtlasImage
 {
+	int spacing;
 	Image image;
 	SourceRect[] rects;
 }
@@ -85,13 +86,13 @@ struct AtlasConfig
 {
 	AtlasItem[] items;
 	int width, height;
+
+	int spacing;
 }
 
 CompiledFile compileAtlas(void[] data, DirEntry file, ref Context context)
 {
-
 	auto atlasConfig = fromSDLSource!AtlasConfig(Mallocator.it, cast(string)data);
-
 	auto root = file.name[context.inFolder.length + 1 .. $ - baseName(file.name).length];
 	auto itemIDs = atlasConfig.items.map!(x => buildPath(root, x.name)).array;
 	foreach(item; itemIDs)
@@ -146,33 +147,20 @@ CompiledFile compileAtlas(void[] data, DirEntry file, ref Context context)
 		assert(0, "Not yet implemented!");
 }	
 
-
-auto atlasLuaLoading()
-{
-	return 
-"
-	
-
-";
-}
-
 auto createAtlas(AtlasConfig config, DirEntry file, Platform platform)
 {
-	
-
 	Image[] images;
 	foreach(item; config.items.map!(x => Tuple!(string, string, Padding)(stripExtension(x.name),
 						buildPath(dirName(file.name), x.name ~ "\0"), x.padding)))
 	{
 //		logInfo("Item[0] = ", item[0], "Item[1] = ", item[1]);
-
 		Image image = loadImage(item[1]);
 		image.name  = item[0];
 		image.padding = item[2];
 		images ~= image;
 	}
 
-	auto result = buildAtlas(images, config.width, config.height);
+	auto result = buildAtlas(images, config.width, config.height, config.spacing);
 	freeImages(images);
 
 	if(platform == Platform.phone)
@@ -202,10 +190,11 @@ auto createAtlas(AtlasConfig config, DirEntry file, Platform platform)
 
 struct AtlasNode
 {
-	AtlasNode*[2] child;
-	uint bottom, left, right, top;
+	int bottom, left, right, top;
 	int type = -1;
 	static AtlasImage* atlas;
+	AtlasNode*[2] child;
+
 
 	this(uint bottom, uint left, uint right, uint top, uint type)
 	{
@@ -237,10 +226,9 @@ struct AtlasNode
 		{
 			copySubImage(atlas.image, image, bottom, left);
 			atlas.rects ~= SourceRect(image.name, this.bottom + image.padding.bottom, 
-												  this.left + image.padding.left, 
-									              this.right - image.padding.right, 
-									              this.top - image.padding.top);
-
+												  this.left   + image.padding.left, 
+									              this.right  - image.padding.right, 
+									              this.top    - image.padding.top);
 			type = 1;
 			return &this;
 		}
@@ -254,22 +242,31 @@ struct AtlasNode
 
 		if(dw > dh)
 		{
-			child[0] = new AtlasNode(bottom, left,
-								left + image.width,
-								top, 2);
+			child[0] = new AtlasNode(bottom, 
+									 left,
+									 left + image.width,
+									 top, 
+									 2);
 
-			child[1] = new AtlasNode(bottom, left + image.width,
-								right,
-								top, 2);
+			child[1] = new AtlasNode(bottom, 
+									 left + image.width + atlas.spacing,
+									 right,
+									 top, 
+									 2);
 		}
 		else 
 		{
-			child[0] = new AtlasNode(bottom, left,
-								right, bottom + image.height, 2);
+			child[0] = new AtlasNode(bottom, 
+									 left,
+									 right, 
+									 bottom + image.height, 
+									 2);
 
-			child[1] = new AtlasNode(bottom + image.height, left,
-								right,
-								top, 2);
+			child[1] = new AtlasNode(bottom + image.height + atlas.spacing, 
+									 left,
+									 right,
+									 top, 
+									 2);
 		}
 
 		this.type = 0;
@@ -277,9 +274,9 @@ struct AtlasNode
 	}
 }
 
-AtlasImage buildAtlas(Image[] images, uint maxWidth, uint maxHeight)
+AtlasImage buildAtlas(Image[] images, uint maxWidth, uint maxHeight, uint spacing)
 {
-	AtlasImage atlas = AtlasImage(Image(maxWidth, maxHeight, new uint[maxWidth * maxHeight]));
+	AtlasImage atlas = AtlasImage(spacing, Image(maxWidth, maxHeight, new uint[maxWidth * maxHeight]));
 	AtlasNode.atlas = &atlas;
 
 	auto start = new AtlasNode(0, 0, maxWidth, maxHeight, 2);

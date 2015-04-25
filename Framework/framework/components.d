@@ -184,16 +184,59 @@ class SoundComponent : IApplicationComponent
 	}
 
 }
-
 version(RELOADING)
 {
+	import content, allocation;
+	struct ReloadingConfig
+	{
+		ushort port;
+		@Optional("") string loader;
+	}
+
+
 	class ReloadingComponent : IApplicationComponent
 	{
+		ushort port;
+		string theLoader;
+		NetworkServiceFinder finder;
+		bool found;
+
+		this(ReloadingConfig config)
+		{
+			this.port		= config.port;
+			this.theLoader	= config.loader;
+			this.found		= false;
+
+			finder = NetworkServiceFinder(Mallocator.it, 23451, "FILE_RELOADING_SERVICE", &onServiceFound);
+		}
+
 		override void initialize()
 		{
+		}
+
+		void onServiceFound(const(char)[] service, ubyte[] serviceInfo)
+		{
+			import log;
+			logInfo("Found Service!");
+
+			import util.bitmanip;
+			this.found = true;
+
+			auto ip		= serviceInfo.read!uint;
+			auto port	= serviceInfo.read!ushort;
+
 			import content.content, content.reloading;
-			auto loader = app.locate!AsyncContentLoader;
-			setupReloader(12345, loader);
+			auto loader = app.locate!AsyncContentLoader(theLoader);
+			setupReloader(ip, port, loader);
+		}
+
+		override void step(Time time)
+		{
+			if(!found)
+			{
+				if(!finder.pollServiceFound())
+					finder.sendServiceQuery();
+			}
 		}
 	}
 }

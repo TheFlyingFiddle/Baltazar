@@ -126,15 +126,14 @@ bool listbox(T, Sels)(ref Gui gui,
 			toDraw.bottom < rect.top)
 		{
 			auto item = items.front;
-			GuiFrame frame;
+			GuiFrame frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
+			gui.drawQuad(toDraw, frame, rect);
 			auto c = selected.countUntil!(x => x == i);
 			if(c != -1) {
 				frame = style.selected;
+				gui.drawQuad(toDraw, frame, rect);
 			}
-			else
-				frame = i % 2 == 0 ? style.stripe0 : style.stripe1;
-
-			gui.drawQuad(toDraw, frame, rect);
+			
 			gui.drawText(item, toDraw, style.font, rect);
 
 		}

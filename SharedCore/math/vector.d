@@ -51,8 +51,6 @@ struct Vector(size_t size, T)
 			sink(text(buffer, "X:", x, " Y:", y, "Z:", z, "W:", w));
 	}	
 
-
-
 	this(U)(U u) if (isNumeric!U)
 	{
 		static if(__ctfe)

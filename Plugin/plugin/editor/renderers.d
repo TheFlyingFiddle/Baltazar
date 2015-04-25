@@ -12,14 +12,60 @@ import rendering.combined;
 import rendering.shapes;
 
 
+
 alias RenderFunctions = Functions!(plugin.editor.renderers);
+
+//Tile
+@WorldRenderer("Tile")
+void renderTiles(RenderContext* context)
+{
+	import plugin.tile.data;
+	import util.hash;
+	import log;
+
+	auto atlas = Editor.gameAssets.locate!(TextureAtlas)(TileData.atlas);
+	if(!atlas) return;
+
+	auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+	if(!obj) return;
+
+	auto camera = context.camera;
+	auto tm = context.state.proxy!TileMap(*obj);
+	auto positions = tm.positions.get();
+	auto colors	   = tm.tint.get();
+	auto types	   = tm.type.get();
+	auto images    = tm.tileID.get();
+
+	foreach(i; 0 .. tm.capacity)
+	{
+		auto type = types[i];
+		if(type == 0) continue;
+
+		auto frame = (*atlas)[HashID(images[i])];
+
+
+		Color c;
+		if(type == TileType.normal)
+			c = Color.white;
+		else if(type == TileType.collision)
+			c = Color.blue;
+
+		auto pos   = float2(positions[i]);
+
+		float2 min = camera.worldToScreen(pos); 
+		float2 max = camera.worldToScreen(pos + float2.one); 
+
+		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), frame, c);
+
+	}
+}
 
 @WorldRenderer("Grid")
 void renderGrid(RenderContext* context)
 {
 	auto cam   = context.camera;
-	auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-	auto frame = (*atlas)["pixel"];
+	auto atlas = Editor.assets.locate!(TextureAtlas)(Atlas);
+	auto frame = (*atlas)[Pixel];
 
 	context.renderer.drawQuad(cam.viewport, 0,frame,Color(0xFF707070));
 
@@ -48,8 +94,8 @@ void renderGrid(RenderContext* context)
 void renderCamera(RenderContext* context)
 {
 	import util.strings;
-	auto font	 = Editor.assets.locate!(FontAtlas)("Fonts");
-	auto consola = (*font)["consola"];
+	auto font	 = Editor.assets.locate!(FontAtlas)(Fonts);
+	auto consola = (*font)[Consola];
 	auto text = text1024("Camera: ", context.camera.position);
 	float2 size = consola.measure(text) * consola.size;
 
@@ -74,7 +120,7 @@ void renderBasic(RenderContext* context)
 			auto transform = context.state.proxy!(Transform)(guid);
 			auto sprite	   = context.state.proxy!(Sprite)(guid);
 
-			auto atlas = Editor.assets.locate!(TextureAtlas)(sprite.texture.atlas);
+			auto atlas = Editor.gameAssets.locate!(TextureAtlas)(sprite.texture.atlas);
 			if(atlas && atlas.contains(sprite.texture.image))
 			{
 				auto frame = (*atlas)[sprite.texture.image];
@@ -108,8 +154,8 @@ void renderBasic(RenderContext* context)
 @WorldRenderer("Selected")
 void renderSelected(RenderContext* context)
 {
-	auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-	auto frame = (*atlas)["pixel"];
+	auto atlas = Editor.assets.locate!(TextureAtlas)(Atlas);
+	auto frame = (*atlas)[Pixel];
 
 	foreach(guid; SharedData.selected)
 	{

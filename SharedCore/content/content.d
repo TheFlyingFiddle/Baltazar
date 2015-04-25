@@ -104,9 +104,13 @@ struct ContentLoader
 		this.fileLoaders   = List!(FileLoader)(allocator, 100);
 		this.resourceCount = 0;
 
-		//USE SDL MAP HERE! :)
+		import std.file;
 		import content.sdl, util.strings;
-		avalibleResources = fromSDLFile!(FileMap)(allocator, text1024(resourceFolder, "\\FileCache.sdl"));
+		auto f = text1024(resourceFolder, "\\FileCache.sdl");
+		if(exists(f))
+		{
+			avalibleResources = fromSDLFile!(FileMap)(allocator, f);
+		}
 	}
 
 	void addFileLoader(FileLoader fileLoader)
@@ -145,42 +149,68 @@ struct ContentLoader
 		return handle;
 	}
 
+	Handle* getItem(HashID hash) nothrow 
+	{
+		return &items[indexOf(hash)];
+	}
+
 	Handle* getItem(string path) nothrow
 	{
-		return &items[indexOf(bytesHash(path))];
+		return getItem(bytesHash(path));
 	}
 	
-	bool isLoaded(string path)
+	bool isLoaded(string path) nothrow 
 	{
 		return isLoaded(bytesHash(path));
 	}
 
-	bool isLoaded(HashID hash)
+	bool isLoaded(HashID hash) nothrow
 	{
+		scope(failure) return false;
 		return indexOf(hash) != -1;
 	}
 
-	ContentHandle!(T) load(T)(string path)
+	Handle* load(string path)
+	{
+		import std.path, util.strings;
+		auto ext = path.extension;
+		auto hash = bytesHash(path[0 .. $ - ext.length]);
+		if(isLoaded(hash)) return getItem(path[0 .. $ - ext.length]);
+
+		auto fileLoader = fileLoaders.find!(x => x.extension == ext)[0];
+		auto file		= text1024(resourceFolder, dirSeparator, hash.value, ext);
+		void* loaded    = fileLoader.load(allocator, cast(string)file, false);
+
+		auto itemIndex	= addItem(hash, fileLoader.typeHash, loaded);
+		return &items[itemIndex];
+	}
+
+	Handle* load(TypeHash typeHash, string path)
 	{
 		auto hash = bytesHash(path);
 		if(isLoaded(hash)) 
 		{
 			auto item = items[indexOf(hash)];
-			assert(item.typeHash == typeHash!T);
-			return getItem!T(hash);
+			assert(item.typeHash == typeHash);
+			return getItem(hash);
 		}
 
 		import util.strings;
-		
-		auto index = fileLoaders.countUntil!(x => x.typeHash == typeHash!T);
+
+		auto index = fileLoaders.countUntil!(x => x.typeHash == typeHash);
 		assert(index != -1, "Can't load the type specified!");
 
 		auto loader = fileLoaders[index];
 		auto file = text1024(resourceFolder, dirSeparator, hash.value,  loader.extension);
-		T* loaded   = cast(T*)loader.load(allocator, cast(string)file, false);
-	
-		auto itemIndex = addItem(hash, typeHash!T, loaded);
-		return ContentHandle!(T)(&items[itemIndex]);
+		void* loaded   = loader.load(allocator, cast(string)file, false);
+		auto itemIndex = addItem(hash, typeHash, loaded);
+		
+		return getItem(hash);
+	}
+
+	ContentHandle!(T) load(T)(string path)
+	{
+		return ContentHandle!(T)(load(typeHash!T, path));
 	}
 
 	bool unload(T)(ContentHandle!(T) cHandle)
@@ -247,6 +277,16 @@ struct AsyncContentLoader
 		numRequests = 0;
 	}
 	
+	Handle* load(TypeHash hash, string path)
+	{
+		return loader.load(hash, path);
+	}
+
+	Handle* load(string path)
+	{
+		return loader.load(path);
+	}
+
 	ContentHandle!(T) load(T)(string path)
 	{
 		return loader.load!T(path);
@@ -299,8 +339,6 @@ struct AsyncContentLoader
 
 	void asyncLoad(string path)
 	{
-		if(loader.isLoaded(path)) return;
-
 		import std.path, util.strings;
 		auto ext = path.extension;
 		auto hash = bytesHash(path[0 .. $ - ext.length]);

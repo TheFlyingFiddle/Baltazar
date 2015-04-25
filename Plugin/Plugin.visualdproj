@@ -12,7 +12,7 @@
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>1</symdebug>
+  <symdebug>0</symdebug>
   <optimize>0</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
@@ -33,7 +33,7 @@
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
-  <release>0</release>
+  <release>1</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -75,7 +75,7 @@
   <moduleDepsFile />
   <run>0</run>
   <runargs />
-  <runCv2pdb>1</runCv2pdb>
+  <runCv2pdb>0</runCv2pdb>
   <pathCv2pdb>$(VisualDInstallDir)cv2pdb\cv2pdb.exe</pathCv2pdb>
   <cv2pdbPre2043>0</cv2pdbPre2043>
   <cv2pdbNoDemangle>0</cv2pdbNoDemangle>
@@ -399,6 +399,13 @@
     <File path="plugin\editor\panels.d" />
     <File path="plugin\editor\renderers.d" />
     <File path="plugin\editor\tools.d" />
+   </Folder>
+   <Folder name="game">
+    <File path="plugin\game\panel.d" />
+   </Folder>
+   <Folder name="tile">
+    <File path="plugin\tile\data.d" />
+    <File path="plugin\tile\panel.d" />
    </Folder>
    <File path="plugin\attributes.d" />
    <File path="plugin\package.d" />

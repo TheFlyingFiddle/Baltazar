@@ -29,6 +29,8 @@ void main(string[] argv)
 	initializeRemoteLogging("Content_Pipeline");
 	scope (exit) termRemoteLogging();
 
+	spawnReloadingService();
+
 	logInfo("Content Pipeline running!");
 	while(true)
 	{
@@ -84,32 +86,48 @@ void makeDir(const(char)[] dir)
 
 void build(string inDir, string outDir)
 {
+	//We swap focus and only consider 1 game at a time!
+	//DirEntry[] games;
+	//foreach(entry; dirEntries(inDir, SpanMode.shallow))
+	//{
+	//	if(entry.isDir) {
+	//		games ~= entry;
+	//		makeDir(entry.name.replace(inDir, outDir));				
+	//	}
+	//}
+	
+	//foreach(game; games)
+	//{
+	//	foreach(entry; dirEntries(game.name, SpanMode.shallow)) if(entry.isDir)
+	//	{
+	//		auto name = entry.name[entry.name.lastIndexOf(dirSeparator) + 1 .. $];
+	//		if(name == "phone")	{
+	//			auto phoneDir = entry.name.replace(inDir, outDir);
+	//			makeDir(phoneDir);
+	//			compileFolder(entry.name, phoneDir, Platform.phone);
+	//		}
+	//		if(name == "desktop") {
+	//			auto desktopDir = entry.name.replace(inDir, outDir);
+	//			makeDir(desktopDir);
+	//			compileFolder(entry.name, desktopDir, Platform.desktop);
+	//		}
+	//	}
+	//}
+
 	makeDir(outDir);
-	DirEntry[] games;
-	foreach(entry; dirEntries(inDir, SpanMode.shallow))
+	foreach(folder; dirEntries(inDir, SpanMode.shallow)) if(folder.isDir)
 	{
-		if(entry.isDir) {
-			games ~= entry;
-			makeDir(entry.name.replace(inDir, outDir));				
+		auto name = folder.name[folder.name.lastIndexOf(dirSeparator) + 1 .. $];
+		auto nDir = folder.name.replace(inDir, outDir);
+		makeDir(nDir);
+		if(name == "phone")	{
+			compileFolder(folder.name, nDir, Platform.phone);
+		}
+		if(name == "desktop") {
+			compileFolder(folder.name, nDir, Platform.desktop);
 		}
 	}
-	foreach(game; games)
-	{
-		foreach(entry; dirEntries(game.name, SpanMode.shallow)) if(entry.isDir)
-		{
-			auto name = entry.name[entry.name.lastIndexOf(dirSeparator) + 1 .. $];
-			if(name == "phone")	{
-				auto phoneDir = entry.name.replace(inDir, outDir);
-				makeDir(phoneDir);
-				compileFolder(entry.name, phoneDir, Platform.phone);
-			}
-			if(name == "desktop") {
-				auto desktopDir = entry.name.replace(inDir, outDir);
-				makeDir(desktopDir);
-				compileFolder(entry.name, desktopDir, Platform.desktop);
-			}
-		}
-	}
+
 }
 
 struct FileCompiler
@@ -217,6 +235,8 @@ void compileFolder(string inFolder, string outFolder, Platform platform)
 			writeFile.rawWrite(item.data);
 		}
 
+		import log;
+		logInfo("Item has changed: ", nameHash);
 		reloadChanged(compiled.items, nameHash);
 		fileCache.dependencies ~= Dependencies(name ~ entry.name.extension, compiled.dependencies);
 

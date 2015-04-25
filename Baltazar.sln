@@ -44,6 +44,14 @@ Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "SharedGame", "SharedGame\Sh
 EndProject
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "Staging", "Staging\Staging.visualdproj", "{DC2F5DA1-B7E9-447C-B55F-A8805B55B7F9}"
 EndProject
+Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "EditorLauncher", "EditorLauncher\EditorLauncher.visualdproj", "{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E49CC85-7A61-48C7-8CF2-865E927F5194} = {7E49CC85-7A61-48C7-8CF2-865E927F5194}
+		{796064A9-E6D5-425A-81C3-FB40D681C7D7} = {796064A9-E6D5-425A-81C3-FB40D681C7D7}
+		{E640EFC2-88DD-467D-8D2E-0C6C7C5B5AED} = {E640EFC2-88DD-467D-8D2E-0C6C7C5B5AED}
+		{D47811EE-3736-445F-8831-741E9B431DA8} = {D47811EE-3736-445F-8831-741E9B431DA8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -130,6 +138,12 @@ Global
 		{DC2F5DA1-B7E9-447C-B55F-A8805B55B7F9}.Release|Win32.ActiveCfg = Release|Win32
 		{DC2F5DA1-B7E9-447C-B55F-A8805B55B7F9}.Release|Win32.Build.0 = Release|Win32
 		{DC2F5DA1-B7E9-447C-B55F-A8805B55B7F9}.Release|x64.ActiveCfg = Release|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Debug|Win32.Build.0 = Debug|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Debug|x64.ActiveCfg = Debug|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Release|Win32.ActiveCfg = Release|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Release|Win32.Build.0 = Release|Win32
+		{0D374EAD-D3FE-4C02-8E2A-AF793DEB93F5}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

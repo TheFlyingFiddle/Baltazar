@@ -383,7 +383,6 @@
  <Folder name="PluginBridge">
   <Folder name="bridge">
    <File path="bridge\attributes.d" />
-   <File path="bridge\commands.d" />
    <File path="bridge\contexts.d" />
    <File path="bridge\core.d" />
    <File path="bridge\os.d" />

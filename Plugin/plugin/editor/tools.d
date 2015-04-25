@@ -11,7 +11,6 @@ import rendering.shapes;
 import util.traits;
 import plugin.core.data;
 
-
 alias Tools = Classes!(plugin.editor.tools);
 
 interface ITool
@@ -25,7 +24,10 @@ interface ITool
 class Select : ITool
 {
 	string name() { return "Select"; }
-	bool usable(ToolContext* contex) { return true; }
+	bool usable(ToolContext* contex) 
+	{
+		return  SharedData.mode == Mode.entity;
+	}
 	
 	float2 start, end;
 	void use(ToolContext* context)
@@ -82,8 +84,8 @@ class Select : ITool
 		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
 		if(!entities) return;
 
-		auto atlas = Editor.assets.locate!(TextureAtlas)("Atlas");
-		auto pixel = (*atlas)["pixel"];
+		auto atlas = Editor.assets.locate!(TextureAtlas)(Atlas);
+		auto pixel = (*atlas)[Pixel];
 
 		Rect bounds = Rect(start, end);
 		foreach(ref guid; *entities)
@@ -116,7 +118,10 @@ class Select : ITool
 class Grab  : ITool
 {
 	string name() { return "Grab"; }
-	bool usable(ToolContext* contex) { return true; }
+	bool usable(ToolContext* contex) 
+	{
+		return true;
+	}
 
 	void use(ToolContext* context)
 	{
@@ -135,9 +140,7 @@ class Grab  : ITool
 		}
 	}
 
-	void render(RenderContext* context)
-	{
-	}
+	void render(RenderContext* context) { }
 }
 
 class Move  : ITool
@@ -146,7 +149,7 @@ class Move  : ITool
 
 	bool usable(ToolContext* context) 
 	{
-		return true;
+		return SharedData.mode == Mode.entity;
 	}
 
 	float2 lastLocation;
@@ -189,3 +192,214 @@ class Move  : ITool
 
 	void render(RenderContext* context) { }
 }
+
+
+
+//TILE MODE
+import plugin.tile.data;
+class TilePaiter  : ITool
+{
+	string name() { return "Tiler"; }
+
+	bool usable(ToolContext* context) 
+	{
+		return SharedData.mode == Mode.tile;
+	}
+
+	void createMap()
+	{
+		auto obj = Editor.state.createObject;
+		Editor.state.setProperty(Guid.init, TileMapID, obj);
+
+		//Should move this somewhere!
+		auto tm = Editor.state.proxy!TileMap(obj);
+		tm.capacity = 10;
+		tm.positions.initialize(10);
+		tm.type.initialize(10);
+		tm.tint.initialize(10);
+		tm.tileID.initialize(10);
+	}
+
+	import log;
+	void growMap()
+	{	
+		Editor.state.setRestorePoint();
+
+		auto oldObj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+		auto tmOld   = Editor.state.proxy!TileMap(*oldObj);
+		auto nCap    = tmOld.capacity * 2;
+
+
+		auto pos    = tmOld.positions.get();
+		auto type   = tmOld.type.get();
+		auto tint   = tmOld.tint.get();
+		auto tileID = tmOld.tileID.get();
+
+
+		Editor.state.destroy(*oldObj);
+		auto obj = Editor.state.createObject();
+		Editor.state.setProperty(Guid.init, TileMapID, obj);
+
+		auto tm = Editor.state.proxy!(TileMap)(obj);
+
+		tm.capacity = nCap;
+		tm.positions.initialize(nCap);
+		tm.type.initialize(nCap);
+		tm.tint.initialize(nCap);
+		tm.tileID.initialize(nCap);
+
+		auto nPos    = tm.positions.get();
+		auto ntype   = tm.type.get();
+		auto ntint   = tm.tint.get();
+		auto ntileID = tm.tileID.get(); 
+
+		nPos[0 .. nCap / 2] = pos;
+		ntype[0 .. nCap / 2] = type;
+		ntint[0 .. nCap / 2] = tint;
+		ntileID[0 .. nCap / 2] = tileID;
+	}
+
+	auto getMap()
+	{
+		auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+		if(!obj)
+		{
+			createMap();
+			obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+		}
+		return Editor.state.proxy!TileMap(*obj);
+	}
+
+	//Add support of controll click adding.
+	int counter = 0;
+	void use(ToolContext* context)	
+	{
+		auto m = context.mouse;
+		if(m.isDown(MouseButton.left))
+		{
+			auto loc  = context.camera.screenToWorld(m.location);
+			int2 iloc = int2(loc);
+			
+			if(loc.x < -0.5) iloc.x--;
+			if(loc.y < -0.5) iloc.y--;
+
+			auto tm   = getMap();
+			auto type = tm.type.get();
+			auto pos  = tm.positions.get();
+			auto img  = tm.tileID.get();
+
+			int free  = -1;
+			int taken = -1;
+			int cap	  = tm.capacity;
+			foreach(i; 0 .. tm.capacity)
+			{
+				if(pos[i] == iloc && type[i] != 0 &&
+				   img[i] == TileData.image.value) 
+				{
+					taken = i;
+					break;
+				}
+
+				if(type[i] == 0 || (pos[i] == iloc && img[i] != TileData.image.value)) {
+					free = i;
+					break;
+				}
+
+			}
+
+			if(taken != -1) return;
+			
+			if(free == -1) {
+				growMap();
+				auto tmn = getMap();
+				tmn.positions[cap] = iloc;
+				tmn.type[cap]	   = cast(ubyte)TileType.normal;
+				tmn.tileID[cap]	   = TileData.image.value;
+			}
+			else 
+			{
+				tm.positions[free] = iloc;
+				tm.type[free]	   = cast(ubyte)TileType.normal;
+				tm.tileID[free]	   = TileData.image.value;
+			}
+			counter++;
+		
+		}
+
+		if(m.wasReleased(MouseButton.left))
+		{
+			if(counter > 0)
+				context.state.setRestorePoint();
+			
+			counter = 0;
+		}
+	}
+
+	void render(RenderContext* context) { }
+}
+
+class TileEraser : ITool
+{
+	string name() { return "Eraser"; }
+
+	bool usable(ToolContext* context) 
+	{
+		return SharedData.mode == Mode.tile;
+	}
+
+
+	auto getMap()
+	{
+		auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+		return Editor.state.proxy!TileMap(*obj);
+	}
+
+	int counter = 0;
+	void use(ToolContext* context)	
+	{
+		if(!Editor.state.exists(Guid.init, TileMapID)) return;
+
+		auto m = context.mouse;
+		if(m.isDown(MouseButton.left))
+		{
+			auto loc  = context.camera.screenToWorld(m.location);
+			int2 iloc = int2(loc);
+
+			if(loc.x < -0.5) iloc.x--;
+			if(loc.y < -0.5) iloc.y--;
+
+			auto tm   = getMap();
+			auto type = tm.type.get();
+			auto pos  = tm.positions.get();
+
+			int taken = -1;
+			foreach(i; 0 .. tm.capacity)
+			{
+				if(pos[i] == iloc && type[i] != 0) 
+				{
+					taken = i;
+					break;
+				}
+			}
+
+			if(taken == -1) return;
+			
+			tm.positions[taken] = int2.zero;
+			tm.type[taken]		= 0;
+			tm.tileID[taken]	= 0;
+			counter++;
+
+		}
+
+		if(m.wasReleased(MouseButton.left))
+		{
+			if(counter > 0)
+				context.state.setRestorePoint();
+
+			counter = 0;
+		}
+	}
+
+
+	void render(RenderContext* context) { }
+}		

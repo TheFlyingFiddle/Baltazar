@@ -20,30 +20,30 @@ struct WindowManager
 	static Window create(WindowConfig config)
 	{	
 		if(config.fullScreen) 
-			return create(config.size, config.title, Monitor.primary, config.blocking, config.decorated, config.numSamples);
+			return create(config.size, config.title, Monitor.primary, config.blocking, config.decorated, config.resizable, config.numSamples);
 		else
-			return create(config.size, config.title, config.blocking, config.decorated, config.numSamples);
+			return create(config.size, config.title, config.blocking, config.decorated, config.resizable, config.numSamples);
 	}
 
-	static Window create(float2 size, const(char)[] title, bool blocking, bool decorated, int samples)
+	static Window create(float2 size, const(char)[] title, bool blocking, bool decorated, bool resizable, int samples)
 	{
-		return create(size, title, Monitor(), blocking, decorated, samples);
+		return create(size, title, Monitor(), blocking, decorated, resizable, samples);
 	}
 
-	static Window create(float2 size, const(char)[] title, Monitor monitor, bool blocking, bool decorated, int samples)
+	static Window create(float2 size, const(char)[] title, Monitor monitor, bool blocking, bool decorated, bool resizable, int samples)
 	{
 		assert(!inUse, "Only a single window can exist at the same time!");
 		inUse = true;
 
 		glfwWindowHint(GLFW_SAMPLES, samples);
 		glfwWindowHint(GLFW_DECORATED, decorated);
+		glfwWindowHint(GLFW_RESIZABLE, resizable);
 
 		auto glfwWindow = glfwCreateWindow(cast(int)size.x, cast(int)size.y, title.toCString(), monitor._monitor, null);
 
 		import allocation; //Need to allocate the WindowCallbacks
 		glfwSetWindowUserPointer(glfwWindow, Mallocator.it.allocate!WindowState());
 	
-
 		assert(glfwWindow, "Failed to create window");
 
 		glfwMakeContextCurrent(glfwWindow);
@@ -74,7 +74,7 @@ struct WindowManager
 			float2 msize = Monitor.primary.mode.size;
 			glfwSetWindowPos(glfwWindow, 
 							 cast(int)(msize.x / 2 - size.x / 2),
-							 cast(int)(msize.x / 2 - size.x / 2));
+							 cast(int)(msize.y / 2 - size.y / 2));
 		}
 
 		return 	Window(glfwWindow, blocking);
@@ -248,6 +248,8 @@ struct WindowConfig
 	bool fullScreen;
 	bool blocking;
 	bool decorated;
+
+	@Optional(true) bool resizable;
 
 	@Optional("") string title;
 	@Optional(0)  int numSamples;

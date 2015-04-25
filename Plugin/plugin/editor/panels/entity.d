@@ -53,7 +53,7 @@ struct EntityPanel
 			}
 			else 
 			{
-				Entity.create(state, "Entity", EntitySet);
+				entity = Entity.create(state, "Entity", EntitySet);
 			}
 
 			state.setRestorePoint();
@@ -64,7 +64,6 @@ struct EntityPanel
 		}
 
 		auto archNames = archetypes.map!(x => state.proxy!Entity(x).name);
-		pragma(msg, typeof(archNames).sizeof);
 		(*gui).selectionfield(deleteItemBox, selectedArchetype, archNames);
 
 		if(gui.keyboard.wasPressed(Key.delete_))

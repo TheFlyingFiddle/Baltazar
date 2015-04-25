@@ -15,10 +15,10 @@ struct MPSCQueue(Serializer)
 	
 	this(A)(ref A allocator, size_t size)
 	{
-		queue			 = SPSCQueue!(Serializer)(allocator, size);
-		auto mt			 = GlobalAllocator.allocate!Mutex;
-		cond			 = GlobalAllocator.allocate!Condition(mt);
-		shouldStop		 = false;
+		queue		= SPSCQueue!(Serializer)(allocator, size);
+		auto mt		= GlobalAllocator.allocate!Mutex;
+		cond		= GlobalAllocator.allocate!Condition(mt);
+		shouldStop	= false;
 	}
 
 	~this()
@@ -33,7 +33,8 @@ struct MPSCQueue(Serializer)
 	{
 		synchronized(cond.mutex)
 		{
-			while(!queue.trySend(value)) {
+			while(!queue.trySend(value)) 
+			{
 				if(shouldStop) return;
 
 				cond.wait();
@@ -65,7 +66,7 @@ struct MPSCQueue(Serializer)
 	@disable this(this);
 }
 
-//Multi recive - single send. 
+//Multi recive - single send.
 struct SPMCQueue(Serializer)
 {
 	private SPSCQueue!(Serializer) queue;
@@ -77,11 +78,11 @@ struct SPMCQueue(Serializer)
 	{
 		import allocation;
 
-		queue			 = SPSCQueue!(Serializer)(allocator, size);
-		auto mt			 = GlobalAllocator.allocate!Mutex;
-		cond			 = GlobalAllocator.allocate!Condition(mt);
-		items			 = 0;
-		shouldStop		 = false;
+		queue		= SPSCQueue!(Serializer)(allocator, size);
+		auto mt		= GlobalAllocator.allocate!Mutex;
+		cond		= GlobalAllocator.allocate!Condition(mt);
+		items		= 0;
+		shouldStop	= false;
 	}	
 
 	~this()

@@ -9,7 +9,6 @@ import concurency.task;
 import content.sdl;
 import content.reloading;
 import mainscreen;
-import gameplayscreen;
 import framework;
 import window.window;
 import window.keyboard;
@@ -21,24 +20,26 @@ import core.sys.windows.windows;
 import core.runtime;
 import plugins;
 
-int main()
+struct Baltazar
 {
+	string compileDirectory;
+	string runtimeDirectory;
+}
+
+int main(string[] args)
+{
+	string project = "..\\TestGame\\TestGame.baltz";
+	if(args.length > 1) project = args[1];
+
 	import core.memory;
 	initializeScratchSpace(1024 * 1024);
-
-	//import std.process;
-	//char[][] commands;
-	//commands ~= cast(char[])"..\\Content_Pipeline\\Debug\\Content_pipeline.exe";
-	//commands ~= cast(char[])"..\\resources";
-	//commands ~= cast(char[])"..\\compiled_resources";
-	//spawnProcess(commands);
 
 	init_dlls();
 	scope(exit) shutdown_dlls();
 	try
 	{
-		auto config = fromSDLFile!DesktopAppConfig(Mallocator.it, "config.sdl");
-		run(config);
+		auto config  = fromSDLFile!DesktopAppConfig(Mallocator.it, "config.sdl");
+		run(config, project);
 	}
 	catch(Throwable t)
 	{
@@ -55,15 +56,29 @@ int main()
 	return 0;
 }
 
-void run(DesktopAppConfig config) 
+void run(DesktopAppConfig config, string projectPath) 
 {
-	RegionAllocator region = RegionAllocator(Mallocator.it.allocateRaw(1024 * 1024 * 4, 64));
+	RegionAllocator region = RegionAllocator(Mallocator.it.allocateRaw(1024 * 1024 * 50, 64));
 	auto stack = ScopeStack(region);
 	auto app = createDesktopApp(stack, config);
 
+	import std.path;
+	auto balt = fromSDLFile!Baltazar(Mallocator.it, projectPath);
+	auto root = projectPath.dirName;
+	import std.process;
+	char[][] commands;
+	commands ~= cast(char[])"..\\Content_Pipeline\\Debug\\Content_pipeline.exe";
+	commands ~= cast(char[])root.buildPath(balt.compileDirectory);
+	commands ~= cast(char[])root.buildPath(balt.runtimeDirectory);
+	spawnProcess(commands);
+
+	auto gameAssetsLoader = stack.allocate!AsyncContentLoader(stack, ContentConfig(512, buildPath(root, balt.runtimeDirectory).buildPath("desktop")));
+	app.addService(gameAssetsLoader, "game");
+	app.addComponent(stack.allocate!ReloadingComponent(ReloadingConfig(21345, "game")));
+						 
+
 	import screen.loading;
-	auto gameplay	   = stack.allocate!(GameplayScreen)();
-	auto endScreen     = stack.allocate!(MainScreen)(gameplay);
+	auto endScreen     = stack.allocate!(MainScreen)(null);
 	
 	//The preloading!
 	auto loadingScreen = stack.allocate!(LoadingScreen)(LoadingConfig(true, [], "Fonts"), endScreen);
@@ -77,9 +92,9 @@ void run(DesktopAppConfig config)
 	try
 	{
 		import std.datetime;
-		app.run(TimeStep.fixed, 33_333.usecs);
+		app.run(TimeStep.fixed, 16_666.usecs);
 	}
-	catch(Throwable t) 
+	catch(Throwable t)
 	{
 		logErr("Crash!\n", t);
 		while(t.next) 
@@ -87,8 +102,8 @@ void run(DesktopAppConfig config)
 			t = t.next;
 			logErr(t);
 		}
-
 		import std.stdio;
 		readln;
 	}
+
 }

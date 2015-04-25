@@ -1,0 +1,34 @@
+content =
+{
+	maxResources = 5
+	resourceFolder = |..\compiled_resources\desktop|
+}
+
+render =
+{
+	maxBatchSize = 1024
+	batchCount   = 3
+	clearColor   = 0xFF302D2D
+}
+
+window = 
+{
+	size = 
+	{
+		x=555 
+		y=330
+	}
+
+	fullScreen = false
+	blocking   = false
+	decorated  = true
+	resizable  = false
+	title      = |Editor Launcher|
+}
+
+concurrency = 
+{
+	numThreads   = 1
+	stackSize    = 1024_00 //100kb
+	inboxSize    = 1024    //1kb -- Should not make excessive use of this anyways!   
+}

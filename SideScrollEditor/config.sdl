@@ -5,12 +5,12 @@ name = MapEditor
 contentConfig =
 {
 	maxResources = 512
-	resourceFolder = |..\compiled_resources\hack_and_slash\desktop|
+	resourceFolder = |..\compiled_resources\desktop|
 }
 
 renderConfig =
 {
-	maxBatchSize = 0xffff
+	maxBatchSize = 0xfffff
 	batchCount   = 15
 	clearColor   = 0xFF302D2D
 }
@@ -19,8 +19,8 @@ windowConfig =
 {
 	size = 
 	{
-		x=1067 
-		y=600
+		x=1280 
+		y=720
 	}
 
 	fullScreen = false
