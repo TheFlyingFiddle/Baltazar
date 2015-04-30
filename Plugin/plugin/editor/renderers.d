@@ -69,7 +69,10 @@ void renderGrid(RenderContext* context)
 
 	//context.renderer.drawQuad(cam.viewport, 0,frame,Color(0xFF707070));
 
-	float xOff  = (-cam.position.x * cam.scale)  % cam.scale;
+	float2 size = float2(cam.viewport.z - cam.viewport.x,
+						 cam.viewport.w - cam.viewport.y);
+
+	float xOff  = (-cam.position.x * cam.scale + size.x / 2)  % cam.scale;
 	float width = cam.viewport.z - cam.viewport.x;
 	foreach(i; 0 .. cast(int)(width / cam.scale) + 2)
 	{
@@ -79,7 +82,7 @@ void renderGrid(RenderContext* context)
 		context.renderer.drawLine(s0, e0, 1, frame, Color(0xAAAAAAAA));
 	}
 
-	float yOff  = (-cam.position.y * cam.scale)  % cam.scale;
+	float yOff  = (-cam.position.y * cam.scale + size.y / 2)  % cam.scale ;
 	float height = cam.viewport.w - cam.viewport.y;
 	foreach(i; 0 .. cast(int)(height / cam.scale) + 2)
 	{

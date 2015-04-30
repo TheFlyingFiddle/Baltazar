@@ -387,6 +387,7 @@
    </Folder>
    <Folder name="editor">
     <Folder name="panels">
+     <File path="plugin\editor\panels\asset.d" />
      <File path="plugin\editor\panels\common.d" />
      <File path="plugin\editor\panels\components.d" />
      <File path="plugin\editor\panels\entity.d" />
