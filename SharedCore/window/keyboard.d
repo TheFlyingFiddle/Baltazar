@@ -116,7 +116,7 @@ struct Keyboard
 		if(isDown(Key.leftSuper) || isDown(Key.rightSuper))
 			modifier |= KeyModifiers.super_;
 
-		return (modifiers & modifier) == modifiers;
+		return modifier == modifiers;
 	}
 
 	bool isUp(Key key)

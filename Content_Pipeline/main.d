@@ -216,7 +216,6 @@ void compileFolder(string inFolder, string outFolder, Platform platform)
 			writeFile.rawWrite(item.data);
 		}
 
-		import log;
 		logInfo("Item has changed: ", nameHash);
 		reloadChanged(compiled.items, nameHash);
 		fileCache.dependencies ~= Dependencies(name ~ entry.name.extension, compiled.dependencies);
