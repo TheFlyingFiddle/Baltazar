@@ -61,6 +61,18 @@ struct TextureAtlas
 		return this[s];
 	}
 
+	
+	size_t idToIndex(HashID id)
+	{
+		foreach(i; 0 .. rects.length)
+		{
+			if(rects[i].hash == id) 
+				return i;
+		}
+
+		return -1;
+	}
+
 	HashID indexToID(size_t index)
 	{
 		return rects[index].hash;

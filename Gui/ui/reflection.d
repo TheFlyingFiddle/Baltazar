@@ -79,6 +79,10 @@ bool typefield(T, C)(ref Gui gui, Rect rect, ref T t, C* context, HashID styleID
 	{
 		return context.handle(gui, rect, t, styleID);
 	}
+	else static if(hasMember!(T, "showGui"))
+	{
+		return t.showGui(gui, rect, context, styleID);
+	}
 	else static if(is(T == enum))
 	{
 		return gui.enumField!T(rect, t); 

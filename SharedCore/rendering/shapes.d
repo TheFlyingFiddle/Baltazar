@@ -131,7 +131,6 @@ void fixQuad(ref float4 quad, ref float4 coords, ref float4 bounds)
 void drawQuad(R)(ref R renderer, float4 quad, Frame frame, Color color, float4 bounds)
 {
 	import rendering.renderer;
-	__gshared static ushort[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
 
 	if(quad.x > bounds.z ||
 	   quad.y > bounds.w ||
@@ -140,8 +139,14 @@ void drawQuad(R)(ref R renderer, float4 quad, Frame frame, Color color, float4 b
 		return;
 
 	fixQuad(quad, frame.coords, bounds);
+	drawQuad(renderer, quad, frame, color);
+}
 
+void drawQuad(R, F)(ref R renderer, float4 quad, auto ref F frame, Color color)
+{
+	import rendering.renderer;
 	float4 coords = frame.coords;
+	__gshared static ushort[6] indecies = [ 0, 1, 2, 0, 2, 3 ]; 
 
 	Vertex[4] vertices;
 	vertices[0] = Vertex(quad.xy, coords.xy, color);
@@ -150,11 +155,6 @@ void drawQuad(R)(ref R renderer, float4 quad, Frame frame, Color color, float4 b
 	vertices[3] = Vertex(quad.xw, coords.xw, color);
 
 	renderer.addItems(vertices[], indecies[], frame.texture);
-}
-
-void drawQuad(R)(ref R renderer, float4 quad, Frame frame, Color color)
-{
-	drawQuad(renderer, quad, frame, color, quad);
 }	
 
 void drawQuad(R)(ref R renderer, float4 quad, float rotation, Frame frame, Color color)

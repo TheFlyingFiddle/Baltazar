@@ -469,12 +469,12 @@ class Assets : IAssets
 		return typed.find!(x => x.type == type)[0].assets;
 	}
 
-	override void* locateAsset(TypeHash type, string asset) nothrow
+	override Handle* locateAsset(TypeHash type, string asset) nothrow
 	{
 		scope(failure) return null;
 		auto a = loader.load(type, asset);
 		if(a.typeHash == type)
-			return a.item;
+			return a;
 		else 
 			return null;
 	}

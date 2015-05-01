@@ -16,15 +16,16 @@ import window.keyboard;
 import external_libraries;
 import log;
 
-import core.sys.windows.windows;
-import core.runtime;
 import plugins;
+import std.process;
 
 struct Baltazar
 {
 	string compileDirectory;
 	string runtimeDirectory;
 }
+
+Pid contentPid;
 
 int main(string[] args)
 {
@@ -52,7 +53,7 @@ int main(string[] args)
 		import std.stdio;
 		readln;
 	}
-
+	
 	return 0;
 }
 
@@ -70,7 +71,7 @@ void run(DesktopAppConfig config, string projectPath)
 	commands ~= cast(char[])"..\\Content_Pipeline\\Debug\\Content_pipeline.exe";
 	commands ~= cast(char[])root.buildPath(balt.compileDirectory);
 	commands ~= cast(char[])root.buildPath(balt.runtimeDirectory);
-	spawnProcess(commands);
+	contentPid = spawnProcess(commands);
 
 	auto gameAssetsLoader = stack.allocate!AsyncContentLoader(stack, ContentConfig(512, buildPath(root, balt.runtimeDirectory).buildPath("desktop")));
 	app.addService(gameAssetsLoader, "game");
@@ -93,6 +94,9 @@ void run(DesktopAppConfig config, string projectPath)
 	{
 		import std.datetime;
 		app.run(TimeStep.fixed, 16_666.usecs);
+
+		kill(contentPid);
+		wait(contentPid);
 	}
 	catch(Throwable t)
 	{

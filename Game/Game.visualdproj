@@ -3,7 +3,7 @@
  <Config name="Debug" platform="Win32">
   <obj>0</obj>
   <link>0</link>
-  <lib>2</lib>
+  <lib>0</lib>
   <subsystem>0</subsystem>
   <multiobj>0</multiobj>
   <singleFileCompilation>0</singleFileCompilation>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\SharedGame; </imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore;   ..\Gui; ..\SharedGame; </imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles />
-  <libpaths />
+  <libfiles> ExternalLibs.lib SharedCore.lib Gui.lib SharedGame.lib </libfiles>
+  <libpaths>..\ExternalLibs\Debug ..\SharedCore\Debug ..\Gui\Debug ..\SharedGame\Debug</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).dll</exefile>
@@ -383,6 +383,9 @@
  <Folder name="Game">
   <File path="dll.def" />
   <File path="dllmain.d" />
-  <File path="panel.d" />
+  <File path="entity.d" />
+  <File path="processes.d" />
+  <File path="soa.d" />
+  <File path="types.d" />
  </Folder>
 </DProject>

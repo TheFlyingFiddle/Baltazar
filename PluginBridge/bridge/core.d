@@ -47,12 +47,21 @@ template isData(T)
 @DontReflect
 interface IAssets
 {
-	void* locateAsset(TypeHash type, string asset) nothrow;
+	import content.content;
+	Handle* locateAsset(TypeHash type, string asset) nothrow;
 	List!Asset loadedAssets(string type) nothrow;
 	
 	final T* locate(T)(string item) nothrow
 	{
-		return cast(T*)locateAsset(typeHash!T, item);
+		auto handle = locateAsset(typeHash!T, item);
+		if(handle !is null) return cast(T*)(handle.item);
+		
+		return null;
+	}
+
+	final ContentHandle!T getHandle(T)(string item) nothrow
+	{
+		return ContentHandle!T(locateAsset(typeHash!T, item));
 	}
 }
 

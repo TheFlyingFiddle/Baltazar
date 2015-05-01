@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\SharedCore; ..\ExternalLibs  ..\Framework</imppath>
+  <imppath>..\SharedCore; ..\ExternalLibs  ..\Framework ..\Gui</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>SharedCore.lib ExternalLib.lib Framework.lib</libfiles>
-  <libpaths>..\Framework\Debug ..\ExternalLibs\Debug ..\SharedCore\Debug</libpaths>
+  <libfiles>SharedCore.lib ExternalLib.lib Framework.lib Gui.lib</libfiles>
+  <libpaths>..\Framework\Debug ..\ExternalLibs\Debug ..\SharedCore\Debug ..\Gui\Debug .</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).lib</exefile>
@@ -383,7 +383,7 @@
  <Folder name="SharedGame">
   <Folder name="common">
    <File path="common\attributes.d" />
-   <File path="common\components.d" />
+   <File path="common\binary.d" />
    <File path="common\data.d" />
    <File path="common\identifiers.d" />
   </Folder>

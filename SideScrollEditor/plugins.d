@@ -6,18 +6,15 @@ import std.file;
 struct PluginConfig
 {
 	string[] pluginDlls;
-	string[] gameDlls;
 }
 
 import framework;
 class PluginComponent : IApplicationComponent
 {
 	Plugins plugins;
-	Plugins games;
 	this(A)(ref A a, PluginConfig config)
 	{
 		createPlugins(a, plugins, config.pluginDlls);
-		createPlugins(a, games,   config.gameDlls);
 	}
 
 	void createPlugins(A)(ref A all, ref Plugins plugins, string[] paths)
@@ -37,7 +34,6 @@ class PluginComponent : IApplicationComponent
 	override void initialize()
 	{
 		app.addService(&plugins);
-		app.addService(&games, "Games");
 	}
 
 	float f = 0;
@@ -48,7 +44,6 @@ class PluginComponent : IApplicationComponent
 		{
 			f -= 2.0f;
 			checkAndReloadPlugins(plugins);
-			checkAndReloadPlugins(games);
 		}
 	}
 
@@ -57,7 +52,7 @@ class PluginComponent : IApplicationComponent
 		foreach_reverse(i; 0 .. plugins.fileChangedInfo.length)
 		{
 			//TODO change...
-			//timeLastModified allocates data.
+			//timeLastModified allocates data. This is just lol really :P
 			if(plugins.fileChangedInfo[i] != timeLastModified(plugins.paths[i]))
 			{
 				if(exists(plugins.paths[i]))

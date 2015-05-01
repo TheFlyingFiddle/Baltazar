@@ -313,7 +313,8 @@ struct GrowingList(T)
 
 	void opOpAssign(string s : "~", Range)(Range range)
 	{
-		base_.opOpAssign!s(range);
+		foreach(item; range)
+			this ~= item;
 	}
 
 	void opIndexAssign(ref T value, size_t index)
@@ -411,7 +412,8 @@ struct GrowingList(T)
 	
 	void popFront() { base_.popFront(); }
 	void popBack() { base_.popBack(); }
-	void put(T data) { base_.put(data); }
+	void put(T data) { this ~= data; }
+	void put(T[] data) { this ~= data; }
 
 }
 

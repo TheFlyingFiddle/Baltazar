@@ -383,6 +383,8 @@
  <Folder name="Plugin">
   <Folder name="plugin">
    <Folder name="core">
+    <File path="plugin\core\components.d" />
+    <File path="plugin\core\constants.d" />
     <File path="plugin\core\data.d" />
    </Folder>
    <Folder name="editor">
@@ -397,15 +399,11 @@
      <File path="plugin\editor\tools\tool.d" />
     </Folder>
     <File path="plugin\editor\menus.d" />
-    <File path="plugin\editor\panels.d" />
     <File path="plugin\editor\renderers.d" />
     <File path="plugin\editor\tools.d" />
    </Folder>
-   <Folder name="game">
-    <File path="plugin\game\panel.d" />
-   </Folder>
+   <Folder name="game" />
    <Folder name="tile">
-    <File path="plugin\tile\data.d" />
     <File path="plugin\tile\panel.d" />
    </Folder>
    <File path="plugin\attributes.d" />

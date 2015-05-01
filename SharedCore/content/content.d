@@ -30,6 +30,11 @@ struct ContentHandle(T)
 		return *item;
 	}
 
+	@property HashID resourceID()
+	{
+		return handle.hashID;
+	}
+
 	alias asset this;
 }
 
