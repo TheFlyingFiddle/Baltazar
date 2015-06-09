@@ -1,6 +1,7 @@
 module bridge_os;
 import bridge.core;
 import dialogs;
+import std.c.string, std.path;
 
 final class FileFinder : IFileFinder
 {
@@ -32,7 +33,6 @@ final class FileFinder : IFileFinder
 	{
 		if(saveFileDialog("Map\0*.sidal\0", buffer[]))
 		{
-			import std.c.string, std.path;
 			auto len = strlen(buffer.ptr);
 			if(buffer[0 .. len].extension != ".sidal")
 				buffer[len .. len + ".sidal".length + 1] = ".sidal\0"; 
@@ -59,5 +59,28 @@ final class FileFinder : IFileFinder
 			return path;
 		else 
 			return findSaveProjectPath();
+	}
+
+	string openPath(string ext)
+	{
+		if(openFileDialog(ext, buffer[]))
+		{
+
+			auto len = strlen(buffer.ptr);
+			return cast(string)buffer[0 .. len];
+		}
+
+		return null;
+	}
+
+	string savePath(string ext)
+	{
+		if(saveFileDialog(ext, buffer[]))
+		{
+			auto len = strlen(buffer.ptr);
+			return cast(string)buffer[0 .. len];
+		}
+
+		return null;
 	}
 }

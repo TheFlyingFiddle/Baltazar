@@ -301,7 +301,7 @@ struct Gui
 
 	void state(T)(HashID id, T state)
 	{
-		controlStates[id] = StateVariant(state);
+		controlStates[id] = StateVariant.create(state);
 	}
 
 	void fixRect(ref Rect rect)

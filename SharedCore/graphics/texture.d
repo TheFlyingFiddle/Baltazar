@@ -77,7 +77,8 @@ bool deleted(T)() if(isTexture!T)
 
 void obliterate(T)(T t) if(isTexture!T) 
 {
-	gl.deleteTextures(1, &t.glName);
+	uint glName = t.glName;
+	gl.deleteTextures(1, &glName);
 }
 
 static uint createTexture()
@@ -120,8 +121,11 @@ struct Texture2D
 {
 	enum target = TextureTarget.texture2D;
 
-	uint glName;
-	uint width, height;
+	import std.bitmanip;
+	mixin(bitfields!(
+		uint, "glName", 10,
+		uint, "width",  11,
+		uint, "height", 11));
 
 	this(uint glName, uint width, uint height) {
 		this.glName = glName;

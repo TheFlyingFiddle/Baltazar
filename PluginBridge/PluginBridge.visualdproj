@@ -12,8 +12,8 @@
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>0</symdebug>
-  <optimize>1</optimize>
+  <symdebug>1</symdebug>
+  <optimize>0</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -33,7 +33,7 @@
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
-  <release>1</release>
+  <release>0</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\SharedCore; ..\ExternalLibs ..\Gui ..\Framework ..\SharedGame</imppath>
+  <imppath>..\SharedCore; ..\ExternalLibs ..\Gui</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -75,7 +75,7 @@
   <moduleDepsFile />
   <run>0</run>
   <runargs />
-  <runCv2pdb>0</runCv2pdb>
+  <runCv2pdb>1</runCv2pdb>
   <pathCv2pdb>$(VisualDInstallDir)cv2pdb\cv2pdb.exe</pathCv2pdb>
   <cv2pdbPre2043>0</cv2pdbPre2043>
   <cv2pdbNoDemangle>0</cv2pdbNoDemangle>
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles>SharedCore.lib ExternalLib.slib Gui.lib Framework.lib SharedGame.lib</libfiles>
-  <libpaths>..\SharedCore\Debug ..\ExternalLibs\Debug ..\Gui\Debug ..\Framework\Debug ..\SharedGame\Debug</libpaths>
+  <libfiles>SharedCore.lib ExternalLibs.lib Gui.lib</libfiles>
+  <libpaths>..\SharedCore\Debug..\ExternalLibs\Debug ..\Gui\Debug</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).lib</exefile>
@@ -385,6 +385,7 @@
    <File path="bridge\attributes.d" />
    <File path="bridge\contexts.d" />
    <File path="bridge\core.d" />
+   <File path="bridge\data.d" />
    <File path="bridge\os.d" />
    <File path="bridge\package.d" />
    <File path="bridge\plugins.d" />

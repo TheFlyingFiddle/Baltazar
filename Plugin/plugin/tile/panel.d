@@ -10,16 +10,13 @@ import reflection;
 import std.typetuple;
 import std.algorithm;
 
-import common.components;
-import common.attributes;
-import common.identifiers;
+import pluginshared.components;
+import pluginshared.data;
 import bridge;
 
 import plugin.attributes;
 import plugin.editor.renderers;
-import plugin.core.data;
 import plugin.tile.data;
-
 
 enum defFieldSize = 20;
 enum defSpacing   = 3;

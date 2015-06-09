@@ -91,7 +91,10 @@ struct RTTI
 
 	VariantN!(N) initial(size_t N)() const
 	{
-		return VariantN!N(hash, defaultValue[0 .. size]);
+		VariantN!N v;
+		v.id = hash;
+		v.data[0 .. size] = defaultValue[0 .. size];
+		return v;
 	}
 
 	@property const(RTTI)* inner() const
@@ -162,10 +165,10 @@ mixin template Interval(T, string name, string ident = name)
 {
 	enum intervalName = name ~ "Interval";
 	mixin("TinyInterval " ~ intervalName ~ ";");
-	mixin("@property " ~ T.stringof ~ "[] " ~ ident ~ "()  {\n"
+	mixin("@property " ~ T.stringof ~ "[] " ~ ident ~ "() nothrow {\n"
 		  ~ "with(" ~ intervalName ~ ")\n" 
 		  ~ "return assembly. " ~ name ~ " [offset .. offset + count];\n }");
-	mixin("@property const(" ~ T.stringof ~ "[]) " ~ ident ~ "() const  {\n"
+	mixin("@property const(" ~ T.stringof ~ "[]) " ~ ident ~ "() const nothrow {\n"
 		  ~ "with(" ~ intervalName ~ ")\n" 
 		  ~ "return assembly. " ~ name ~ " [offset .. offset + count];\n }");
 
@@ -565,7 +568,7 @@ void createAt(Params...)(in MetaConstructor ctor, void[] buffer, ref auto Params
 
 alias MetaAttribute = VariantN!(32);
 
-bool hasAttribute(Attrib, T)(ref T item)
+bool hasAttribute(Attrib, T)(ref T item) nothrow
 {
 	foreach(attribute; item.attributes)
 	{
@@ -577,8 +580,10 @@ bool hasAttribute(Attrib, T)(ref T item)
 	return false;
 }
 
-Attrib getAttribute(Attrib, T)(ref T item)
+Attrib getAttribute(Attrib, T)(ref T item) nothrow
 {
+	scope(failure) return Attrib.init;
+
 	enum hash = typeHash!Attrib;
 	foreach(attribute; item.attributes)
 	{

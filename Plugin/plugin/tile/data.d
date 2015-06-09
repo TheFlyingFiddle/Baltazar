@@ -22,7 +22,7 @@ enum TileType : ubyte
 
 struct TileMap
 {
-	uint	capacity;
+	uint	length;
 	int2[]  positions;
 	ubyte[] type;
 	uint[]  tint;

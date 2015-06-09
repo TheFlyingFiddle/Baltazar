@@ -1,203 +1,203 @@
 
-dependencies=[
+dependencies = [
 	{
-		name=|Fonts.fontatl|
-		deps=[|consola.ttf|,|DejaVuSansMono.ttf|,|comic.ttf|,|impact.ttf|,|segoeui.ttf|,|segoeuil.ttf|,|seguisli.ttf|,|calibri.ttf|]
+		name = |Atlas.atl|
+		deps = [|banana.png|,|base_tower.png|,|baws.png|,|boulder.png|,|clock_base.png|,|circle.png|,|orange.png|,|teddy.png|,|pixel.psd|]
 	},
 	{
-		name=|squeek.wav|
-		deps=[]
+		name = |Fonts.fontatl|
+		deps = [|consola.ttf|,|DejaVuSansMono.ttf|,|comic.ttf|,|impact.ttf|,|segoeui.ttf|,|segoeuil.ttf|,|seguisli.ttf|,|calibri.ttf|]
 	},
 	{
-		name=|particlesystem0.psys|
-		deps=[]
+		name = |squeek.wav|
+		deps = []
 	},
 	{
-		name=|allready.wav|
-		deps=[]
+		name = |particlesystem0.psys|
+		deps = []
 	},
 	{
-		name=|halleluja.wav|
-		deps=[]
+		name = |allready.wav|
+		deps = []
 	},
 	{
-		name=|cough.wav|
-		deps=[]
+		name = |halleluja.wav|
+		deps = []
 	},
 	{
-		name=|Atlas.atl|
-		deps=[|banana.png|,|base_tower.png|,|baws.png|,|boulder.png|,|clock_base.png|,|circle.png|,|orange.png|,|teddy.png|,|pixel.psd|]
+		name = |cough.wav|
+		deps = []
 	}]
-itemChanged=[
+itemChanged = [
 	{
-		name=|seguisli.ttf|
-		lastChanged=635071642474572288
+		name = |seguisli.ttf|
+		lastChanged = 635071642474572288
 	},
 	{
-		name=|seguisbi.ttf|
-		lastChanged=635071642474259766
+		name = |seguisbi.ttf|
+		lastChanged = 635071642474259766
 	},
 	{
-		name=|seguisb.ttf|
-		lastChanged=635111015333207392
+		name = |seguisb.ttf|
+		lastChanged = 635111015333207392
 	},
 	{
-		name=|seguili.ttf|
-		lastChanged=635071642452383228
+		name = |seguili.ttf|
+		lastChanged = 635071642452383228
 	},
 	{
-		name=|calibri.ttf|
-		lastChanged=635127825032031962
+		name = |calibri.ttf|
+		lastChanged = 635127825032031962
 	},
 	{
-		name=|seguibli.ttf|
-		lastChanged=635071642452070702
+		name = |seguibli.ttf|
+		lastChanged = 635071642452070702
 	},
 	{
-		name=|seguibl.ttf|
-		lastChanged=635071642451601919
+		name = |seguibl.ttf|
+		lastChanged = 635071642451601919
 	},
 	{
-		name=|comic.ttf|
-		lastChanged=635127825012969469
+		name = |comic.ttf|
+		lastChanged = 635127825012969469
 	},
 	{
-		name=|consola.ttf|
-		lastChanged=635127825036250693
+		name = |consola.ttf|
+		lastChanged = 635127825036250693
 	},
 	{
-		name=|segoeuiz.ttf|
-		lastChanged=635071642451289401
+		name = |segoeuiz.ttf|
+		lastChanged = 635071642451289401
 	},
 	{
-		name=|DejaVuSansMono.ttf|
-		lastChanged=634344142400000000
+		name = |DejaVuSansMono.ttf|
+		lastChanged = 634344142400000000
 	},
 	{
-		name=|FINALNEW.TTF|
-		lastChanged=635375879363831441
+		name = |FINALNEW.TTF|
+		lastChanged = 635375879363831441
 	},
 	{
-		name=|segoeuisl.ttf|
-		lastChanged=635113525483787575
+		name = |segoeuisl.ttf|
+		lastChanged = 635113525483787575
 	},
 	{
-		name=|impact.ttf|
-		lastChanged=635127824988750708
+		name = |impact.ttf|
+		lastChanged = 635127824988750708
 	},
 	{
-		name=|segoeuil.ttf|
-		lastChanged=635111015326331757
+		name = |segoeuil.ttf|
+		lastChanged = 635111015326331757
 	},
 	{
-		name=|segoeuii.ttf|
-		lastChanged=635071642449570530
+		name = |segoeuii.ttf|
+		lastChanged = 635071642449570530
 	},
 	{
-		name=|segoeuib.ttf|
-		lastChanged=635111015326175496
+		name = |segoeuib.ttf|
+		lastChanged = 635111015326175496
 	},
 	{
-		name=|segoeui.ttf|
-		lastChanged=635111015306954983
+		name = |segoeui.ttf|
+		lastChanged = 635111015306954983
 	},
 	{
-		name=|Atlas.atl|
-		lastChanged=635654036646139794
+		name = |Atlas.atl|
+		lastChanged = 635654036646139794
 	},
 	{
-		name=|banana.png|
-		lastChanged=635655844363542312
+		name = |banana.png|
+		lastChanged = 635655844363542312
 	},
 	{
-		name=|base_tower.png|
-		lastChanged=635385076291739954
+		name = |base_tower.png|
+		lastChanged = 635385076291739954
 	},
 	{
-		name=|baws.png|
-		lastChanged=635385612392883761
+		name = |baws.png|
+		lastChanged = 635385612392883761
 	},
 	{
-		name=|boulder.png|
-		lastChanged=635655812217286035
+		name = |boulder.png|
+		lastChanged = 635655812217286035
 	},
 	{
-		name=|clock_base.png|
-		lastChanged=635371521180385798
+		name = |clock_base.png|
+		lastChanged = 635371521180385798
 	},
 	{
-		name=|circle.png|
-		lastChanged=635560976454848463
+		name = |circle.png|
+		lastChanged = 635560976454848463
 	},
 	{
-		name=|orange.png|
-		lastChanged=635371521181085840
+		name = |orange.png|
+		lastChanged = 635371521181085840
 	},
 	{
-		name=|teddy.png|
-		lastChanged=635385593091906009
+		name = |teddy.png|
+		lastChanged = 635385593091906009
 	},
 	{
-		name=|pixel.psd|
-		lastChanged=635422347598201816
+		name = |pixel.psd|
+		lastChanged = 635422347598201816
 	},
 	{
-		name=|Fonts.fontatl|
-		lastChanged=635450954269345119
+		name = |Fonts.fontatl|
+		lastChanged = 635450954269345119
 	},
 	{
-		name=|squeek.wav|
-		lastChanged=635371521178365681
+		name = |squeek.wav|
+		lastChanged = 635371521178365681
 	},
 	{
-		name=|orange.png|
-		lastChanged=635371521181085840
+		name = |orange.png|
+		lastChanged = 635371521181085840
 	},
 	{
-		name=|particlesystem0.psys|
-		lastChanged=635592161082013400
+		name = |particlesystem0.psys|
+		lastChanged = 635592161082013400
 	},
 	{
-		name=|allready.wav|
-		lastChanged=635371521178255681
+		name = |allready.wav|
+		lastChanged = 635371521178255681
 	},
 	{
-		name=|halleluja.wav|
-		lastChanged=635371521178345683
+		name = |halleluja.wav|
+		lastChanged = 635371521178345683
 	},
 	{
-		name=|cough.wav|
-		lastChanged=635371521178275683
+		name = |cough.wav|
+		lastChanged = 635371521178275683
 	},
 	{
-		name=|clock_base.png|
-		lastChanged=635371521180385798
+		name = |clock_base.png|
+		lastChanged = 635371521180385798
 	},
 	{
-		name=|circle.png|
-		lastChanged=635560976454848463
+		name = |circle.png|
+		lastChanged = 635560976454848463
 	},
 	{
-		name=|boulder.png|
-		lastChanged=635655812217286035
+		name = |boulder.png|
+		lastChanged = 635655812217286035
 	},
 	{
-		name=|baws.png|
-		lastChanged=635385612392883761
+		name = |baws.png|
+		lastChanged = 635385612392883761
 	},
 	{
-		name=|base_tower.png|
-		lastChanged=635385076291739954
+		name = |base_tower.png|
+		lastChanged = 635385076291739954
 	},
 	{
-		name=|banana.png|
-		lastChanged=635655844363542312
+		name = |banana.png|
+		lastChanged = 635655844363542312
 	},
 	{
-		name=|teddy.png|
-		lastChanged=635385593091906009
+		name = |teddy.png|
+		lastChanged = 635385593091906009
 	},
 	{
-		name=|pixel.psd|
-		lastChanged=635422347598201816
+		name = |pixel.psd|
+		lastChanged = 635422347598201816
 	}]

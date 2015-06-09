@@ -6,7 +6,7 @@ import util.hash, collections.table, graphics.frame,
 struct SourceRect
 {
 	HashID hash;
-	float4 source;
+	short4 source;
 }
 
 struct TextureAtlas

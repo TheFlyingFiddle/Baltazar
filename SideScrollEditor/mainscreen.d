@@ -19,6 +19,7 @@ import bridge.os;
 import bridge.contexts;
 import bridge.attributes;
 import bridge.plugins;
+import bridge.data;
 
 enum defFieldSize = 20;
 enum defSpacing   = 3;
@@ -141,8 +142,7 @@ final class MainScreen : Screen, IEditor, IOS
 	{
 		try
 		{
-			import reflection.serialization;
-			auto context = ReflectionContext(plugin.assemblies.array);
+			DataStoreContext context;
 			toSDLFile(editorState.store, &context, path);
 		}
 		catch(Exception e)
@@ -158,10 +158,20 @@ final class MainScreen : Screen, IEditor, IOS
 		try
 		{
 			import reflection.serialization;
-			auto context = ReflectionContext(plugin.assemblies.array);
+			DataStoreContext context;
 			auto data    = fromSDLFile!DataStore(Mallocator.it, path, context);
 			editorState.deallocate();
 			editorState.initialize(Mallocator.cit, data);
+
+			foreach(k, v; data.data)
+			{
+				foreach(key, val; v)
+				{
+					import log;
+					logInfo("Loaded: ", key, " ", val);
+				}
+			}
+
 
 		}
 		catch(Exception e)
@@ -264,6 +274,9 @@ final class MainScreen : Screen, IEditor, IOS
 	
 	override void render(Time time)
 	{
+		import util.bench;
+		//auto wqeq = StackProfile("Render");
+
 		import window.window;
 		auto w = app.locate!Window;
 
@@ -293,9 +306,9 @@ final class MainScreen : Screen, IEditor, IOS
 		}
 
 		if(movingRight)
-			right = clamp(right - mouse.moveDelta.x, 200, 400);
+			right = math.clamp(right - mouse.moveDelta.x, 200, 400);
 		if(movingLeft)
-			left  = clamp(left + mouse.moveDelta.x, 200, 400);
+			left  = math.clamp(left + mouse.moveDelta.x, 200, 400);
 
 		if(inLeft || inRight)
 		{
@@ -306,17 +319,16 @@ final class MainScreen : Screen, IEditor, IOS
 			glfwSetCursor(w._windowHandle, null);
 		}
 
-
 		auto wr =  Rect(left, defSpacing, w.size.x - left - right, w.size.y - 23);
 		auto leftSide  = Rect(defSpacing, wr.y, left - defSpacing * 2, wr.h);
 		leftPanels.show(gui, leftSide);
 
 		auto rightSide = Rect(wr.right + defSpacing, wr.y, right - defSpacing * 2, wr.h);
 		rightPanels.show(gui, rightSide);
-
+		
 		auto center = wr;
 		centerPanels.show(gui, center);
-
+	
 		gui.menu(m);
 		gui.end();
 	}

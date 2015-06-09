@@ -59,7 +59,8 @@ struct ServiceLocator
 	void add(T)(T* service, string name = "") if(is(T == struct))
 	{
 		auto hash = hashOf!T(name);
-		assert(!services.canFind!(x => x.hash == hash), text("Already present in locator: Type: ", T.stringof, " Name: ", name));
+		auto test = services.canFind!(x => x.hash == hash);
+		assert(!test, text("Already present in locator: Type: ", T.stringof, " Name: ", name));
 		services ~= Service(hash, cast(void*)service);
 	}
 

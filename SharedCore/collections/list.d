@@ -287,7 +287,7 @@ struct GrowingList(T)
 		size_t val = base_.capacity <  defaultStartCapacity ? defaultStartCapacity : base_.capacity;
 		auto new_ = List!T(allocator, cast(size_t)(val * 1.5));
 		new_.length = base_.capacity;
-		(cast(T[])new_.array)[] = base_.array;
+		(cast(T[])new_.array)[] = cast(T[])base_.array;
 
 		base_.deallocate(allocator);
 		base_ = new_;

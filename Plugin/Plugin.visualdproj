@@ -6,13 +6,13 @@
   <lib>2</lib>
   <subsystem>0</subsystem>
   <multiobj>0</multiobj>
-  <singleFileCompilation>1</singleFileCompilation>
+  <singleFileCompilation>0</singleFileCompilation>
   <oneobj>0</oneobj>
   <trace>0</trace>
   <quiet>0</quiet>
   <verbose>0</verbose>
   <vtls>0</vtls>
-  <symdebug>0</symdebug>
+  <symdebug>1</symdebug>
   <optimize>0</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
@@ -33,7 +33,7 @@
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
   <useInline>0</useInline>
-  <release>1</release>
+  <release>0</release>
   <preservePaths>0</preservePaths>
   <warnings>0</warnings>
   <infowarnings>0</infowarnings>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\SharedGame; </imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore;  ..\PluginBridge ..\Gui; ..\PluginShared</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -75,7 +75,7 @@
   <moduleDepsFile />
   <run>0</run>
   <runargs />
-  <runCv2pdb>0</runCv2pdb>
+  <runCv2pdb>1</runCv2pdb>
   <pathCv2pdb>$(VisualDInstallDir)cv2pdb\cv2pdb.exe</pathCv2pdb>
   <cv2pdbPre2043>0</cv2pdbPre2043>
   <cv2pdbNoDemangle>0</cv2pdbNoDemangle>
@@ -83,8 +83,8 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles> ExternalLibs.lib SharedCore.lib PluginBridge.lib Gui.lib SharedGame.lib </libfiles>
-  <libpaths>..\ExternalLibs\Debug ..\SharedCore\Debug ..\PluginBridge\Debug ..\Gui\Debug ..\SharedGame\Debug</libpaths>
+  <libfiles> ExternalLibs.lib SharedCore.lib PluginBridge.lib Gui.lib PluginShared.lib</libfiles>
+  <libpaths>..\ExternalLibs\Debug ..\SharedCore\Debug ..\PluginBridge\Debug ..\Gui\Debug ..\SharedGame\Debug ..\PluginShared\Debug</libpaths>
   <deffile />
   <resfile />
   <exefile>$(OutDir)\$(ProjectName).dll</exefile>
@@ -382,28 +382,19 @@
  </Config>
  <Folder name="Plugin">
   <Folder name="plugin">
-   <Folder name="core">
-    <File path="plugin\core\components.d" />
-    <File path="plugin\core\constants.d" />
-    <File path="plugin\core\data.d" />
-   </Folder>
    <Folder name="editor">
     <Folder name="panels">
-     <File path="plugin\editor\panels\asset.d" />
      <File path="plugin\editor\panels\common.d" />
      <File path="plugin\editor\panels\components.d" />
      <File path="plugin\editor\panels\entity.d" />
      <File path="plugin\editor\panels\world.d" />
     </Folder>
-    <Folder name="tools">
-     <File path="plugin\editor\tools\tool.d" />
-    </Folder>
     <File path="plugin\editor\menus.d" />
     <File path="plugin\editor\renderers.d" />
     <File path="plugin\editor\tools.d" />
    </Folder>
-   <Folder name="game" />
    <Folder name="tile">
+    <File path="plugin\tile\data.d" />
     <File path="plugin\tile\panel.d" />
    </Folder>
    <File path="plugin\attributes.d" />
@@ -411,5 +402,6 @@
   </Folder>
   <File path="dll.def" />
   <File path="dllmain.d" />
+  <File path="entry.d" />
  </Folder>
 </DProject>

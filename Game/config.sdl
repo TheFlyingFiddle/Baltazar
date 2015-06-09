@@ -1,0 +1,60 @@
+numServices = 100
+numComponents = 100
+name = Game
+
+contentConfig =
+{
+	maxResources = 512
+	resourceFolder = |..\TestGame\runtime_resources\desktop|
+}
+
+renderConfig =
+{
+	maxBatchSize = 0xffff
+	batchCount   = 3
+	clearColor   = 0xFF302D2D
+}
+
+windowConfig = 
+{
+	size = 
+	{
+		x=1280 
+		y=720
+	}
+
+	fullScreen = false
+	blocking   = false
+	decorated  = true
+	title      = |Simple Game|
+}
+
+serverConfig = 
+{
+	maxConnections = 20
+	broadcastPort  = 7331
+	maxMessageSize = 0xffff
+	broadcastInterval = 1.0
+	connectionTimeout = 15
+}
+
+concurencyConfig = 
+{
+	numThreads   = 1
+	stackSize    = 1024_00 //100kb
+	inboxSize    = 1024    //1kb -- Should not make excessive use of this anyways!   
+}
+
+soundConfig =
+{
+	freq = 22050
+	numChannels = 32
+	bufferSize = 4096
+	
+	musicVolume  = 1.0
+	soundVolume  = 1.0 
+	masterVolume = 0.5
+	muted        = false
+
+	musicFoulderPath = ||
+}

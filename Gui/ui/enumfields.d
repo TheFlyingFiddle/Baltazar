@@ -11,10 +11,12 @@ struct NameGen
 	bool function(int i, ref string s, void* context) func;
 	void[32] context;
 
-	this(T)(T t, bool function(int i, ref string s, void* context) func) if(T.sizeof <= 32)
+	static NameGen create(T)(T t, bool function(int i, ref string s, void* context) func) if(T.sizeof <= 32)
 	{
-		*cast(T*)(context.ptr) = t;
-		this.func = func;
+		NameGen ng;
+		*cast(T*)(ng.context.ptr) = t;
+		ng.func = func;
+		return ng;
 	}
 
 	this(bool function(int i, ref string s, void* context) func)
@@ -227,7 +229,7 @@ NameGen itemNameGen(Items)(Items items)
 		return true;
 	}
 
-	return NameGen(items, &impl);
+	return NameGen.create(items, &impl);
 }
 
 

@@ -7,8 +7,6 @@ struct ComponentsPanelImpl
 {
 	import util.traits;
 	int  selectedComponent;
-
-
 	IEditorState state;
 	Guid oldItem;
 
@@ -78,20 +76,32 @@ struct ComponentsPanelImpl
 		compTypeBox.x  = addBox.right + defSpacing;
 		compTypeBox.w  = gui.area.w - defSpacing * 3 - addBox.w ; 
 
+
+		import pluginshared.data;
+		auto comps  = Editor.services.locate!(MetaComponents);
+
 		import std.algorithm;
-		gui.selectionfield(compTypeBox, selectedComponent, ComponentIDs);
+		gui.selectionfield(compTypeBox, selectedComponent, comps.components.map!(x => x.name));
 		if(gui.button(addBox, "AddComp"))
 		{
-			ulong bit   = 1 << cast(ulong)selectedComponent;
-			ulong comps = entity.components;
-			if((comps & bit) != bit)
+			auto selComp = comps.components[selectedComponent].hash;
+			auto ecomps = entity.components.get();
+			if(!ecomps.canFind!(x => x == selComp))
 			{
-				//Add the component to the entity;
-				entity.components = (comps | bit); //This is how you do that :) 
-				state.setRestorePoint();
+				entity.components ~= selComp;
 			}
 		}
 
+		foreach(comp; entity.components.get())
+		{
+			
+		}
+
+
+		import log;
+		logInfo(entity.components.get());
+
+		/*
 		offset -= defFieldSize;
 
 		ulong comps = entity.components;
@@ -141,6 +151,8 @@ struct ComponentsPanelImpl
 		}
 
 		oldItem = item;
+
+		*/
 	}
 
 

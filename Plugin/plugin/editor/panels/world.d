@@ -6,6 +6,11 @@ import plugin.editor.panels.common;
 import plugin.editor.renderers;
 import plugin.editor.tools;
 
+import util.traits;
+
+alias Tools = Classes!(plugin.editor.tools);
+alias RenderFunctions = Functions!(plugin.editor.renderers);
+
 @EditorPanel("World", PanelPos.center)
 struct WorldPanel
 {
@@ -25,7 +30,7 @@ struct WorldPanel
 		auto renderer = context.gui.renderer;
 
 		if(context.area.contains(context.gui.mouse.location))
-			camera.scale = clamp(context.gui.mouse.scrollDelta.y + camera.scale, 5, 128);
+			camera.scale = math.clamp(context.gui.mouse.scrollDelta.y + camera.scale, 5, 128);
 
 		auto rcontext = RenderContext(Editor.state, camera, renderer);
 		camera.viewport = context.area.toFloat4;

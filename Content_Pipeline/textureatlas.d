@@ -107,16 +107,16 @@ CompiledFile compileAtlas(void[] data, DirEntry file, ref Context context)
 	import util.bitmanip;
 	if(context.platform == Platform.desktop)
 	{
-		auto atlasMetaData	= new ubyte[atlas.rects.length * uint.sizeof * 5];
+		auto atlasMetaData	= new ubyte[atlas.rects.length * (uint.sizeof + ushort.sizeof * 4)];
 
 		size_t offset = 0;		
 		foreach(i, r; atlas.rects)
 		{
 			atlasMetaData.write!uint(bytesHash(r.name.ptr, r.name.length).value, &offset);
-			atlasMetaData.write!float(r.left, &offset);
-			atlasMetaData.write!float(r.bottom, &offset);
-			atlasMetaData.write!float(r.right - r.left, &offset);
-			atlasMetaData.write!float(r.top - r.bottom, &offset);
+			atlasMetaData.write!short(cast(short)r.left, &offset);
+			atlasMetaData.write!short(cast(short)r.bottom, &offset);
+			atlasMetaData.write!short(cast(short)(r.right - r.left), &offset);
+			atlasMetaData.write!short(cast(short)(r.top - r.bottom), &offset);
 		}
 
 		return CompiledFile([CompiledItem(".atl", atlasMetaData), 
@@ -151,6 +151,8 @@ CompiledFile compileAtlas(void[] data, DirEntry file, ref Context context)
 
 auto createAtlas(AtlasConfig config, DirEntry file, Platform platform)
 {
+	import std.typecons;
+
 	Image[] images;
 	foreach(item; config.items.map!(x => Tuple!(string, string, Padding)(stripExtension(x.name),
 						buildPath(dirName(file.name), x.name ~ "\0"), x.padding)))

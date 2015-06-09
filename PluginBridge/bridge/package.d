@@ -6,3 +6,4 @@ public import bridge.attributes;
 public import bridge.plugins;
 public import bridge.state;
 public import bridge.contexts;
+public import bridge.data;

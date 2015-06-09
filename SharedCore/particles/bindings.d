@@ -77,7 +77,8 @@ struct ParticleSDLContext
 	{
 		auto loader(U)()
 		{
-			return variant!(32)(iter.as!U);
+			U u = iter.as!U;
+			return VariantN!(32).create(u);
 		}
 
 		auto all   = iter.allocator;
@@ -98,7 +99,7 @@ struct ParticleSDLContext
 			{
 				if(ParticleVariable[varIndex].value[1] == name)
 				{
-					auto v = loader!(ParticleVariable[varIndex].value[0]);
+					VariantN!32 v = loader!(ParticleVariable[varIndex].value[0]);
 					table.add(name, v);
 					found = true;
 					break;

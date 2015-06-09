@@ -565,10 +565,10 @@ auto makeAttributes(Attribs...)()
 		//Check to see that the attribute has a value.
 		static if(is(attribute))
 		{
-			assembly.attributes ~= MetaAttribute(attribute.init);
+			assembly.attributes ~= MetaAttribute.create(attribute.init);
 		}
 		else static if(__traits(compiles, typeof(attribute))) {
-			assembly.attributes ~= MetaAttribute(attribute);
+			assembly.attributes ~= MetaAttribute.create(attribute);
 		} else {
 			static assert(0, "Only value attributes are allowed!");
 		}

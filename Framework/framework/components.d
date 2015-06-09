@@ -25,8 +25,8 @@ final class WindowComponent : IApplicationComponent
 	this(WindowConfig config)
 	{
 		_window    = WindowManager.create(config);
-		_keyboard  = Keyboard(&_window);
 		_mouse	   = Mouse(&_window);
+		_keyboard  = Keyboard.create(&_window);
 		_gamePad   = GamePad.init;
 		_clipboard = Clipboard(&_window);
 	}

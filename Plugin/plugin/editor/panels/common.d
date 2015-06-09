@@ -9,12 +9,9 @@ public import reflection;
 public import std.typetuple;
 public import std.algorithm;
 
-public import common.components;
-public import common.attributes;
-public import common.identifiers;
+public import pluginshared;
+public import pluginshared.data;
 public import bridge;
-
-public import plugin.core.data;
 
 enum defFieldSize = 20;
 enum defSpacing   = 3;

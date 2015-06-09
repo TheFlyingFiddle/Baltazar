@@ -19,7 +19,9 @@ alias float4  = Vector!(4, float);
 alias int4    = Vector!(4, int);
 alias uint4   = Vector!(4, uint);
 alias ushort4 = Vector!(4, ushort);
+alias short4  = Vector!(4, short);
 alias ubyte4  = Vector!(4, ubyte);
+
 
 struct Vector(size_t size, T) 
 {
@@ -53,7 +55,7 @@ struct Vector(size_t size, T)
 
 	this(U)(U u) if (isNumeric!U)
 	{
-		static if(__ctfe)
+		if(__ctfe)
 		{
 			static if(size > 1)
 			{
@@ -69,34 +71,33 @@ struct Vector(size_t size, T)
 		{
 			foreach(i; staticIota!(0, size))
 			{
-				arr[i] = cast(T)u;
+				this.data[i] = cast(T)u;
 			}
 		}
 	}
 
-	this(U...)(U u) 
-		if(U.length == size)
+	this(U...)(U u) if(U.length == size)
+	{
+		if(__ctfe)
 		{
-			static if(__ctfe)
+			static if(size > 1)
 			{
-				static if(size > 1)
-				{
-					x = cast(T)u[0];
-					y = cast(T)u[1];
-				}
-				static if(size > 2)
-					z = cast(T)u[2];
-				static if(size > 3)
-					w = cast(T)u[3];
+				x = cast(T)u[0];
+				y = cast(T)u[1];
 			}
-			else 
+			static if(size > 2)
+				z = cast(T)u[2];
+			static if(size > 3)
+				w = cast(T)u[3];
+		}
+		else 
+		{
+			foreach(i, elem; u) 
 			{
-				foreach(i, elem; u) 
-				{
-					this.data[i] = cast(T)elem;
-				}
+				this.data[i] = cast(T)elem;
 			}
 		}
+	}
 
 	this(U)(auto ref Vector!(size, U) other)
 	{

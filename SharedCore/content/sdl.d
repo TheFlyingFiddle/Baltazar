@@ -159,6 +159,12 @@ struct SDLIterator(C)
 			return cast(bool) over.root[currentIndex].objectIndex;
 		}
 
+	@property SDLObject.Type objType() 
+	{
+		int i;
+		return cast(SDLObject.Type)over.root[currentIndex].type;	
+	}
+
     @property
 		size_t walkLength() {
 			if(!hasChildren)
@@ -335,7 +341,6 @@ struct SDLIterator(C)
         return cast(T)s;
 	}
 
-
     T as_impl(T)() if(isArray!T && !isSomeString!T)
     {
         static if(is(T t == A[], A)) {
@@ -381,7 +386,6 @@ struct SDLIterator(C)
 		return Mallocator.cit;
 	}
 
-
 	T as_impl(T)() if (is(T == enum))
 	{
 		enforce(over.root[currentIndex].type == TypeID._string,
@@ -405,7 +409,6 @@ struct SDLIterator(C)
 		return Color(as_impl!(uint)());
 	}
 
-	
 	T as_impl(T)() if(is(T t == HashMap!(K, V), K, V) && !is(T t1 == HashMap!(string, U), U))
 	{
 		static if(is(T t == HashMap!(K, V), K, V))
@@ -477,7 +480,9 @@ struct SDLIterator(C)
 	}
 
 	T as_impl(T : void*)() { return null; }
-	T as_impl(T)()
+	T as_impl(T)() if(is(T == struct) && !is(T t == HashMap!(K, V), K, V) &&
+					  !is(T == Color) && !is(T t == List!U, U) && 
+					  !isVector!T)
 	{
 		auto a = allocator;
 
@@ -582,7 +587,7 @@ struct SDLIterator(C)
     T as(T)()
 	{        
 		
-		enum context_compiles = __traits(compiles, () => context.read!(T, C)(&this));
+		enum context_compiles = __traits(compiles, () => context.read!(T)(&this));
 		static if(context_compiles)
 		{
 			return context.read!T(&this);
@@ -596,7 +601,9 @@ struct SDLIterator(C)
 
 		static if(!context_compiles && !as_impl_compiles)
 		{
-			as_impl!(T)();
+			auto t  = context.read!T(&this);
+			auto t2 = as_impl!(T)();
+			return t;		
 		}
 
 		//static assert(0, "Cannot serialize this type!");
@@ -715,11 +722,17 @@ void toSDL(T, Sink)(auto ref T value, ref Sink s)
 void toSDL(T, Sink, C)(auto ref T value, ref Sink sink, C* context, int level = 0)
 {
 
+	import util.variant;
+
 	enum context_compiles = __traits(compiles, () => context.write(value, sink, level));
 	static if(context_compiles)
 	{
 		context.write(value, sink, level);
 	}	
+	else static if(is(T == VariantN!12))
+	{
+		context.write(value, sink, level);
+	}
 	else 
 	{
 		toSDL_impl!(T, Sink, C)(value, sink, context, level);
@@ -736,40 +749,42 @@ void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is
 
 void toSDL_impl(T, Sink, C)(T value, ref Sink sink, C* context, int level) if(is(T == struct) && !isList!(T) && !is(T == Color) && !is(T t == HashMap!(K, V), K , V))
 {
-	if(level != 0) {
-		sink.put('\n');
-		sink.put('\t'.repeat(level - 1));
-		sink.put(objectOpener);
-	}
+
 	
 	import math;
 	static if (is(T vec == Vector!(len, U), int len, U)) {
 		enum dimensions = ['x','y','z','w']; // This is at the same time the vector rep and the file rep. TODO: DRY.
+		sink.put(objectOpener);
 		foreach(i;staticIota!(0, len)) {  
-			sink.put('\n');
-			sink.put('\t'.repeat(level));
+			sink.put(" ");
 			sink.put(dimensions[i]);
 			sink.put('=');
 			sink.put(cast(char[])(mixin("value." ~ dimensions[i]).to!string));
 		}
-	} else {
+		sink.put(" ");
+		sink.put(objectCloser);
+	} 
+	else
+	{
+		if(level != 0) {
+			sink.put('\n');
+			sink.put('\t'.repeat(level - 1));
+			sink.put(objectOpener);
+		}
+
 		foreach(i, field; value.tupleof) {
 			sink.put('\n');
 			sink.put('\t'.repeat(level));
 			sink.put(cast(char[])__traits(identifier, T.tupleof[i]));
-			sink.put('=');
+			sink.put(" = ");
 			toSDL(field, sink, context, level + 1);
 		}
-	}
 
-//Quick note about casts to char[]
-//These exists since a non-trivial
-//amount of the underlying implementations
-//of sinks require mutability.
-	if(level != 0){
-		sink.put('\n');
-		sink.put('\t'.repeat(level - 1));
-		sink.put(objectCloser);
+		if(level != 0){
+			sink.put('\n');
+			sink.put('\t'.repeat(level - 1));
+			sink.put(objectCloser);
+		}
 	}
 }
 

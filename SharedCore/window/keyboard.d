@@ -26,6 +26,12 @@ enum KeyModifiers : ubyte
 	super_  = 0x08
 }
 
+struct KeyCommand
+{
+	uint modifiers = KeyModifiers.none;
+	Key key		   = Key.unknown;
+}
+
 struct Keyboard
 {
 	private Window* _handle;
@@ -37,12 +43,15 @@ struct Keyboard
 
 	Key repeatKey;
 
-	this(Window* _handle) 
+	//BUG in compiler 2.070.1
+	static Keyboard create(Window* _handle) 
 	{
-		this._handle = _handle;
-		this._handle.onUnicode  = &onCharInput;
-		this._handle.onKey = &onKeyInput; 
-		keystates[] = KeyState.released;
+		Keyboard kb; 
+		kb._handle = _handle;
+		kb._handle.onUnicode  = &kb.onCharInput;
+		kb._handle.onKey = &kb.onKeyInput; 
+		kb.keystates[] = KeyState.released;
+		return kb;
 	}
 
 	void onCharInput(char[] input)

@@ -18,6 +18,17 @@ struct VariantN(size_t size)
 		*cast(T*)(this.data.ptr) = t;
 	}
 
+	//Regression bug in 2.070.1 made this needed.
+	static VariantN!(size) create(T)(auto ref T t) if(T.sizeof <= size - TypeHash.sizeof)
+	{
+		static assert(T.sizeof <= size - TypeHash.sizeof);
+		alias U = FullyUnqual!T;
+		VariantN!size var;
+		var.id  = typeHash!U;
+		*cast(T*)(var.data.ptr) = t;
+		return var;
+	}
+
 	this(size_t N)(VariantN!(N) value) if(N <= size - TypeHash.sizeof)
 	{
 		this.id = value.id;
@@ -40,7 +51,13 @@ struct VariantN(size_t size)
 
 	void opAssign(size_t N)(VariantN!N other) if(N <= size - TypeHash.sizeof)
 	{
-		this.data[0 .. N] = other.data[];
+		this.data[0 .. N] = other.data.ptr[0 .. N];
+		this.id			  = other.id;
+	}
+
+	void opAssign(VariantN!size other) 
+	{
+		this.data[0 .. size - TypeHash.sizeof] = other.data.ptr[0 .. size - TypeHash.sizeof];
 		this.id			  = other.id;
 	}
 
@@ -67,8 +84,17 @@ struct VariantN(size_t size)
 
 VariantN!(size) variant(size_t size, T)(T t)
 {
-	return VariantN!size(t);
+	auto s = VariantN!(size)(t);
+	return s;
 }
+
+unittest
+{
+	auto test0 = VariantN!(32)("Hello");
+	auto test1 = VariantN!(32)(32);
+	auto test1 = VariantN!(32)(ubyte(0));
+}
+
 
 struct VariantTable(size_t size) //The representation looks strange. Prolly had something to do with serialization sigh...
 {
@@ -108,7 +134,7 @@ struct VariantTable(size_t size) //The representation looks strange. Prolly had 
 		static if(is(T == VariantN!(size)))		
 			_rep[name] = value;
 		else
-			_rep[name] = VariantN!(size)(value);		
+			_rep[name] = VariantN!(size).create(value);		
 	}	
 
 	ref VariantN!size opDispatch(string name)()

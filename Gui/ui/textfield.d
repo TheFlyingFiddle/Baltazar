@@ -221,7 +221,7 @@ struct GuiTextfield
 			size_t low  = min(state.selection.x, state.selection.y);
 			size_t high = max(state.selection.x, state.selection.y);
 
-			clipboard.text(text.array[low .. high]);
+			clipboard.text(cast(char[])text.array[low .. high]);
 		}
 
 		if(keyboard.wasInput(Key.v) && keyboard.isModifiersDown(KeyModifiers.control))

@@ -1,7 +1,5 @@
 module bridge.attributes;
 
-public import common.attributes;
-
 enum PanelPos
 {
 	left,
@@ -17,9 +15,8 @@ struct EditorPanel
 
 struct EditorTool { }
 
-public import ui.menu : KeyCommand;
-public import window.keyboard : KeyModifiers, Key;
 
+public import window.keyboard : KeyCommand, Key, KeyModifiers;
 struct MenuItem
 {
 	string name;

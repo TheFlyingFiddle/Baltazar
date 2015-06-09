@@ -1,65 +1,65 @@
 
-items=[
+items = [
 	{
-		name=|1569186121.psys|
-		hash=
+		name = |1569186121.psys|
+		hash = 
 		{
-			value=458037588
+			value = 458037588
 		}
 	},
 	{
-		name=|1610212832.atl|
-		hash=
+		name = |1610212832.atl|
+		hash = 
 		{
-			value=2573216184
+			value = 1159175345
 		}
 	},
 	{
-		name=|1610212832.png|
-		hash=
+		name = |1610212832.png|
+		hash = 
 		{
-			value=106445681
+			value = 106445681
 		}
 	},
 	{
-		name=|1940348860.wav|
-		hash=
+		name = |1940348860.wav|
+		hash = 
 		{
-			value=1694026465
+			value = 1694026465
 		}
 	},
 	{
-		name=|1977726047.wav|
-		hash=
+		name = |1977726047.wav|
+		hash = 
 		{
-			value=4114763384
+			value = 4114763384
 		}
 	},
 	{
-		name=|2306788233.wav|
-		hash=
+		name = |2306788233.wav|
+		hash = 
 		{
-			value=3188877822
+			value = 3188877822
 		}
 	},
 	{
-		name=|2338379748.fnt|
-		hash=
+		name = |2338379748.fnt|
+		hash = 
 		{
-			value=69567674
+			value = 69567674
 		}
 	},
 	{
-		name=|2338379748.png|
-		hash=
+		name = |2338379748.png|
+		hash = 
 		{
-			value=1002116334
+			value = 1002116334
 		}
 	},
 	{
-		name=|2584865562.wav|
-		hash=
+		name = |2584865562.wav|
+		hash = 
 		{
-			value=3738141926
+			value = 3738141926
 		}
 	}]

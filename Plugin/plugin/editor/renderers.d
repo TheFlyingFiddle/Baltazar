@@ -2,9 +2,10 @@ module plugin.editor.renderers;
 
 import util.traits;
 import bridge.core;
+import bridge.data;
 import plugin.attributes;
-import plugin.core.data;
-import common.components;
+import pluginshared.components;
+import pluginshared.data;
 
 import math.vector;
 import graphics.textureatlas;
@@ -13,7 +14,6 @@ import rendering.shapes;
 
 
 
-alias RenderFunctions = Functions!(plugin.editor.renderers);
 
 //Tile
 @WorldRenderer("Tile")
@@ -26,23 +26,25 @@ void renderTiles(RenderContext* context)
 	auto atlas = Editor.gameAssets.locate!(TextureAtlas)(TileData.atlas);
 	if(!atlas) return;
 
-	auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+	auto obj = Editor.state.getProperty(Guid.init, TileMapID);
 	if(!obj) return;
 
 	auto camera = context.camera;
-	auto tm = context.state.proxy!TileMap(*obj);
+	auto tm = context.state.proxy!TileMap(obj.get!Guid);
 	auto positions = tm.positions.get();
 	auto colors	   = tm.tint.get();
 	auto types	   = tm.type.get();
 	auto images    = tm.tileID.get();
 
-	foreach(i; 0 .. tm.capacity)
+
+	import log;
+	logInfo(tm.length);
+	foreach(i; 0 .. tm.length)
 	{
+		
+
 		auto type = types[i];
 		if(type == 0) continue;
-
-		auto frame = (*atlas)[HashID(images[i])];
-
 
 		Color c;
 		if(type == TileType.normal)
@@ -55,8 +57,14 @@ void renderTiles(RenderContext* context)
 		float2 min = camera.worldToScreen(pos); 
 		float2 max = camera.worldToScreen(pos + float2.one); 
 
-		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), frame, c);
+		if(max.x < camera.viewport.x || 
+		   max.y < camera.viewport.y || 
+		   min.x > camera.viewport.z ||
+		   min.y > camera.viewport.w)
+			continue;
 
+		auto frame = (*atlas)[HashID(images[i])];
+		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), frame, c);
 	}
 }
 
@@ -110,15 +118,11 @@ void renderCamera(RenderContext* context)
 @WorldRenderer("Basic")
 void renderBasic(RenderContext* context)
 {
-	auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
-	if(!entities) return;
-
-	foreach(ref guid; *entities)
+	auto entities = Editor.state.proxy!(Guid[], EntitySet)(Guid.init).get;
+	foreach(ref guid; entities)
 	{	
 		auto entity = context.state.proxy!Entity(guid);
-		auto comps	= entity.components;
-
-		if(Entity.hasComponents!(Transform, Sprite)(comps))
+		if(Entity.hasComponents!(Transform, Sprite)(guid))
 		{
 			auto transform = context.state.proxy!(Transform)(guid);
 			auto sprite	   = context.state.proxy!(Sprite)(guid);
@@ -135,7 +139,7 @@ void renderBasic(RenderContext* context)
 			}
 		}
 
-		if(Entity.hasComponents!(Transform, Text)(comps))
+		if(Entity.hasComponents!(Transform, Text)(guid))
 		{
 			auto transform = context.state.proxy!(Transform)(guid);
 			auto text	   = context.state.proxy!(Text)(guid);
@@ -163,8 +167,7 @@ void renderSelected(RenderContext* context)
 	foreach(guid; SharedData.selected)
 	{
 		auto entity = context.state.proxy!Entity(guid);
-		auto comps	= entity.components;
-		if(Entity.hasComponents!(Transform)(comps))
+		if(Entity.hasComponents!(Transform)(guid))
 		{
 			auto transform	= context.state.proxy!(Transform)(guid).get();
 			float2 trans = context.camera.worldToScreen(transform.position); 

@@ -306,11 +306,6 @@ struct MenuItem
 	KeyCommand command;
 }
 
-struct KeyCommand
-{
-	uint		 modifiers = KeyModifiers.none;
-	Key key				   = Key.unknown;
-}
 
 enum MenuItemType
 {

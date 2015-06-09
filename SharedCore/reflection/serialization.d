@@ -3,13 +3,15 @@ module reflection.serialization;
 import content.sdl;
 import util.hash;
 import util.variant;
+import util.traits;
+
 import reflection.data;		
 import allocation;
 import std.algorithm;
 
 struct ReflectionContext
 {
-	const(MetaAssembly)*[] assemblies;
+	const(MetaAssembly*)[] assemblies;
 	U read(U, C)(SDLIterator!(C)* iter) if(is(U == VariantTable!(32)))
 	{
 		auto all = iter.allocator;	

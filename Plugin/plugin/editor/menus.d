@@ -2,7 +2,7 @@ module plugin.editor.menus;
 
 import bridge.attributes;
 import bridge.core;
-import plugin.core.data;
+import pluginshared.data;
 
 @MenuItem("FILE.New.Project")
 void new_()
@@ -64,36 +64,34 @@ void copy()
 {
 	//The amounts of things needed to do this is stagering.
 	//Though it shows that things are decoupled.
-	import allocation, plugin.core.data, std.algorithm;
-	import reflection.serialization, content.sdl, bridge.plugins;
+	import allocation, std.algorithm, bridge.data;
+	import content.sdl;
 
 	auto state = Editor.state;
 	auto db = DataStore(Mallocator.cit);
 	scope(exit) db.deallocate();
 
-	auto e = state.getProperty!(Guid[])(Guid.init, EntitySet);
-	auto a = state.getProperty!(Guid[])(Guid.init, ArchetypeSet);
-	auto entities   = e ? *e : Guid[].init;
-	auto archetypes = a ? *a : Guid[].init; 
+	auto entities   = state.proxy!(Guid[], EntitySet)(Guid.init).get;
+	auto archetypes = state.proxy!(Guid[], ArchetypeSet)(Guid.init).get;
 
+	db.setArrayProperty!Guid(Guid.init, "copied-objects", SharedData.selected.length);
 	foreach(ref guid; SharedData.selected)
 	{
-		db.addToSet(Guid.init, "copied-objects", guid);
+		db.appendArrayElement(Guid.init, "copied-objects", guid);
 		db.create(guid);
 		auto object = state.object(guid);
 		foreach(k, v; object)
 			db.setProperty(guid, k, v);
 		
 		if(entities.canFind!(x => x == guid))
-			db.addToSet(Guid.init, "entities", guid);
+			db.appendArrayElement(Guid.init, "entities", guid);
 		else if(archetypes.canFind!(x => x == guid))
-			db.addToSet(Guid.init, "archetypes", guid);
+			db.appendArrayElement(Guid.init, "archetypes", guid);
 	}	
 
 	//Staying like this atm.
-	auto p = Editor.services.locate!(Plugins);
 	MallocAppender!char appender = MallocAppender!char(1024 * 1024);
-	auto context = ReflectionContext(p.assemblies.array);
+	DataStoreContext context;
 	toSDL(db, appender, &context);
 	appender.put('\0');
 	Editor.os.clipboardText(appender.take.array);
@@ -102,15 +100,14 @@ void copy()
 @MenuItem("EDIT.pase", KeyCommand(KeyModifiers.control, Key.v))
 void paste()
 {
-	import allocation, plugin.core.data, std.algorithm, collections.map;
-	import reflection.serialization, content.sdl, bridge.plugins;
+	import allocation, std.algorithm, collections.map;
+	import content.sdl, bridge.data;
 	
 	try
 	{
 		auto source = Editor.os.clipboardText;
 
-		auto p		 = Editor.services.locate!(Plugins);
-		auto context = ReflectionContext(p.assemblies.array);
+		DataStoreContext context;
 		auto db		 = fromSDLSource!DataStore(GC.it, source, context);
 
 		auto c		 = db.getProperty(Guid.init, "copied-objects");
@@ -143,12 +140,14 @@ void paste()
 
 		foreach(entity; entities)
 		{
-			Editor.state.addToSet(Guid.init, EntitySet, renamed[entity]);
+			auto name = renamed[entity];
+			Editor.state.appendArrayElement(Guid.init, EntitySet, toByteArray(name));
 		}
 
 		foreach(arch; archetypes)
 		{
-			Editor.state.addToSet(Guid.init, ArchetypeSet, renamed[arch]);
+			auto name = renamed[arch];
+			Editor.state.appendArrayElement(Guid.init, ArchetypeSet, toByteArray(name));
 		}
 
 		Editor.state.setRestorePoint();
@@ -189,7 +188,26 @@ void tileMode()
 	SharedData.mode = Mode.tile;
 }
 
+import std.process, std.path;
+Pid p = Pid.init;
 
+@MenuItem("GAME.run")
+void runGame()
+{
+	auto files = Editor.services.locate!(IFileFinder);
+	auto path  = files.openPath("Game\0*.exe");
+	if(path is null) return;
+
+	if(p !is Pid.init)
+	{
+		scope(failure) goto failed;
+		kill(p); 
+	}
+failed:
+
+	auto workDir = path.dirName.dirName;
+	p = spawnProcess([path], null, Config.none, workDir);	
+}
 
 import reflection.generation;
 enum Filter(T) = true;

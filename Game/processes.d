@@ -16,6 +16,16 @@ struct Sprite
 	TextureID	texture; //Cold as hell outside of the renderer.
 }
 
+struct TransformStorage
+{
+	SpriteRenderer renderer;
+
+	void change(Entity entity, Transform transform)
+	{
+		renderer.transformChanged(entity, transform);
+	}
+}
+
 //Processes - Transform - Renderer - Input - Physics/Collision?
 struct SpriteRenderer
 {
@@ -81,7 +91,4 @@ struct SpriteRenderer
 			renderer.drawQuad(float4(min.x, min.y, max.x, max.y), 0, frame, color);
 		}
 	}
-
 }
-
-

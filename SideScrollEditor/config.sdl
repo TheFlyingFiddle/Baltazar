@@ -10,7 +10,7 @@ contentConfig =
 
 renderConfig =
 {
-	maxBatchSize = 0xfffff
+	maxBatchSize = 0xffff
 	batchCount   = 15
 	clearColor   = 0xFF302D2D
 }

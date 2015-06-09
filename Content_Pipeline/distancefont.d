@@ -124,6 +124,7 @@ ubyte[] composeImage(FontData[] datas, int baseSize, out int width, out int heig
 	auto output = new ubyte[ width * height * 4];
 	auto temp   = new ubyte[ width * height * 4];
 
+	import std.algorithm : min;
 	foreach(i; taskPool.parallel(iota(0, (datas.length - 1) / 4 + 1)))
 	{
 		int index = i * 4;

@@ -1,6 +1,7 @@
 module bridge_core_impl;
 
 import bridge.core;
+import bridge.data;
 import collections.list;
 import reflection;
 import allocation;
@@ -12,6 +13,7 @@ import util.servicelocator;
 import std.exception;
 import std.random;
 import util.variant;
+import std.bitmanip;
 import collections.list;
 import collections.map;
 import allocation;
@@ -24,11 +26,15 @@ enum CmdTag : byte
 	destroy,
 	setProp,
 	removeProp, 
-	addSet,
-	removeSet,
 
 	//Arrays!
-	setIndex,
+	setElement,
+	appendElement,
+	unappendElement,
+	insertElement,
+	removeElementAt,
+	removeElement
+
 }
 
 struct Command
@@ -44,9 +50,6 @@ struct Command
 			string key;
 			union
 			{
-				//add/remove from set.
-				Guid   itemGuid;
-				
 				//SetProperty
 				Data   data;
 
@@ -54,8 +57,8 @@ struct Command
 				struct 
 				{
 					align(1):
-					ushort arrayIndex; // <- PROBLEM! Need to devide into 24 bit and 8 bit.
-					ushort itemSize;
+					mixin(bitfields!(uint, "arrayIndex", 24,
+									 uint, "itemSize", 8));
 					ubyte[8] itemValue;
 				}
 			}
@@ -76,7 +79,7 @@ class EditorState : IEditorState
 	private GrowingList!(uint)	  restorepoints;
 	private uint restoreIdx;
 	private uint cmdSinceRestore;
-	private ulong objectCounter;
+	private uint objectCounter;
 
 	this(IAllocator allocator)
 	{
@@ -158,12 +161,17 @@ class EditorState : IEditorState
 		return false;
 	}
 	
-	Data* getPropertyTyped(Guid guid, string key) nothrow
+	Data* getProperty(Guid guid, string key) nothrow
 	{
 		return store.getProperty(guid, key);
 	}
 
-	void setPropertyTyped(Guid guid, string key, Data data) nothrow
+	ubyte[] getArrayElement(Guid guid, string key, uint index) nothrow
+	{
+		return store.getArrayElement(guid, key, index);
+	}
+	
+	void setProperty(Guid guid, string key, Data data) nothrow
 	{
 		if(store.hasProperty(guid, key))
 		{
@@ -202,67 +210,86 @@ class EditorState : IEditorState
 		return false;
 	}
 
-	void addToSet(Guid guid, string key, Guid item) nothrow 
+	void setArrayProperty(Guid guid, string key, uint capacity, ArrayElementTag tag) nothrow
 	{
-		auto cmd = Command(CmdTag.removeSet, guid);
+		assert(!store.hasProperty(guid, key));
+		store.setArrayProperty(guid, key, tag, capacity);
+
+		auto cmd = Command(CmdTag.removeProp, guid);
 		cmd.key  = key;
-		cmd.itemGuid = item;
+		addCmd(cmd);
+	}
+
+	void setArrayElement(Guid guid, string key, uint index, ubyte[] value) nothrow
+	{
+		auto arr = store.getProperty(guid, key);
+
+		auto cmd = Command(CmdTag.setElement, guid);
+		cmd.key  = key;
+		cmd.arrayIndex = index;
+		cmd.itemSize   = value.length;
+		cmd.itemValue[0 .. value.length] = store.getArrayElement(guid, key, index);
 		addCmd(cmd);
 
-		store.addToSet(guid, key, item);
+		store.setArrayElement(guid, key, index, value);
 	}
 
-	void removeFromSet(Guid guid, string key, Guid item) nothrow 
+	void appendArrayElement(Guid guid, string key, ubyte[] value, ArrayElementTag tag) nothrow
 	{
-		auto cmd = Command(CmdTag.addSet, guid);
-		cmd.key  = key;
-		cmd.itemGuid = item;
-		addCmd(cmd);
-
-		store.removeFromSet(guid, key, item);
-	}
-
-	void setArrayTyped(Guid guid, string key, uint capacity, uint size, TypeHash array) nothrow
-	{
-		scope(failure) return;
-		//Removed data stays forever as it is now. (Works well enough :))
-		auto mem   = cast(ubyte[])Mallocator.it.allocateRaw(capacity * size, size);
-		mem[] = 0;
-		mem.length = capacity;
-		Data data;
-		data.id = array;
-		*(cast(void[]*)data.data.ptr) = mem;
-
-		setPropertyTyped(guid, key, data);
-	}
-
-	void setArrayElement(Guid guid, string key, uint index, ubyte[] item, TypeHash arrType) nothrow
-	{
-		auto array = store.getProperty(guid, key);
-		if(array)
+		auto prop = getProperty(guid, key);
+		if(!prop)
 		{
-			assert(array.id == arrType);
-
-			int size = item.length;
-			auto d    = *cast(ubyte[]*)array.data;
-			auto data = d.ptr;
-			assert(d.length > index, "Range exception!");
-			
-			auto cmd	   = Command(CmdTag.setIndex, guid);
-			cmd.key		   = key;
-			cmd.arrayIndex = cast(ushort)index;
-			cmd.itemSize   = cast(ushort)size;
-
-			import log;
-			logInfo(size, " ", d.length, " ", guid, " ", key, " ", index, " " , item);
-			cmd.itemValue[0 .. size] = data[index * size .. index * size + size];
-			addCmd(cmd);
-			
-			data[index * size .. index * size + size] = item;
-			return;
+			setArrayProperty(guid, key, 8, tag);
 		}
+
+
+		auto cmd = Command(CmdTag.unappendElement, guid);
+		cmd.key  = key;
+		cmd.itemSize = value.length;
+		addCmd(cmd);
+
+		store.appendArrayElement(guid, key, value);
 	}
 
+	void insertArrayElement(Guid guid, string key, uint index, ubyte[] value) nothrow
+	{
+		auto cmd	    = Command(CmdTag.removeElementAt, guid);
+		cmd.key		    = key;
+		cmd.arrayIndex  = index;
+		cmd.itemSize	= value.length;
+		cmd.itemValue[0 .. value.length]   = value[];
+		addCmd(cmd);
+
+		store.insertArrayElement(guid, key, index, value);
+	}
+
+	void removeArrayElementAt(Guid guid, string key, uint index) nothrow
+	{
+		auto value = store.getArrayElement(guid, key, index); 
+
+		auto cmd = Command(CmdTag.insertElement, guid);
+		cmd.key  = key;
+		cmd.arrayIndex = index;
+		cmd.itemSize   = value.length;
+		cmd.itemValue[0 .. value.length] = value[];
+		addCmd(cmd);
+
+		store.removeArrayElementAt(guid, key, index);
+	}
+
+	void removeArrayElement(Guid guid, string key, ubyte[] value) nothrow
+	{
+		auto index = store.indexOfArrayElement(guid, key, value);
+		if(index == -1) return;
+		
+		auto cmd = Command(CmdTag.insertElement, guid);
+		cmd.key  = key;
+		cmd.arrayIndex = index;
+		cmd.itemSize   = value.length;
+		cmd.itemValue[0 .. value.length] = value[];
+		addCmd(cmd);
+		store.removeArrayElementAt(guid, key, index);
+	}
 
 	void undo() nothrow 
 	{
@@ -336,65 +363,78 @@ class EditorState : IEditorState
 	private void excecute(Command command, ref GrowingList!Command stack) nothrow 
 	{
 		Command inverse;
-		final switch(command.tag)
+		final switch(command.tag) 
 		{
-			case CmdTag.create: 
-				inverse = Command(CmdTag.destroy, command.guid);
+			case CmdTag.create:
+				inverse		= Command(CmdTag.destroy, command.guid);
 				store.data.add(command.guid, command.values);
-				break;
-			case CmdTag.destroy: 
-				inverse = Command(CmdTag.create, command.guid);
+			break;
+			case CmdTag.destroy:
+				inverse		   = Command(CmdTag.create, command.guid);
 				inverse.values = store.data[command.guid];
 				store.destroy(command.guid);
-				break;
-			case CmdTag.addSet:
-				inverse = Command(CmdTag.removeSet, command.guid);
-				inverse.key  = command.key;
-				inverse.itemGuid = command.itemGuid;
-
-				store.addToSet(command.guid, command.key, command.itemGuid);
-				break;
-			case CmdTag.removeSet: 
-				inverse = Command(CmdTag.addSet, command.guid);
-				inverse.key  = command.key;
-				inverse.itemGuid = command.itemGuid;
-
-				store.removeFromSet(command.guid, command.key, command.itemGuid);
-				break;
-			case CmdTag.setProp: 
+			break;
+			case CmdTag.setProp:
 				if(store.hasProperty(command.guid, command.key))
 				{
-					inverse = Command(CmdTag.setProp, command.guid);
-					inverse.key  = command.key;
+					inverse     = Command(CmdTag.setProp, command.guid);
+					inverse.key = command.key;
 					inverse.data = store.data[command.guid][command.key];
 				}
 				else 
 				{
-					inverse = Command(CmdTag.removeProp, command.guid);
-					inverse.key  = command.key;
+					inverse     = Command(CmdTag.removeProp, command.guid);
+					inverse.key = command.key;
 				}
-
 				store.setProperty(command.guid, command.key, command.data);
-				break;
-			case CmdTag.removeProp: 
+			break;
+			case CmdTag.removeProp:
 				inverse = Command(CmdTag.setProp, command.guid);
 				inverse.key  = command.key;
 				inverse.data = store.data[command.guid][command.key];
 
 				store.removeProperty(command.guid, command.key);
-				break;
-			case CmdTag.setIndex:
-				inverse			   = Command(CmdTag.setIndex, command.guid);
-				inverse.key		   = command.key;
-				inverse.itemSize   = command.itemSize;
+			break;
+			case CmdTag.setElement:
+				inverse = Command(CmdTag.setElement, command.guid);
+				inverse.key = command.key;
 				inverse.arrayIndex = command.arrayIndex;
+				inverse.itemSize  = command.itemSize;
+				inverse.itemValue[0 .. command.itemSize] = store.getArrayElement(command.guid, command.key, command.arrayIndex);
 
-				auto array = store.getProperty(command.guid, command.key);
-				auto data = (*cast(ubyte[]*)array.data).ptr;
-				inverse.itemValue[0 .. command.itemSize] = data[command.arrayIndex * command.itemSize .. command.arrayIndex * command.itemSize + command.itemSize];
-				data[command.arrayIndex * command.itemSize .. command.arrayIndex * command.itemSize + command.itemSize] = command.itemValue[0 .. command.itemSize];
+				store.setArrayElement(command.guid, command.key, command.arrayIndex, command.itemValue[0 .. command.itemSize]);
 				break;
+			case CmdTag.appendElement:
+				inverse = Command(CmdTag.unappendElement, command.guid);
+				inverse.key = command.key;
+				inverse.itemSize = command.itemSize;
+
+				store.appendArrayElement(command.guid, command.key, command.itemValue[0 .. command.itemSize]);
+			break;
+			case CmdTag.unappendElement:
+				auto arr = store.getProperty(command.guid, command.key);
+				inverse = Command(CmdTag.appendElement, command.guid);
+				inverse.key		   = command.key;
+				inverse.arrayIndex = arr.meta - 1;
+				inverse.itemSize   = command.itemSize;
+				inverse.itemValue[0 .. command.itemSize] = store.getArrayElement(command.guid, command.key, arr.meta - 1);
+
+				store.removeArrayElementAt(command.guid, command.key, arr.meta - 1);
+			break;
+			case CmdTag.insertElement:
+				inverse = command;
+				inverse.tag = CmdTag.removeElementAt;
+				store.insertArrayElement(command.guid, command.key, command.arrayIndex, command.itemValue[0 .. command.itemSize]);
+				
+				break;
+			case CmdTag.removeElementAt:
+			case CmdTag.removeElement:
+				inverse = command;
+				inverse.tag = CmdTag.insertElement;
+				store.removeArrayElementAt(command.guid, command.key, command.arrayIndex);
+			break;
 		}
+
 
 		assumeWontThrow(stack ~= inverse);
 	}

@@ -2,16 +2,15 @@ module plugin.editor.tools;
 
 import math;
 import bridge.core;
+import bridge.data;
 import window.mouse;
 import window.keyboard;
-import common.components;
+import pluginshared.components;
 import plugin.attributes;
 import graphics.textureatlas;
 import rendering.shapes;
 import util.traits;
-import plugin.core.data;
-
-alias Tools = Classes!(plugin.editor.tools);
+import pluginshared.data;
 
 interface ITool
 {
@@ -57,13 +56,11 @@ class Select : ITool
 		SharedData.selected.clear();
 		Rect bounds = Rect(start, end);
 
-		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
-		if(!entities) return;
-
-		foreach(ref guid; *entities)
+		auto entities = Editor.state.proxy!(Guid[], EntitySet)(Guid.init).get;
+		foreach(ref guid; entities)
 		{
 		    auto entity = context.state.proxy!(Entity)(guid);
-		    if(Entity.hasComponents!(Transform)(entity.components))
+		    if(Entity.hasComponents!(Transform)(guid))
 		    {
 		        auto trans = context.state.proxy!(Transform)(guid);
 		        Rect r   = Rect(trans.position.x - trans.scale.x / 2,
@@ -80,18 +77,16 @@ class Select : ITool
 	void render(RenderContext* context)
 	{
 		if(start == end) return;
-
-		auto entities = context.state.getProperty!(Guid[])(Guid.init, EntitySet);
-		if(!entities) return;
+		auto entities = Editor.state.proxy!(Guid[], EntitySet)(Guid.init).get;
 
 		auto atlas = Editor.assets.locate!(TextureAtlas)(Atlas);
 		auto pixel = (*atlas)[Pixel];
 
 		Rect bounds = Rect(start, end);
-		foreach(ref guid; *entities)
+		foreach(ref guid; entities)
 		{
 			auto entity = context.state.proxy!(Entity)(guid);
-		    if(Entity.hasComponents!(Transform)(entity.components))
+		    if(Entity.hasComponents!(Transform)(guid))
 		    {
 		        auto trans = context.state.proxy!(Transform)(guid);
 				Rect r   = Rect(trans.position.x - trans.scale.x / 2,
@@ -172,7 +167,7 @@ class Move  : ITool
 				foreach(ref guid; SharedData.selected)
 				{
 					auto entity = context.state.proxy!(Entity)(guid);
-					if(Entity.hasComponents!(Transform)(entity.components))
+					if(Entity.hasComponents!(Transform)(guid))
 					{
 						auto trans = context.state.proxy!(Transform)(guid);
 						trans.position = trans.position + delta;
@@ -209,65 +204,26 @@ class TilePaiter  : ITool
 	void createMap()
 	{
 		auto obj = Editor.state.createObject;
-		Editor.state.setProperty(Guid.init, TileMapID, obj);
+		Editor.state.setProperty(Guid.init, TileMapID, Data.create(obj));
 
 		//Should move this somewhere!
 		auto tm = Editor.state.proxy!TileMap(obj);
-		tm.capacity = 10;
-		tm.positions.initialize(10);
-		tm.type.initialize(10);
-		tm.tint.initialize(10);
-		tm.tileID.initialize(10);
-	}
-
-	import log;
-	void growMap()
-	{	
-		Editor.state.setRestorePoint();
-
-		auto oldObj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
-		auto tmOld   = Editor.state.proxy!TileMap(*oldObj);
-		auto nCap    = tmOld.capacity * 2;
-
-
-		auto pos    = tmOld.positions.get();
-		auto type   = tmOld.type.get();
-		auto tint   = tmOld.tint.get();
-		auto tileID = tmOld.tileID.get();
-
-
-		Editor.state.destroy(*oldObj);
-		auto obj = Editor.state.createObject();
-		Editor.state.setProperty(Guid.init, TileMapID, obj);
-
-		auto tm = Editor.state.proxy!(TileMap)(obj);
-
-		tm.capacity = nCap;
-		tm.positions.initialize(nCap);
-		tm.type.initialize(nCap);
-		tm.tint.initialize(nCap);
-		tm.tileID.initialize(nCap);
-
-		auto nPos    = tm.positions.get();
-		auto ntype   = tm.type.get();
-		auto ntint   = tm.tint.get();
-		auto ntileID = tm.tileID.get(); 
-
-		nPos[0 .. nCap / 2] = pos;
-		ntype[0 .. nCap / 2] = type;
-		ntint[0 .. nCap / 2] = tint;
-		ntileID[0 .. nCap / 2] = tileID;
+		tm.length = 0;
+		tm.positions.create();
+		tm.type.create();
+		tm.tint.create();
+		tm.tileID.create();
 	}
 
 	auto getMap()
 	{
-		auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+		auto obj = Editor.state.getProperty(Guid.init, TileMapID);
 		if(!obj)
 		{
 			createMap();
-			obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
+			obj = Editor.state.getProperty(Guid.init, TileMapID);
 		}
-		return Editor.state.proxy!TileMap(*obj);
+		return Editor.state.proxy!TileMap(obj.get!Guid);
 	}
 
 	//Add support of controll click adding.
@@ -290,42 +246,23 @@ class TilePaiter  : ITool
 			auto pos  = tm.positions.get();
 			auto img  = tm.tileID.get();
 
-			int free  = -1;
-			int taken = -1;
-			int cap	  = tm.capacity;
-			foreach(i; 0 .. tm.capacity)
+			int length	 = tm.length;
+			foreach(i; 0 .. length)
 			{
 				if(pos[i] == iloc && type[i] != 0 &&
 				   img[i] == TileData.image.value) 
 				{
-					taken = i;
-					break;
+					return;
 				}
-
-				if(type[i] == 0 || (pos[i] == iloc && img[i] != TileData.image.value)) {
-					free = i;
-					break;
-				}
-
 			}
 
-			if(taken != -1) return;
-			
-			if(free == -1) {
-				growMap();
-				auto tmn = getMap();
-				tmn.positions[cap] = iloc;
-				tmn.type[cap]	   = cast(ubyte)TileType.normal;
-				tmn.tileID[cap]	   = TileData.image.value;
-			}
-			else 
-			{
-				tm.positions[free] = iloc;
-				tm.type[free]	   = cast(ubyte)TileType.normal;
-				tm.tileID[free]	   = TileData.image.value;
-			}
-			counter++;
+			tm.length     = length + 1;
+			tm.positions  ~= iloc;
+			tm.type		  ~= cast(ubyte)TileType.normal;
+			tm.tileID	  ~= TileData.image.value;
+			tm.tint      ~= Color.white.packedValue;
 		
+			counter++;
 		}
 
 		if(m.wasReleased(MouseButton.left))
@@ -352,8 +289,8 @@ class TileEraser : ITool
 
 	auto getMap()
 	{
-		auto obj = Editor.state.getProperty!Guid(Guid.init, TileMapID);
-		return Editor.state.proxy!TileMap(*obj);
+		auto obj = Editor.state.getProperty(Guid.init, TileMapID);
+		return Editor.state.proxy!TileMap(obj.get!Guid);
 	}
 
 	int counter = 0;
@@ -375,7 +312,7 @@ class TileEraser : ITool
 			auto pos  = tm.positions.get();
 
 			int taken = -1;
-			foreach(i; 0 .. tm.capacity)
+			foreach(i; 0 .. tm.length)
 			{
 				if(pos[i] == iloc && type[i] != 0) 
 				{
@@ -386,11 +323,10 @@ class TileEraser : ITool
 
 			if(taken == -1) return;
 			
-			tm.positions[taken] = int2.zero;
-			tm.type[taken]		= 0;
-			tm.tileID[taken]	= 0;
+			tm.positions.removeAt(taken);
+			tm.type.removeAt(taken);
+			tm.tileID.removeAt(taken);
 			counter++;
-
 		}
 
 		if(m.wasReleased(MouseButton.left))

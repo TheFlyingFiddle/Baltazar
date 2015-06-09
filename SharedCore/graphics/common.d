@@ -27,6 +27,17 @@ template isIntVec(T) {
 	enum isIntVec = isAny!(T, int, int2, int3, int4);
 }
 
+template isShortVec(T) {
+	static if(is(T v == Vector!(len, U), int len, U))
+	{
+		enum isShortVec = is(U == short);
+	}
+	else 
+	{
+		enum isShortVec = false;
+	}
+}
+
 template isUintVec(T) {
 	enum isUintVec = isAny!(T, uint, uint2, uint3, uint4);
 }
@@ -34,11 +45,10 @@ template isUintVec(T) {
 template glUnitSize(T) {
 	static if(isNumeric!T) {
 		enum glUnitSize = 1;
-	} else static if(is(T == float2) || is(T == int2) || is(T == uint2)) {
-		enum glUnitSize = 2;
-	} else static if(is(T == float3) || is(T == int3) || is(T == uint3)) {
-		enum glUnitSize = 3;
-	} else static if(is(T == float4) || is(T == int4) || is(T == uint4) || is(T == Color)) {
+	}
+	else static if(is(T v == Vector!(len, U), int len, U)) {
+		enum glUnitSize = len;
+	} else static if(is(T == Color)) {
 		enum glUnitSize = 4;
 	} else {
 		static assert(false, "Not Yet implemented");
@@ -71,6 +81,8 @@ template glType(T)
 		enum glType = GL_UNSIGNED_BYTE;
 	} else static if(isUintVec!T) {
 		enum glType = GL_UNSIGNED_INT;
+	} else static if(isShortVec!T) {
+		enum glType = GL_SHORT;
 	} else  {
 		static assert(false, "Not Yet implemented");
 	}

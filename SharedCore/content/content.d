@@ -25,7 +25,8 @@ struct ContentHandle(T)
 
 	@property ref T asset()
 	{
-		assert(handle.typeHash == typeHash!T);
+		enum h = typeHash!T;
+		assert(handle.typeHash == h);
 		auto item = cast(T*)(handle.item);
 		return *item;
 	}
@@ -118,6 +119,9 @@ struct ContentLoader
 		{
 			avalibleResources = fromSDLFile!(FileMap)(allocator, f); 
 		}
+
+		import log;
+		logInfo("Allocated");
 	}
 
 	void addFileLoader(FileLoader fileLoader)
@@ -205,7 +209,7 @@ struct ContentLoader
 		import util.strings;
 
 		auto index = fileLoaders.countUntil!(x => x.typeHash == typeHash);
-		assert(index != -1, "Can't load the type specified!");
+		assert(index != -1, "Can't load the type specified! " ~ path);
 
 		auto loader = fileLoaders[index];
 		auto file = text1024(resourceFolder, dirSeparator, hash.value,  loader.extension);
@@ -282,6 +286,10 @@ struct AsyncContentLoader
 		import content : createStandardLoader;
 		loader = createStandardLoader(allocator, Mallocator.cit, numResources, resourceFolder);
 		numRequests = 0;
+
+
+		import log;
+		logInfo("Called");
 	}
 	
 	Handle* load(TypeHash hash, string path)

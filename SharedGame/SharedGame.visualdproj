@@ -384,8 +384,10 @@
   <Folder name="common">
    <File path="common\attributes.d" />
    <File path="common\binary.d" />
+   <File path="common\components.d" />
    <File path="common\data.d" />
    <File path="common\identifiers.d" />
+   <File path="common\package.d" />
   </Folder>
  </Folder>
 </DProject>

@@ -93,7 +93,7 @@ void run(DesktopAppConfig config, string projectPath)
 	try
 	{
 		import std.datetime;
-		app.run(TimeStep.fixed, 16_666.usecs);
+		app.run(TimeStep.fixed, 33_333.usecs);
 
 		kill(contentPid);
 		wait(contentPid);

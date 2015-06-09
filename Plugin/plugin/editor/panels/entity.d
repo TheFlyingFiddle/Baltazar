@@ -26,10 +26,11 @@ struct EntityPanel
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		auto e = state.getProperty!(Guid[])(Guid.init, EntitySet);
-		auto a = state.getProperty!(Guid[])(Guid.init, ArchetypeSet);
-		auto entities   = e ? *e : Guid[].init;
-		auto archetypes = a ? *a : Guid[].init; 
+		auto entitityProxy  	= state.proxy!(Guid[], EntitySet)(Guid.init);
+		auto archetypesProxy    = state.proxy!(Guid[], ArchetypeSet)(Guid.init);
+
+		auto entities			= entitityProxy.get;
+		auto archetypes			= archetypesProxy.get;
 
 		this.selected.clear();
 		foreach(ref guid; SharedData.selected)
@@ -47,9 +48,9 @@ struct EntityPanel
 			{
 				auto obj    = state.object(archetypes[selectedArchetype]);
 				entity = state.createObject();
-				state.addToSet(Guid.init, EntitySet, entity);
+				entitityProxy ~= entity;
 				foreach(k, v; obj)
-					state.setPropertyTyped(entity, k, v);
+					state.setProperty(entity, k, v);
 			}
 			else 
 			{
@@ -108,8 +109,8 @@ struct ArchetypePanel
 		Rect deleteItemBox = Rect(newItemBox.right + defSpacing * 2, lp.y, newItemBox.w, defFieldSize);
 		Rect itemBox	   = Rect(lp.x, newItemBox.top + defSpacing, lp.w, lp.h - (newItemBox.top + defSpacing * 2 - lp.y));
 
-		auto e = state.getProperty!(Guid[])(Guid.init, ArchetypeSet);
-		auto archetypes = e ? *e : Guid[].init;
+		auto archetypesProxy = state.proxy!(Guid[], ArchetypeSet)(Guid.init);
+		auto archetypes = archetypesProxy.get;
 
 		this.selected.clear();
 		foreach(ref guid; SharedData.selected)

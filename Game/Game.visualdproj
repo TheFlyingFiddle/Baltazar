@@ -4,7 +4,7 @@
   <obj>0</obj>
   <link>0</link>
   <lib>0</lib>
-  <subsystem>0</subsystem>
+  <subsystem>1</subsystem>
   <multiobj>0</multiobj>
   <singleFileCompilation>0</singleFileCompilation>
   <oneobj>0</oneobj>
@@ -13,7 +13,7 @@
   <verbose>0</verbose>
   <vtls>0</vtls>
   <symdebug>0</symdebug>
-  <optimize>0</optimize>
+  <optimize>1</optimize>
   <cpu>0</cpu>
   <isX86_64>0</isX86_64>
   <isLinux>0</isLinux>
@@ -29,13 +29,13 @@
   <useIn>0</useIn>
   <useOut>0</useOut>
   <useArrayBounds>0</useArrayBounds>
-  <noboundscheck>0</noboundscheck>
+  <noboundscheck>1</noboundscheck>
   <useSwitchError>0</useSwitchError>
   <useUnitTests>0</useUnitTests>
-  <useInline>0</useInline>
-  <release>1</release>
+  <useInline>1</useInline>
+  <release>0</release>
   <preservePaths>0</preservePaths>
-  <warnings>1</warnings>
+  <warnings>0</warnings>
   <infowarnings>0</infowarnings>
   <checkProperty>0</checkProperty>
   <genStackFrame>0</genStackFrame>
@@ -47,7 +47,7 @@
   <compiler>0</compiler>
   <otherDMD>0</otherDMD>
   <program>$(DMDInstallDir)windows\bin\dmd.exe</program>
-  <imppath>..\ExternalLibs; ..\SharedCore;   ..\Gui; ..\SharedGame; </imppath>
+  <imppath>..\ExternalLibs; ..\SharedCore; ..\Framework</imppath>
   <fileImppath />
   <outdir>$(ConfigurationName)</outdir>
   <objdir>$(OutDir)</objdir>
@@ -83,11 +83,11 @@
   <cv2pdbOptions />
   <objfiles />
   <linkswitches />
-  <libfiles> ExternalLibs.lib SharedCore.lib Gui.lib SharedGame.lib </libfiles>
-  <libpaths>..\ExternalLibs\Debug ..\SharedCore\Debug ..\Gui\Debug ..\SharedGame\Debug</libpaths>
+  <libfiles>SharedCore.lib Framework.lib ExternalLibs.lib</libfiles>
+  <libpaths>..\ExternalLibs\Debug  ..\SharedCore\Debug  ..\Framework\Debug</libpaths>
   <deffile />
   <resfile />
-  <exefile>$(OutDir)\$(ProjectName).dll</exefile>
+  <exefile>$(OutDir)\$(ProjectName).exe</exefile>
   <useStdLibPath>1</useStdLibPath>
   <cRuntime>2</cRuntime>
   <additionalOptions />
@@ -381,10 +381,13 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep</filesToClean>
  </Config>
  <Folder name="Game">
-  <File path="dll.def" />
-  <File path="dllmain.d" />
+  <File path="config.sdl" />
   <File path="entity.d" />
+  <File path="gameplay.d" />
+  <File path="halffloat.d" />
+  <File path="main.d" />
   <File path="processes.d" />
+  <File path="renderer.d" />
   <File path="soa.d" />
   <File path="types.d" />
  </Folder>

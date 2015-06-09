@@ -1,5 +1,5 @@
 module plugin;
-import common.components;
+import pluginshared.components;
 
 template isTest(T...) if(T.length == 1)
 {
@@ -7,5 +7,4 @@ template isTest(T...) if(T.length == 1)
 }
 
 import reflection;
-mixin GenerateMetaData!(isTest,
-                        common.components);
+mixin GenerateMetaData!(isTest, pluginshared.components);

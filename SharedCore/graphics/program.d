@@ -289,6 +289,7 @@ void drawArrays(V, U)(ref VAO!V vao,
 	vao.bind();
 	program.use();
 	gl.drawArrays(type, start, length);
+	vao.unbind();
 }
 
 void drawElements(T, V, U)(ref VAO!V vao,
