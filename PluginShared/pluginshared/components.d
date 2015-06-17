@@ -9,13 +9,14 @@ public import graphics.color : Color;
 {
 	float2 position	= float2.zero;
 	float2 scale	= float2.one;
-	float  rotation	= 0;
+	float  rotation;
 }
 
 @Component struct Sprite
 {
 	Color tint	= Color.white;
 	TextureID texture;
+	float		lol = 0;
 }
 
 @Component struct Text

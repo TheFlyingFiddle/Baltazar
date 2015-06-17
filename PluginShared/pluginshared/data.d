@@ -108,10 +108,19 @@ struct SharedDataCont
 
 __gshared SharedDataCont* SharedData;
 
+import ui.base, bridge.data;
+alias showFunction = bool function(ref Gui, ref float, float, void*);
+alias loadComponent = void* function(IEditorState, uint, void*);
+alias storeComponent = void function(IEditorState, uint, void*);
+
 struct MetaComponent
 {
 	string name;
 	uint   hash;
+	uint size;
+	showFunction show;
+	loadComponent load;
+	storeComponent store;
 }
 
 struct MetaComponents

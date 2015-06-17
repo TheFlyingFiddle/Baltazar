@@ -61,19 +61,15 @@ final class MainScreen : Screen
 	override void render(Time time)
 	{
 		import util.bench;
+		import window.window;
+
+		auto w = app.locate!Window;
+		renderer.viewport(float2(w.size));
+		gl.viewport(0,0, cast(int)w.size.x, cast(int)w.size.y);
+		foreach(ref sprite; sprites)
 		{
-			auto wqeq = StackProfile("Render");
-
-			import window.window;
-			auto w = app.locate!Window;
-			renderer.viewport(float2(w.size));
-			gl.viewport(0,0, cast(int)w.size.x, cast(int)w.size.y);
-
-			foreach(ref sprite; sprites)
-			{
-				float2 size = float2(uniform(35, 70),uniform(35, 70));
-				renderer.drawQuad(sprite.position, size, sprite.textureID, sprite.color);
-			}
+			float2 size = float2(uniform(35, 70),uniform(35, 70));
+			renderer.drawQuad(sprite.position, size, sprite.textureID, sprite.color);
 		}
 
 		renderer.draw();

@@ -111,6 +111,7 @@ align(4) struct Data
 		alias ints   = TypeTuple!(ubyte, byte, ushort, short, int, uint, long, ulong);
 		alias floats = TypeTuple!(float, double);
 
+		import log;
 
 		Data d;
 		static if(staticIndexOf!(T, ints) != -1)
@@ -141,6 +142,17 @@ align(4) struct Data
 		else static assert(0, T.stringof ~ " cannot be placed inside a datastore!");
 
 		return d;
+	}
+
+	bool opEquals(const ref Data other) nothrow
+	{
+		if(this.tag == other.tag)
+		{
+			return this.meta == other.meta && 
+				   this.int_ == other.int_;
+		}
+
+		return false;
 	}
 
 	void opAssign(Data other) nothrow
@@ -510,6 +522,7 @@ struct EditorStateProxy(T, string s) if(is(T == struct))
 		}
 	}
 
+	import log;
 	void set(T t) 
 	{
 		foreach(i, ref field; t.tupleof)
@@ -549,7 +562,7 @@ struct EditorStateProxy(T, string s) if(is(T == struct))
 			alias FT = typeof(T.tupleof[i]);
 
 			enum name = T.tupleof[i].stringof;
-			enum pname = s ~ name;
+			enum pname = s ~ "." ~ name;
 			enum type = typeof(T.tupleof[i]).stringof;
 			static if(isBasic!FT)
 			{
@@ -570,7 +583,7 @@ struct EditorStateProxy(T, string s) if(is(T == struct))
 			}
 			else 
 			{
-				enum ptype = "EditorStateProxy!(" ~ typeof(T.tupleof[i]).stringof ~ ", \"" ~ s ~ "." ~ name ~ "\")";
+				enum ptype = "EditorStateProxy!(" ~ typeof(T.tupleof[i]).stringof ~ ", \"" ~ pname ~ "\")";
 
 				static if(!isArray!FT || isSomeString!T)
 				{

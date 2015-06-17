@@ -5,6 +5,8 @@ import plugin.editor.panels.common;
 @DontReflect
 struct ComponentsPanelImpl
 {
+	enum maxComponents = 100;
+
 	import util.traits;
 	int  selectedComponent;
 	IEditorState state;
@@ -14,7 +16,7 @@ struct ComponentsPanelImpl
 	EditText textData;
 	float2 scroll;
 	float2 area;
-	ulong active;
+	bool[]	activeComps;
 
 	this(IAllocator all)
 	{
@@ -22,7 +24,8 @@ struct ComponentsPanelImpl
 
 		this.scroll = float2.zero;
 		this.area   = float2.zero;
-		this.active = 0;
+		activeComps	= all.allocate!(bool[])(maxComponents);
+		activeComps[] = true;
 	}
 
 	void show(PanelContext* context)
@@ -51,6 +54,7 @@ struct ComponentsPanelImpl
 		auto item = SharedData.selected[0];
 		if(item != oldItem  && oldItem != 0)
 		{
+			activeComps[] = true;
 			state.setRestorePoint();
 		}
 
@@ -71,6 +75,7 @@ struct ComponentsPanelImpl
 	
 		//Add component field
 		float offset = area.y - 43;	
+		float width  = gui.area.w - defSpacing * 2;
 		Rect addBox		 = Rect(defSpacing, offset - defSpacing, 100, defFieldSize);
 		Rect compTypeBox = addBox;
 		compTypeBox.x  = addBox.right + defSpacing;
@@ -91,70 +96,53 @@ struct ComponentsPanelImpl
 				entity.components ~= selComp;
 			}
 		}
-
-		foreach(comp; entity.components.get())
-		{
-			
-		}
-
-
 		import log;
-		logInfo(entity.components.get());
 
-		/*
-		offset -= defFieldSize;
+		ubyte[256] buffer; 
+		uint[100]  comp_copy;
+		int length	= entity.components.get().length;
+		comp_copy[0 .. length] = entity.components.get();
 
-		ulong comps = entity.components;
-		foreach(i; staticIota!(0, ComponentTypes.length))
+		make_seperator(gui, offset, width);
+		foreach(i, comp_hash; comp_copy[0 .. length])
 		{
-			alias CT = ComponentTypes[i];
-			enum  CN = Identifier!CT;
+			auto meta_comps = comps.components.find!(x => x.hash == comp_hash)[0];
+			
+			offset -= defFieldSize;
+			Rect r = Rect(defSpacing, offset, gui.area.w - defSpacing, defFieldSize);
+			gui.label(r, meta_comps.name, HorizontalAlignment.center);
 
-			ulong bit = 1 << cast(ulong)i;
-			if((comps & bit) == bit)
+			r.x += 2;
+			r.y += 2;
+			r.w = 16;
+			r.h -= 4;
+
+			gui.toggle(r, activeComps[i], "", HashID("arrowToggle"));
+
+			r.x = gui.area.w - 35;
+			if(gui.button(r, "", HashID("deleteButton")))
 			{
-				offset -= defFieldSize;
-				Rect r = Rect(defSpacing, offset, gui.area.w - defSpacing, defFieldSize);
-				gui.label(r, ComponentIDs[i], HorizontalAlignment.center);
-
-				r.x += 2;
-				r.y += 2;
-				r.w = 16;
-				r.h -= 4;
-
-				bool act = (active & bit) == bit;
-				gui.toggle(r, act, "", HashID("arrowToggle"));
-				active = act ? (active | bit) : (active & ~bit);
-
-				r.x = gui.area.w - 35;
-				if(gui.button(r, "", HashID("deleteButton")))
-				{
-					entity.components = (comps & ~bit);
-					auto proxy = state.proxy!(CT)(item);
-					proxy.destroy();
-				}
-
-				if((active & bit) == bit) 
-				{
-					auto proxy = state.proxy!(CT)(item);
-					CT inst = proxy.get();
-					if(comp(gui, inst, offset,  gui.area.w - defSpacing * 2))
-					{
-						proxy.set(inst);
-					}
-				}
-
-				offset -= defFieldSize + defSpacing;
-				r = Rect(defSpacing, offset, gui.area.w - defSpacing * 2, defFieldSize);
-				gui.separator(r, Color(0xFFB3B0A9));
+				entity.components.removeAt(i);
 			}
+
+			if(activeComps[i])
+			{
+				meta_comps.load(state, item, buffer.ptr);
+				meta_comps.show(gui, offset, width, buffer.ptr);
+				meta_comps.store(state, item, buffer.ptr);
+			}
+			
+			make_seperator(gui, offset, width);
 		}
-
-		oldItem = item;
-
-		*/
 	}
+	
 
+	void make_seperator(ref Gui gui, ref float offset, float width)
+	{
+		offset -= defFieldSize + defSpacing;
+		Rect r = Rect(defSpacing, offset, width, defFieldSize);
+		gui.separator(r, Color(0xFFB3B0A9));
+	}
 
 	bool comp(T)(ref Gui gui, ref T t, ref float offset, float width)
 	{

@@ -177,8 +177,9 @@ class EditorState : IEditorState
 		{
 			auto prop = store.getProperty(guid, key);
 			if(*prop == data)
+			{
 				return; //Don't set a property that has not been changed!
-
+			}
 
 			auto cmd = Command(CmdTag.setProp, guid);
 			cmd.key  = key;
@@ -293,8 +294,6 @@ class EditorState : IEditorState
 
 	void undo() nothrow 
 	{
-		logInfo("undo");
-
 		if(cmdSinceRestore != 0)
 			setRestorePoint();
 
@@ -310,7 +309,6 @@ class EditorState : IEditorState
 
 	void redo() nothrow
 	{
-		logInfo("redo");
 		if(restoreIdx == restorepoints.length - 1) return;
 
 		foreach(i; 0 .. restorepoints[++restoreIdx])
@@ -321,13 +319,10 @@ class EditorState : IEditorState
 		redoCmds.length -= restorepoints[restoreIdx];
 	}
 
-	import log; 
-
 	void setRestorePoint() nothrow 
 	{
 		if(cmdSinceRestore == 0) return;
-		logInfo("Setting restore point!");
-
+		
 		assumeWontThrow(restorepoints ~= cmdSinceRestore);
 		restoreIdx	  = restorepoints.length - 1;
 
