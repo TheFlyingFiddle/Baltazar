@@ -1,0 +1,11 @@
+<DProject>
+ <ProjectGuid>3ec4eb7c-759e-49a8-8e5c-46c1e91a44c4</ProjectGuid>
+ <Config name="Debug">
+  <!-- default to defaults -->
+ </Config>
+ <Config name="Release">
+  </Config>
+ <Folder name="TilePlugin">
+  <File path="main.d" />
+ </Folder>
+</DProject>

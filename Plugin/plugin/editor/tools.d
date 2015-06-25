@@ -11,14 +11,7 @@ import graphics.textureatlas;
 import rendering.shapes;
 import util.traits;
 import pluginshared.data;
-
-interface ITool
-{
-	string name();
-	bool usable(ToolContext* contex);
-	void use(ToolContext* context);
-	void render(RenderContext* context);
-}
+import pluginshared.toolmeta;
 
 class Select : ITool
 {
@@ -189,47 +182,24 @@ class Move  : ITool
 }
 
 
-
-//TILE MODE
-import plugin.tile.data;
-class TilePaiter  : ITool
+////TILE MODE
+import plugin.tile.panel, plugin.tile.data;
+class TilePainter  : ITool
 {
 	string name() { return "Tiler"; }
 
 	bool usable(ToolContext* context) 
 	{
-		return SharedData.mode == Mode.tile;
+		if(SharedData.selected.length != 1)	return false;
+		auto item = SharedData.selected[0];
+		auto hasComps = Entity.hasComponents!(TileMap)(item);
+		return Entity.hasComponents!(TileMap)(item);
 	}
 
-	void createMap()
-	{
-		auto obj = Editor.state.createObject;
-		Editor.state.setProperty(Guid.init, TileMapID, Data.create(obj));
 
-		//Should move this somewhere!
-		auto tm = Editor.state.proxy!TileMap(obj);
-		tm.length = 0;
-		tm.positions.create();
-		tm.type.create();
-		tm.tint.create();
-		tm.tileID.create();
-	}
-
-	auto getMap()
-	{
-		auto obj = Editor.state.getProperty(Guid.init, TileMapID);
-		if(!obj)
-		{
-			createMap();
-			obj = Editor.state.getProperty(Guid.init, TileMapID);
-		}
-		return Editor.state.proxy!TileMap(obj.get!Guid);
-	}
-
+	int counter = 0;
 	//Add support of controll click adding.
 	//Also vairble size and 
-	//
-	int counter = 0;
 	void use(ToolContext* context)	
 	{
 		auto m = context.mouse;
@@ -237,31 +207,52 @@ class TilePaiter  : ITool
 		{
 			auto loc  = context.camera.screenToWorld(m.location);
 			int2 iloc = int2(loc);
-			
+
 			if(loc.x < -0.5) iloc.x--;
 			if(loc.y < -0.5) iloc.y--;
 
-			auto tm   = getMap();
+			auto tm = Editor.state.proxy!(TileMap)(SharedData.selected[0]);
+			if(!tm.positions.exists())
+			{
+				tm.length = 0;
+				tm.positions.create();
+				tm.type.create();
+				tm.tint.create();
+				tm.tileID.create();
+			}
+
 			auto type = tm.type.get();
 			auto pos  = tm.positions.get();
 			auto img  = tm.tileID.get();
 
+			int idx      = -1;
 			int length	 = tm.length;
 			foreach(i; 0 .. length)
 			{
-				if(pos[i] == iloc && type[i] != 0 &&
-				   img[i] == TileData.image.value) 
+				if(pos[i] == iloc && type[i] != 0) 
 				{
-					return;
+					if(img[i] == TileData.image.value) return;
+					idx = i;
+					break;
 				}
 			}
 
-			tm.length     = length + 1;
-			tm.positions  ~= iloc;
-			tm.type		  ~= cast(ubyte)TileType.normal;
-			tm.tileID	  ~= TileData.image.value;
-			tm.tint      ~= Color.white.packedValue;
-		
+			if(idx == -1)
+			{
+				tm.length     = length + 1;
+				tm.positions  ~= iloc;
+				tm.type		  ~= cast(ubyte)TileType.normal;
+				tm.tileID	  ~= TileData.image.value;
+				tm.tint       ~= Color.white.packedValue;
+			}
+			else
+			{
+				tm.positions[idx] = iloc;
+				tm.type[idx]	  = cast(ubyte)TileType.normal;
+				tm.tileID[idx]	  = TileData.image.value;
+				tm.tint[idx]	  = Color.white.packedValue;
+			}
+
 			counter++;
 		}
 
@@ -269,75 +260,77 @@ class TilePaiter  : ITool
 		{
 			if(counter > 0)
 				context.state.setRestorePoint();
-			
+
 			counter = 0;
 		}
 	}
 
 	void render(RenderContext* context) { }
 }
+//
+//class TileEraser : ITool
+//{
+//    string name() { return "Eraser"; }
+//
+//    bool usable(ToolContext* context) 
+//    {
+//        return SharedData.mode == Mode.tile;
+//    }
+//
+//
+//    auto getMap()
+//    {
+//        auto obj = Editor.state.getProperty(Guid.init, TileMapID);
+//        return Editor.state.proxy!TileMap(obj.get!Guid);
+//    }
+//
+//    int counter = 0;
+//    void use(ToolContext* context)	
+//    {
+//        if(!Editor.state.exists(Guid.init, TileMapID)) return;
+//
+//        auto m = context.mouse;
+//        if(m.isDown(MouseButton.left))
+//        {
+//            auto loc  = context.camera.screenToWorld(m.location);
+//            int2 iloc = int2(loc);
+//
+//            if(loc.x < -0.5) iloc.x--;
+//            if(loc.y < -0.5) iloc.y--;
+//
+//            auto tm   = getMap();
+//            auto type = tm.type.get();
+//            auto pos  = tm.positions.get();
+//
+//            int taken = -1;
+//            foreach(i; 0 .. tm.length)
+//            {
+//                if(pos[i] == iloc && type[i] != 0) 
+//                {
+//                    taken = i;
+//                    break;
+//                }
+//            }
+//
+//            if(taken == -1) return;
+//
+//            tm.positions.removeAt(taken);
+//            tm.type.removeAt(taken);
+//            tm.tileID.removeAt(taken);
+//            counter++;
+//        }
+//
+//        if(m.wasReleased(MouseButton.left))
+//        {
+//            if(counter > 0)
+//                context.state.setRestorePoint();
+//
+//            counter = 0;
+//        }
+//    }
+//
+//
+//    void render(RenderContext* context) { }
+//}		
 
-class TileEraser : ITool
-{
-	string name() { return "Eraser"; }
-
-	bool usable(ToolContext* context) 
-	{
-		return SharedData.mode == Mode.tile;
-	}
-
-
-	auto getMap()
-	{
-		auto obj = Editor.state.getProperty(Guid.init, TileMapID);
-		return Editor.state.proxy!TileMap(obj.get!Guid);
-	}
-
-	int counter = 0;
-	void use(ToolContext* context)	
-	{
-		if(!Editor.state.exists(Guid.init, TileMapID)) return;
-
-		auto m = context.mouse;
-		if(m.isDown(MouseButton.left))
-		{
-			auto loc  = context.camera.screenToWorld(m.location);
-			int2 iloc = int2(loc);
-
-			if(loc.x < -0.5) iloc.x--;
-			if(loc.y < -0.5) iloc.y--;
-
-			auto tm   = getMap();
-			auto type = tm.type.get();
-			auto pos  = tm.positions.get();
-
-			int taken = -1;
-			foreach(i; 0 .. tm.length)
-			{
-				if(pos[i] == iloc && type[i] != 0) 
-				{
-					taken = i;
-					break;
-				}
-			}
-
-			if(taken == -1) return;
-			
-			tm.positions.removeAt(taken);
-			tm.type.removeAt(taken);
-			tm.tileID.removeAt(taken);
-			counter++;
-		}
-
-		if(m.wasReleased(MouseButton.left))
-		{
-			if(counter > 0)
-				context.state.setRestorePoint();
-
-			counter = 0;
-		}
-	}
-
-
-	void render(RenderContext* context) { }
-}		
+mixin ToolBindings!(plugin.editor.tools);

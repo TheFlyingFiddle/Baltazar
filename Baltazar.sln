@@ -49,6 +49,8 @@ Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "EditorLauncher", "EditorLau
 EndProject
 Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "PluginShared", "PluginShared\PluginShared.visualdproj", "{8460D137-8613-49BE-8A89-5171C7A8DFE4}"
 EndProject
+Project("{002A2DE9-8BB6-484D-9802-7E4AD4084715}") = "TilePlugin", "TilePlugin\TilePlugin.visualdproj", "{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -134,6 +136,12 @@ Global
 		{8460D137-8613-49BE-8A89-5171C7A8DFE4}.Release|Win32.ActiveCfg = Release|Win32
 		{8460D137-8613-49BE-8A89-5171C7A8DFE4}.Release|Win32.Build.0 = Release|Win32
 		{8460D137-8613-49BE-8A89-5171C7A8DFE4}.Release|x64.ActiveCfg = Release|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Debug|Win32.Build.0 = Debug|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Debug|x64.ActiveCfg = Debug|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Release|Win32.ActiveCfg = Release|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Release|Win32.Build.0 = Release|Win32
+		{3EC4EB7C-759E-49A8-8E5C-46C1E91A44C4}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

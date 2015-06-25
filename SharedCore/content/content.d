@@ -119,9 +119,6 @@ struct ContentLoader
 		{
 			avalibleResources = fromSDLFile!(FileMap)(allocator, f); 
 		}
-
-		import log;
-		logInfo("Allocated");
 	}
 
 	void addFileLoader(FileLoader fileLoader)
@@ -286,10 +283,6 @@ struct AsyncContentLoader
 		import content : createStandardLoader;
 		loader = createStandardLoader(allocator, Mallocator.cit, numResources, resourceFolder);
 		numRequests = 0;
-
-
-		import log;
-		logInfo("Called");
 	}
 	
 	Handle* load(TypeHash hash, string path)

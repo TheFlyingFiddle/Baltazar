@@ -108,7 +108,7 @@ void paste()
 		auto source = Editor.os.clipboardText;
 
 		DataStoreContext context;
-		auto db		 = fromSDLSource!DataStore(GC.it, source, context);
+		auto db		 = fromSDLSource!DataStore(Mallocator.it, source, context);
 
 		auto c		 = db.getProperty(Guid.init, "copied-objects");
 		auto e		 = db.getProperty(Guid.init, EntitySet);

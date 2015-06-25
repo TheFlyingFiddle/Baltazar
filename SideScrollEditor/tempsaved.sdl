@@ -20,11 +20,12 @@ data = [
 		key = 1
 		value = 
 		{
-			Entityname = |Entity|
-			Entitycomponents_ = 
+			Entity.name = |Entity|
+			Entity.components = 
 			{
 				tag = int_
-				data = [1024624060]
+				data = [2313977023]
 			}
+			TileMap.length = 0
 		}
 	}]

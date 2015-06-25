@@ -312,25 +312,32 @@ struct DataStore
 
 	void appendArrayElement(Guid guid, string key, ubyte[] item) nothrow 
 	{
-		scope(failure) return;
-		auto d = getProperty(guid, key);
-
-		assert(d);
-		assert(d.tag == DataTag.array_);
-
-		auto length = d.meta;
-		auto cap	= d.array_.capacity;
-		if(length == d.array_.capacity)
+		try
 		{
-			auto nBuffer = allocator.allocateRaw(cap * item.length * 2, item.length).ptr;
-			nBuffer[0 .. cap * item.length] = d.array_.buffer[0 .. cap * item.length];
-			allocator.deallocate(d.array_.buffer[0 .. cap * item.length]);
-			d.array_.buffer = nBuffer;
-			d.array_.capacity = cap * 2;
-		}
+			auto d = getProperty(guid, key);
 
-		d.meta = d.meta + 1;
-		d.array_.buffer[length * item.length .. length * item.length + item.length] = item[];
+			assert(d);
+			assert(d.tag == DataTag.array_);
+
+			auto length = d.meta;
+			auto cap	= d.array_.capacity;
+			if(length == d.array_.capacity)
+			{
+				auto nBuffer = allocator.allocateRaw(cap * item.length * 2, item.length).ptr;
+				nBuffer[0 .. cap * item.length] = d.array_.buffer[0 .. cap * item.length];
+				allocator.deallocate(d.array_.buffer[0 .. cap * item.length]);
+				d.array_.buffer = nBuffer;
+				d.array_.capacity = cap * 2;
+			}
+
+			d.meta = d.meta + 1;
+			d.array_.buffer[length * item.length .. length * item.length + item.length] = item[];
+		}
+		catch(Throwable t)
+		{
+			import log;
+			logInfo(t);
+		}
 	}
 
 	void insertArrayElement(T)(Guid guid, string key, uint index, ref T item) nothrow
@@ -498,6 +505,11 @@ struct EditorStateProxy(T, string s) if(is(T == struct))
 		set(t);	
 	}
 
+	bool exists()
+	{
+		return __state.exists(__guid, s);
+	}
+
 	bool opEquals(ref const T other)
 	{
 		return get == other;
@@ -630,6 +642,11 @@ struct EditorStateProxy(T, string s) if(isArray!T && !isSomeString!T)
 		__state.setArrayProperty(__guid, s, capacity, elementTag!ET);
 	}
 
+	bool exists()
+	{
+		return __state.exists(__guid, s);
+	}
+
 	void opIndexAssign(ref ET value, size_t index)
 	{
 		__state.setArrayElement(__guid, s, index,  (cast(ubyte*)(&value))[0 .. ET.sizeof]);
@@ -704,7 +721,7 @@ struct DataStoreContext
 			case _string:
 				import allocation;
 				auto str = iter.readString();
-				auto mem = GC.it.allocate!(char[])(str.length, 1);
+				auto mem = Mallocator.it.allocate!(char[])(str.length, 1);
 				mem[] = str;
 				return Data.create(cast(string)mem);
 			case _parent:
@@ -745,6 +762,7 @@ struct DataStoreContext
 		d.tag = DataTag.array_;
 		d.array_.elementTag = tag;
 		d.meta = data.length;
+		d.array_.capacity = data.length;
 		d.array_.buffer = data.ptr;
 		return d;
 	}
@@ -864,7 +882,7 @@ unittest
 		toSDL(store, buffer,  &context, 0);
 		logInfo(buffer.array);
 		
-		auto t2 = fromSDLSource!DataStore(GC.cit, cast(string)buffer.array, context);
+		auto t2 = fromSDLSource!DataStore(Mallocator.cit, cast(string)buffer.array, context);
 		buffer.length = 0;
 		toSDL(t2, buffer, &context, 0);
 		logInfo(buffer.array);

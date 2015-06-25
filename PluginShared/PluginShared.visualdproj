@@ -196,6 +196,8 @@
    <File path="pluginshared\components.d" />
    <File path="pluginshared\data.d" />
    <File path="pluginshared\package.d" />
+   <File path="pluginshared\renderermeta.d" />
+   <File path="pluginshared\toolmeta.d" />
    <File path="pluginshared\types.d" />
   </Folder>
  </Folder>

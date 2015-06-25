@@ -9,9 +9,11 @@ mixin template ComponentBindings(alias Module)
 		import util.hash : HashID;
 		import util.traits : Structs, hasAttribute;
 		import std.traits  : hasMember;
+		import pluginshared.types;
 		import pluginshared.data;
 		import allocation;
 		import bridge.data;
+		import ui.base, ui.reflection;
 
 		auto service = editor.services.locate!(MetaComponents);
 		if(!service) 
@@ -34,13 +36,21 @@ mixin template ComponentBindings(alias Module)
 			p.set(t);
 		}
 
+		static bool stdshow(T)(ref Gui gui, ref float offset, float width, T* data)
+		{
+			GuiContext context;
+			auto size = gui.typefieldHeight(*data);
+			offset -= size + 5;
+			return gui.typefield(Rect(5, offset, width, size), *data, &context);
+		}
+
 		alias structs = Structs!(Module);
 		foreach(s; structs)
 		{
 			static if(hasAttribute!(s, Component))
 			{
-				enum hash = HashID(s.stringof).value;
-				auto name  = cast(char[])GC.it.allocateRaw(s.stringof.length, 1);
+				enum hash = typeHash!s.value;
+				auto name  = cast(char[])Mallocator.it.allocateRaw(s.stringof.length, 1);
 				name[]	   = s.stringof;
 
 				// Create Show Function
@@ -48,17 +58,10 @@ mixin template ComponentBindings(alias Module)
 
 				static if(hasMember!(s,"show")) 
 				{
-					func = &s.show;
+					func = cast(showFunction)&s.show;
 				} 
 				else
 				{
-					import ui.base, ui.reflection;
-					static bool stdshow(T)(ref Gui gui, ref float offset, float width, T* data)
-					{
-						auto size = gui.typefieldHeight(*data);
-						offset -= size + 5;
-						return gui.typefield(Rect(5, offset, width, size), *data);
-					}
 					func = cast(showFunction)&stdshow!s;
 				}
 			

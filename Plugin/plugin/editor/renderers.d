@@ -13,58 +13,55 @@ import rendering.combined;
 import rendering.shapes;
 
 
-
-
 //Tile
 @WorldRenderer("Tile")
 void renderTiles(RenderContext* context)
 {
+	import plugin.tile.panel;
 	import plugin.tile.data;
 	import util.hash;
 	import log;
 
-	auto atlas = Editor.gameAssets.locate!(TextureAtlas)(TileData.atlas);
+	auto atlas = Editor.gameAssets.locate!(TextureAtlas)("Atlas");
 	if(!atlas) return;
 
-	auto obj = Editor.state.getProperty(Guid.init, TileMapID);
-	if(!obj) return;
-
-	auto camera = context.camera;
-	auto tm = context.state.proxy!TileMap(obj.get!Guid);
-	auto positions = tm.positions.get();
-	auto colors	   = tm.tint.get();
-	auto types	   = tm.type.get();
-	auto images    = tm.tileID.get();
-
-
-	import log;
-	logInfo(tm.length);
-	foreach(i; 0 .. tm.length)
+	auto entities = Editor.state.proxy!(Guid[], EntitySet)(Guid.init).get;
+	foreach(ref guid; entities)
 	{
+		if(!Entity.hasComponents!(TileMap)(guid)) continue;
+
+		auto camera	   = context.camera;
+		auto tm		   = context.state.proxy!TileMap(guid);
+		auto positions = tm.positions.get();
+		auto colors	   = tm.tint.get();
+		auto types	   = tm.type.get();
+		auto images    = tm.tileID.get();
+
+		foreach(i; 0 .. tm.length)
+		{
+			auto type = types[i];
+			if(type == 0) continue;
+
+			Color c;
+			if(type == TileType.normal)
+				c = Color.white;
+			else if(type == TileType.collision)
+				c = Color.blue;
+
+			auto pos   = float2(positions[i]);
+
+			float2 min = camera.worldToScreen(pos); 
+			float2 max = camera.worldToScreen(pos + float2.one); 
+
+			if(max.x < camera.viewport.x || 
+			   max.y < camera.viewport.y || 
+			   min.x > camera.viewport.z ||
+			   min.y > camera.viewport.w)
+				continue;
 		
-
-		auto type = types[i];
-		if(type == 0) continue;
-
-		Color c;
-		if(type == TileType.normal)
-			c = Color.white;
-		else if(type == TileType.collision)
-			c = Color.blue;
-
-		auto pos   = float2(positions[i]);
-
-		float2 min = camera.worldToScreen(pos); 
-		float2 max = camera.worldToScreen(pos + float2.one); 
-
-		if(max.x < camera.viewport.x || 
-		   max.y < camera.viewport.y || 
-		   min.x > camera.viewport.z ||
-		   min.y > camera.viewport.w)
-			continue;
-
-		auto frame = (*atlas)[HashID(images[i])];
-		context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), frame, c);
+			auto frame = (*atlas)[HashID(images[i])];
+			context.renderer.drawQuad(float4(min.x, min.y, max.x, max.y), frame, c);
+		}
 	}
 }
 
@@ -118,10 +115,12 @@ void renderCamera(RenderContext* context)
 @WorldRenderer("Basic")
 void renderBasic(RenderContext* context)
 {
+	import log;
 	auto entities = Editor.state.proxy!(Guid[], EntitySet)(Guid.init).get;
 	foreach(ref guid; entities)
 	{	
 		auto entity = context.state.proxy!Entity(guid);
+
 		if(Entity.hasComponents!(Transform, Sprite)(guid))
 		{
 			auto transform = context.state.proxy!(Transform)(guid);
@@ -178,3 +177,6 @@ void renderSelected(RenderContext* context)
 		}
 	}
 }
+
+import pluginshared.renderermeta;
+mixin RendererBindings!(plugin.editor.renderers);

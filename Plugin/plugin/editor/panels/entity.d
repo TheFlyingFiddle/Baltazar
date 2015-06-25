@@ -83,7 +83,7 @@ struct EntityPanel
 			SharedData.selected.clear();
 			foreach(ref sel; selected)
 			{
-				SharedData.selected ~= entities[sel];
+				SharedData.selected ~= cast(Guid)entities[sel];
 			}
 		}
 	}
@@ -148,7 +148,7 @@ struct ArchetypePanel
 		SharedData.selected.clear();
 		foreach(ref sel; selected)
 		{
-			SharedData.selected ~= archetypes[sel];
+			SharedData.selected ~= cast(Guid)archetypes[sel];
 		}
 	}
 }

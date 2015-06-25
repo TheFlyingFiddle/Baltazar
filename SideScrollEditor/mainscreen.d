@@ -176,9 +176,12 @@ final class MainScreen : Screen, IEditor, IOS
 		}
 		catch(Exception e)
 		{
+			scope(failure) return;
 			import log;
 			logInfo(e);
 			logInfo("Failed to open! ", path);
+			import std.stdio;
+			readln;
 		}
 	}
 
@@ -255,6 +258,10 @@ final class MainScreen : Screen, IEditor, IOS
 
 		//saveFile("temp.sidal");
 		//tools.tools.clear();
+
+
+		import core.memory;
+		GC.collect();
 	}
 
 	void postPluginReload(Plugin plugin)
@@ -266,6 +273,8 @@ final class MainScreen : Screen, IEditor, IOS
 		rightPanels.addPanels(Mallocator.cit, this.plugin);
 		centerPanels.addPanels(Mallocator.cit, this.plugin);
 
+		import core.memory;
+		GC.collect();
 	}
 
 	override void update(Time time)

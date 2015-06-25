@@ -17,6 +17,7 @@ enum Mode
 	entity, tile
 }
 
+
 struct Entity
 {
 	import bridge.core, bridge.data;
@@ -42,11 +43,11 @@ struct Entity
 
 	static bool hasComponents(T...)(Guid entity)
 	{
+		import std.typetuple;
 		auto proxy = Editor.state.proxy!(Entity)(entity);
 		auto comps = proxy.components.get();
 
 		import util.hash;
-		
 		foreach(type; T)
 		{
 			bool found = false;
@@ -61,7 +62,6 @@ struct Entity
 
 			return found;
 		}
-
 		return true;
 	}
 }
@@ -146,4 +146,104 @@ struct MetaComponents
 			components  ~= mcomp;
 		}
 	}
+}
+
+
+@DontReflect
+struct ToolContext
+{
+	import window.keyboard;
+	import window.mouse;
+
+	IEditorState state;
+	Keyboard*  keyboard;
+	Mouse*     mouse;
+	Camera*    camera;
+}
+
+@DontReflect
+struct RenderContext
+{
+	import rendering.combined;
+
+	IEditorState state;
+	Camera*     camera;
+	Renderer2D* renderer;
+}
+
+struct MetaTool
+{
+	string name;
+	ITool tool;
+}
+
+interface ITool
+{
+	string name();
+	bool usable(ToolContext* contex);
+	void use(ToolContext* context);
+	void render(RenderContext* context);
+}
+
+struct MetaTools
+{
+	GrowingList!MetaTool metaTools;
+	static MetaTools* initialize(IAllocator allocator)
+	{
+		auto m = allocator.allocate!MetaTools;
+		m.metaTools = GrowingList!(MetaTool)(allocator, 10);
+		return m;
+	}
+
+	auto tools()
+	{
+		import std.algorithm;
+		return metaTools.map!(x => x.tool);
+	}
+
+	void add(MetaTool mtool)
+	{
+		import std.algorithm;
+		auto idx = metaTools.countUntil!(x => x.name == mtool.name);
+		if(idx != -1)
+		{
+			metaTools[idx] = mtool;
+		}
+		else 
+		{
+			metaTools  ~= mtool;
+		}
+	}
+}
+
+struct MetaRenderer
+{
+	string name;
+	void function(RenderContext*) render;
+
+}
+
+struct MetaRenderers
+{
+	GrowingList!MetaRenderer renderers;
+	static MetaRenderers* initialize(IAllocator allocator)
+	{
+		auto m = allocator.allocate!MetaRenderers;
+		m.renderers = GrowingList!(MetaRenderer)(allocator, 10);
+		return m;
+	}
+
+	void add(MetaRenderer mrenderer)
+	{
+		import std.algorithm;
+		auto idx = renderers.countUntil!(x => x.name == mrenderer.name);
+		if(idx != -1)
+		{
+			renderers[idx] = mrenderer;
+		}
+		else 
+		{
+			renderers  ~= mrenderer;
+		}
+	}	
 }

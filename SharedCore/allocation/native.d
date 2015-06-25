@@ -33,8 +33,8 @@ version(X86)
 
 
 
-			//import log;
-			//logInfo(bytes + aligner," bytes allocated by Mallocator at " , cast(void*)addr);
+			import log;
+			logInfo(bytes + aligner," bytes allocated by Mallocator at " , cast(void*)addr);
 			return allocated[0 .. bytes];
 		}	
 
@@ -50,8 +50,8 @@ version(X86)
 
 			GC.removeRange(toFree);
 
-			//import log;
-			//logInfo(cast(size_t)memory.ptr - addr + memory.length, " bytes deallocated by Mallocator at ", cast(void*)addr);
+			import log;
+			logInfo(cast(size_t)memory.ptr - addr + memory.length, " bytes deallocated by Mallocator at ", cast(void*)addr);
 		}
 
 

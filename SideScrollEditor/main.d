@@ -33,6 +33,7 @@ int main(string[] args)
 	if(args.length > 1) project = args[1];
 
 	import core.memory;
+	GC.disable();
 	initializeScratchSpace(1024 * 1024);
 
 	init_dlls();

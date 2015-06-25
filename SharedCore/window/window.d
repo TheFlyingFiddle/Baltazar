@@ -194,8 +194,6 @@ struct WindowManager
 
 			char[4] buf;
 			size_t s = encode(buf, cast(dchar)codepoint);
-			logInfo("Unicode char: ", codepoint, "=" , buf[0 .. s]);
-
 			auto state = cast(WindowState*)glfwGetWindowUserPointer(window);
 			if(state.unicodeCB !is null)
 				state.unicodeCB(buf[0 .. s]);
